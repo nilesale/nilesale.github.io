@@ -12,10 +12,10 @@
  * Supabase → Authentication → Sign In / Providers.
  */
 window.NILESALE_CONFIG = {
-  supabaseUrl: '',
-  supabaseAnonKey: '',
+  supabaseUrl: 'https://quvsdwcopaoyldpceuac.supabase.co',
+  supabaseAnonKey: 'sb_publishable_L6CX14jyiomRmVJahOzGeQ_0daDBHHI',
   providers: {
-    google: true,
-    apple: false
+    google: false, // switch to true once Google is enabled in Supabase
+    apple: false   // switch to true once Apple is enabled in Supabase
   }
 };
