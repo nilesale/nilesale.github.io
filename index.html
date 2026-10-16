@@ -14,6 +14,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="نيل سيل">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<script src="js/config.js"></script>
+<script src="js/vendor/supabase-2.117.2.js"></script>
 <script src="js/backend.js"></script>
 </head>
 <body>
@@ -1565,6 +1567,9 @@ signInP:["خطوة وحدة وتقدر تنشر وتزايد وتحفظ اللي
 withApple:["المتابعة عبر آبل","Continue with Apple"],
 withEmail:["المتابعة بالبريد الإلكتروني","Continue with email"],
 withPhone:["المتابعة برقم الجوال (رسالة نصية)","Continue with phone (text message)"],
+authRealBoth:["الدخول عبر آبل وجوجل حقيقي ومحمي. الدخول برقم الجوال لسا تجريبي.","Apple and Google sign-in are live. Phone sign-in is still a demo."],
+authRealGoogle:["الدخول عبر جوجل حقيقي ومحمي. آبل ورقم الجوال لسا تجريبيين.","Google sign-in is live. Apple and phone sign-in are still demos."],
+authRedirect:["جاري تحويلك لتسجيل الدخول…","Taking you to sign in…"],
 demoAuth:["تسجيل الدخول في هذي النسخة تجريبي: ما تنرسل رسالة نصية ولا يتم الاتصال بآبل أو جوجل. في التطبيق النهائي يتم عن طريق خدمة تحقق حقيقية.","Sign-in in this version is a demo: no text message is sent and Apple or Google aren't contacted. The live app will use a real verification service."],
 terms:["بالمتابعة توافق على شروط الاستخدام وسياسة الخصوصية.","By continuing you agree to the Terms of Use and Privacy Policy."],
 phoneT:["رقم جوالك","Your phone number"],
@@ -3650,7 +3655,9 @@ function renderAccount(){var box=V.account;box.textContent='';box.appendChild(el
 function isSignedIn(){return !!(account&&account.signedIn);}
 function requireAuth(fn,reason){if(isSignedIn()){fn();return;}openAuth(fn,null,reason);}
 function openAuth(after,pick,reason){payFlow={};authFlow={step:'choose',after:after||null,reason:reason||'',err:'',busy:false};if(pick)pickAuth(authFlow,pick,true);renderAuth();try{if(!dlg.open)dlg.showModal();}catch(e){dlg.setAttribute('open','');}}
-function pickAuth(a,p,silent){a.err='';if(p==='phone')a.step='phone';else{a.step='social';a.provider=p;}if(!silent)renderAuth();}
+function realAuthOn(p){return !!(window.__nsAuth&&window.__nsAuth.has&&window.__nsAuth.has(p));}
+function startRealAuth(a,p){a.err='';a.busy=true;var pend={};if(S.view==='post'&&draft){try{var dd=JSON.parse(JSON.stringify(draft));delete dd.busy;delete dd.err;dd.uploading=0;pend.draft=dd;}catch(e){}}toast(t('authRedirect'));window.__nsAuth.signIn(p,pend).catch(function(){a.busy=false;a.err=t('authFail');renderAuth();});}
+function pickAuth(a,p,silent){a.err='';if(p==='phone')a.step='phone';else if(realAuthOn(p)){startRealAuth(a,p);return;}else{a.step='social';a.provider=p;}if(!silent)renderAuth();}
 function closeAuth(){closeDlg();}
 dlg.addEventListener('close',function(){authFlow={};payFlow={};priceFlow={};wFlow={};});
 dlg.addEventListener('click',function(e){if(e.target===dlg)closeAuth();});
@@ -3662,7 +3669,7 @@ function renderAuth(){var a=authFlow,box=$('dlgIn');if(!a||!a.step)return;box.te
  box.appendChild(el('div',{class:'sheet-head'},[a.step!=='choose'?el('button',{type:'button',class:'btn btn-icon','aria-label':t('back'),onclick:function(){a.err='';a.step=backTo;renderAuth();}},[backIcon()]):el('span',{class:'spacer'}),el('h2',{id:'dlgT',text:t(titleKey)}),el('button',{type:'button',class:'btn btn-icon','aria-label':t('close'),onclick:closeAuth},[ic('close',18)])]));
  if(!db||!uid){box.appendChild(el('p',{text:t('noIdentity')}));return;}
  if(a.reason==='publish'&&a.step==='choose')box.appendChild(el('p',{class:'ready'},[ic('check',18),el('span',{text:t('readyToPublish')})]));
- if(a.step==='choose'){box.appendChild(el('p',{class:'muted',text:t('signInP')}));box.appendChild(authButtons(function(p){pickAuth(a,p);}));box.appendChild(el('p',{class:'demo',text:t('demoAuth')}));box.appendChild(el('p',{class:'small',text:t('terms')}));return;}
+ if(a.step==='choose'){box.appendChild(el('p',{class:'muted',text:t('signInP')}));box.appendChild(authButtons(function(p){pickAuth(a,p);}));box.appendChild(el('p',{class:'demo',text:t(realAuthOn('google')&&realAuthOn('apple')?'authRealBoth':realAuthOn('google')?'authRealGoogle':'demoAuth')}));box.appendChild(el('p',{class:'small',text:t('terms')}));return;}
  var form=el('form',{class:'sheet-form',novalidate:true}),focusEl=null;
  if(a.step==='social'){
   box.appendChild(el('p',{class:'muted',text:t('socialP',{p:t('p_'+a.provider)})}));
@@ -3759,7 +3766,7 @@ async function finishAuth(name){var a=authFlow;if(!db||!uid||a.busy)return;a.bus
  var joined=(profiles[uid]&&profiles[uid].joinedAt)||prev.createdAt||now;
  try{await db.doc('data/users/'+uid+'/account').set(acc);await db.doc('profiles/'+uid).set({name:acc.name,method:a.method,joinedAt:joined});account=acc;profiles[uid]={name:acc.name,method:a.method,joinedAt:joined};var after=a.after;closeAuth();toast(t('welcome',{name:acc.name}));updateHeader();render();if(after)after();}
  catch(e){a.busy=false;a.err=t('authFail');renderAuth();}}
-async function signOut(){if(!db||!uid||!account)return;try{await db.doc('data/users/'+uid+'/account').update({signedIn:false});}catch(e){}account=Object.assign({},account,{signedIn:false});updateHeader();toast(t('signedOut'));render();}
+async function signOut(){if(!db||!uid||!account)return;if(window.__nsAuth&&window.__nsAuth.enabled){try{await window.__nsAuth.signOut();}catch(e){}}try{await db.doc('data/users/'+uid+'/account').update({signedIn:false});}catch(e){}account=Object.assign({},account,{signedIn:false});updateHeader();toast(t('signedOut'));render();}
 
 /* ---------- post wizard ---------- */
 function newDraft(){var d={step:1,dist:'',nbh:'',cat:S.cat!=='all'?S.cat:'',type:'fixed',spec:{},photos:[],title:'',desc:'',price:'',city:'cairo',phone:(account&&account.phoneLocal)||'',minInc:'',dur:'24',err:'',busy:false,uploading:0};if(d.cat)applyDefaults(d);return d;}
@@ -4064,6 +4071,7 @@ applyI18n();setView('home');
   db.doc('data/users/'+uid+'/prefs').onSnapshot(function(s){var d=s.exists?(s.data()||{}):{};var oa=JSON.stringify(prefs.wAlerts||[]);prefs={favs:Array.isArray(d.favs)?d.favs.slice():[],entered:Array.isArray(d.entered)?d.entered.slice():[],wAlerts:Array.isArray(d.wAlerts)?d.wAlerts.filter(function(a){return a&&typeof a==='object'&&typeof a.id==='string';}).slice(0,20):[]};if(S.view==='home'&&JSON.stringify(prefs.wAlerts)!==oa)renderHome();var seen={};document.querySelectorAll('[data-fav]').forEach(function(b){var id=b.getAttribute('data-fav');if(!seen[id]){seen[id]=1;syncFavButtons(id);}});if(S.view==='saved'||S.view==='account')render();},function(){});
  }
  render();
+ try{var na=window.__nsAuth;if(na){if(na.error)toast(t('authFail'));else if(na.justSignedIn)toast(t('welcome',{name:na.justSignedIn.name||''}));var pend=na.takePending&&na.takePending();if(pend&&pend.draft&&typeof pend.draft==='object'&&!na.error){draft=Object.assign(newDraft(),pend.draft,{busy:false,err:'',uploading:0});S.stack=[];setView('post');}}}catch(e){}
 })();
 })();
 </script>

@@ -1,8 +1,10 @@
 /* Nile Sale service worker: makes the site installable and keeps it opening offline. */
-var VERSION = 'nilesale-v1';
+var VERSION = 'nilesale-v2';
 var CORE = [
   './',
   'index.html',
+  'js/config.js',
+  'js/vendor/supabase-2.117.2.js',
   'js/backend.js',
   'data/seed.json',
   'manifest.webmanifest',
