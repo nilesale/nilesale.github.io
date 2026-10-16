@@ -15,7 +15,7 @@ window.NILESALE_CONFIG = {
   supabaseUrl: 'https://quvsdwcopaoyldpceuac.supabase.co',
   supabaseAnonKey: 'sb_publishable_L6CX14jyiomRmVJahOzGeQ_0daDBHHI',
   providers: {
-    google: true,  // enabled in Supabase on 2026-10-17
+    google: false, // switch to true once the Google secret is saved in Supabase
     apple: false   // switch to true once Apple is enabled in Supabase
   }
 };

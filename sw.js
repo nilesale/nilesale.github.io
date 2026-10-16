@@ -1,5 +1,5 @@
 /* Nile Sale service worker: makes the site installable and keeps it opening offline. */
-var VERSION = 'nilesale-v4';
+var VERSION = 'nilesale-v5';
 var CORE = [
   './',
   'index.html',
