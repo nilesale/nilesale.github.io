@@ -1,0 +1,233 @@
+/*
+ * Nile Sale — local backend
+ * -------------------------------------------------------------
+ * The original app was built inside Claude and used Claude's built-in
+ * storage (window.claude.use('db' | 'user' | 'assets')). This file
+ * provides the same interface on a normal website, so the app code
+ * stays almost untouched.
+ *
+ * Where data lives in this version:
+ *   - listings, accounts, favourites → this browser's localStorage
+ *   - uploaded photos                → this browser's IndexedDB
+ * So every visitor sees the demo listings plus what THEY add on THEIR
+ * device. Nothing is shared between visitors yet. The next step is to
+ * replace this file with a Supabase-backed version that has the same
+ * interface (doc / collection / onSnapshot / add / set / update / delete).
+ */
+(function () {
+  'use strict';
+
+  var DB_KEY = 'nilesale.db.v1';
+  var UID_KEY = 'nilesale.uid';
+  var IDB_NAME = 'nilesale-media';
+  var MAX_UPLOAD = 10 * 1024 * 1024;
+
+  /* ---------- helpers ---------- */
+  function clone(v) { return v == null ? v : JSON.parse(JSON.stringify(v)); }
+  function rid(n, abc) {
+    abc = abc || 'abcdefghijklmnopqrstuvwxyz0123456789';
+    var out = '', a = new Uint8Array(n);
+    (window.crypto || window.msCrypto).getRandomValues(a);
+    for (var i = 0; i < n; i++) out += abc[a[i] % abc.length];
+    return out;
+  }
+  function parentOf(path) { var i = path.lastIndexOf('/'); return i < 0 ? '' : path.slice(0, i); }
+  function idOf(path) { return path.slice(path.lastIndexOf('/') + 1); }
+  function later(fn) { setTimeout(fn, 0); }
+  function err(code, msg) { var e = new Error(msg || code); e.code = code; return e; }
+
+  /* ---------- document store (localStorage) ---------- */
+  var store = { docs: {}, meta: {} };
+  function loadStore() {
+    try {
+      var raw = localStorage.getItem(DB_KEY);
+      var v = raw ? JSON.parse(raw) : null;
+      if (v && v.docs) store = v;
+    } catch (e) { /* private mode or blocked storage: keep in memory */ }
+  }
+  function saveStore() {
+    try { localStorage.setItem(DB_KEY, JSON.stringify(store)); return true; }
+    catch (e) { console.warn('[Nile Sale] could not save to localStorage', e); return false; }
+  }
+
+  /* ---------- live listeners ---------- */
+  var listeners = [];
+  function docSnap(path) {
+    var d = store.docs[path];
+    return { id: idOf(path), exists: d !== undefined, data: function () { return clone(d); } };
+  }
+  function runQuery(q) {
+    var rows = [];
+    Object.keys(store.docs).forEach(function (p) {
+      if (parentOf(p) === q.coll) rows.push(p);
+    });
+    if (q.order) {
+      var f = q.order.field, desc = q.order.dir === 'desc';
+      rows.sort(function (a, b) {
+        var x = store.docs[a][f], y = store.docs[b][f];
+        x = x == null ? -Infinity : x; y = y == null ? -Infinity : y;
+        return x < y ? (desc ? 1 : -1) : x > y ? (desc ? -1 : 1) : 0;
+      });
+    }
+    if (q.limit) rows = rows.slice(0, q.limit);
+    var docs = rows.map(docSnap);
+    return { docs: docs, size: docs.length, empty: docs.length === 0 };
+  }
+  function fire(l) {
+    try { l.cb(l.kind === 'doc' ? docSnap(l.path) : runQuery(l.q)); }
+    catch (e) { console.error('[Nile Sale] listener error', e); }
+  }
+  function notify(path) {
+    var coll = parentOf(path);
+    listeners.slice().forEach(function (l) {
+      if (l.kind === 'doc' ? l.path === path : l.q.coll === coll) later(function () { if (l.live) fire(l); });
+    });
+  }
+  function notifyAll() { listeners.slice().forEach(function (l) { later(function () { if (l.live) fire(l); }); }); }
+  window.addEventListener('storage', function (e) { if (e.key === DB_KEY) { loadStore(); notifyAll(); } });
+
+  function listen(l) {
+    l.live = true; listeners.push(l); later(function () { if (l.live) fire(l); });
+    return function () { l.live = false; listeners = listeners.filter(function (x) { return x !== l; }); };
+  }
+
+  function write(path, data) {
+    store.docs[path] = clone(data);
+    if (!saveStore()) return Promise.reject(err('quota_exceeded', 'Storage is full on this device'));
+    notify(path); return Promise.resolve();
+  }
+
+  function docRef(path) {
+    return {
+      id: idOf(path), path: path,
+      get: function () { return Promise.resolve(docSnap(path)); },
+      set: function (data) { return write(path, data); },
+      update: function (part) {
+        var cur = store.docs[path];
+        if (cur === undefined) return Promise.reject(err('not_found', 'Document does not exist'));
+        return write(path, Object.assign({}, cur, clone(part)));
+      },
+      delete: function () {
+        var prefix = path + '/';
+        Object.keys(store.docs).forEach(function (p) { if (p === path || p.indexOf(prefix) === 0) delete store.docs[p]; });
+        saveStore(); notify(path); return Promise.resolve();
+      },
+      onSnapshot: function (cb, onErr) { return listen({ kind: 'doc', path: path, cb: cb, onErr: onErr }); }
+    };
+  }
+  function query(coll, order, limit) {
+    return {
+      orderBy: function (field, dir) { return query(coll, { field: field, dir: dir || 'asc' }, limit); },
+      limit: function (n) { return query(coll, order, n); },
+      get: function () { return Promise.resolve(runQuery({ coll: coll, order: order, limit: limit })); },
+      onSnapshot: function (cb, onErr) { return listen({ kind: 'query', q: { coll: coll, order: order, limit: limit }, cb: cb, onErr: onErr }); },
+      add: function (data) { var id = rid(20); var p = coll + '/' + id; return write(p, data).then(function () { return { id: id, path: p }; }); },
+      doc: function (id) { return docRef(coll + '/' + (id || rid(20))); }
+    };
+  }
+  var db = { doc: docRef, collection: function (c) { return query(c, null, 0); } };
+
+  /* ---------- photos (IndexedDB) ---------- */
+  var blobUrls = {};
+  var idbP = null;
+  function idb() {
+    if (idbP) return idbP;
+    idbP = new Promise(function (res) {
+      try {
+        var r = indexedDB.open(IDB_NAME, 1);
+        r.onupgradeneeded = function () { r.result.createObjectStore('blobs'); };
+        r.onsuccess = function () { res(r.result); };
+        r.onerror = function () { res(null); };
+      } catch (e) { res(null); }
+    });
+    return idbP;
+  }
+  function idbAll() {
+    return idb().then(function (d) {
+      if (!d) return;
+      return new Promise(function (res) {
+        var tx = d.transaction('blobs', 'readonly'), os = tx.objectStore('blobs');
+        var req = os.openCursor();
+        req.onsuccess = function () {
+          var c = req.result;
+          if (c) { try { blobUrls[c.key] = URL.createObjectURL(c.value); } catch (e) {} c.continue(); } else res();
+        };
+        req.onerror = function () { res(); };
+      });
+    });
+  }
+  var assets = {
+    upload: function (blob) {
+      if (!blob || !blob.size) return Promise.reject(err('unsupported_type'));
+      if (blob.size > MAX_UPLOAD) return Promise.reject(err('too_large'));
+      var id = rid(32, '0123456789abcdef');
+      return idb().then(function (d) {
+        if (!d) throw err('quota_or_state');
+        return new Promise(function (res, rej) {
+          var tx = d.transaction('blobs', 'readwrite');
+          tx.objectStore('blobs').put(blob, id);
+          tx.oncomplete = function () { blobUrls[id] = URL.createObjectURL(blob); res({ id: id, url: blobUrls[id] }); };
+          tx.onerror = function () { rej(err('quota_or_state')); };
+        });
+      });
+    },
+    delete: function (id) {
+      if (blobUrls[id]) { try { URL.revokeObjectURL(blobUrls[id]); } catch (e) {} delete blobUrls[id]; }
+      return idb().then(function (d) {
+        if (!d) return;
+        return new Promise(function (res) { var tx = d.transaction('blobs', 'readwrite'); tx.objectStore('blobs').delete(id); tx.oncomplete = res; tx.onerror = res; });
+      });
+    }
+  };
+
+  /* ---------- image addresses used by the app ---------- */
+  var media = {};
+  window.__nsBlob = function (id) {
+    id = String(id || '');
+    if (blobUrls[id]) return blobUrls[id];
+    if (id.indexOf('logo_c_') === 0) return 'logos/cars/' + id.slice(7) + '.png';
+    if (id.indexOf('logo_m_') === 0) return 'logos/moto/' + id.slice(7) + '.png';
+    if (media[id]) return 'media/' + media[id];
+    return 'media/missing.svg';
+  };
+
+  /* ---------- visitor identity (this device) ---------- */
+  var uid = null;
+  try { uid = localStorage.getItem(UID_KEY); } catch (e) {}
+  if (!uid) { uid = 'u_' + rid(22, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'); try { localStorage.setItem(UID_KEY, uid); } catch (e) {} }
+  var user = {
+    id: function () { return Promise.resolve(uid); },
+    me: function () { return Promise.resolve({ id: uid, name: '' }); },
+    canEdit: function () { return Promise.resolve(false); },
+    profiles: function () { return Promise.resolve({}); }
+  };
+
+  /* ---------- first-run demo data ---------- */
+  function loadSeed() {
+    return fetch('data/seed.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (seed) {
+      if (!seed) return;
+      (seed.mediaFiles || []).forEach(function (f) { media[f.split('.')[0]] = f; });
+      var have = Number(store.meta.seedVersion) || 0;
+      if (have >= seed.version) return;
+      Object.keys(seed.docs || {}).forEach(function (p) {
+        // add new demo documents; never overwrite what the visitor changed
+        if (store.docs[p] === undefined || p.indexOf('brandLogos/') === 0) store.docs[p] = seed.docs[p];
+      });
+      store.meta.seedVersion = seed.version;
+      saveStore();
+    }).catch(function (e) { console.warn('[Nile Sale] demo data not loaded', e); });
+  }
+
+  loadStore();
+  var ready = Promise.all([loadSeed(), idbAll()]);
+
+  var services = { db: db, user: user, assets: assets, sample: null, permissions: null };
+  window.claude = {
+    use: function (name) { return ready.then(function () { return services[name] === undefined ? null : services[name]; }); }
+  };
+
+  /* ---------- installable app ---------- */
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+  }
+})();

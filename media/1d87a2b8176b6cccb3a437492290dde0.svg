@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600"><defs>
+<radialGradient id="qbg" cx="50%" cy="38%" r="75%"><stop offset="0" stop-color="#191a20"></stop><stop offset="1" stop-color="#060608"></stop></radialGradient>
+<radialGradient id="qgl" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#e2b93b" stop-opacity="0.55"></stop><stop offset="1" stop-color="#e2b93b" stop-opacity="0"></stop></radialGradient>
+<linearGradient id="qfloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0.35"></stop><stop offset="1" stop-color="#000" stop-opacity="0"></stop></linearGradient>
+</defs>
+<rect width="800" height="600" fill="url(#qbg)"></rect>
+<ellipse cx="400" cy="300" rx="360" ry="230" fill="url(#qgl)"></ellipse>
+<ellipse cx="400" cy="505" rx="300" ry="26" fill="#000" fill-opacity="0.35"></ellipse><defs><linearGradient id="qhs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3f48"></stop><stop offset="1" stop-color="#16181d"></stop></linearGradient></defs>
+<g transform="rotate(-10 400 300)">
+<rect x="120" y="250" width="560" height="110" rx="10" fill="#1e5a3e"></rect>
+<g fill="#d6ad49"><rect x="128" y="262" width="16" height="7"></rect><rect x="128" y="274" width="16" height="7"></rect><rect x="128" y="286" width="16" height="7"></rect><rect x="128" y="298" width="16" height="7"></rect><rect x="128" y="310" width="16" height="7"></rect><rect x="128" y="322" width="16" height="7"></rect><rect x="128" y="334" width="16" height="7"></rect></g>
+<circle cx="660" cy="305" r="14" fill="#0b0d12"></circle><circle cx="660" cy="305" r="7" fill="#c9ced6"></circle>
+<rect x="170" y="236" width="460" height="138" rx="12" fill="url(#qhs)"></rect>
+<g stroke="#000" stroke-opacity="0.25" stroke-width="4"><path d="M200 250 V360"></path><path d="M228 250 V360"></path><path d="M256 250 V360"></path><path d="M284 250 V360"></path><path d="M312 250 V360"></path><path d="M340 250 V360"></path><path d="M368 250 V360"></path><path d="M396 250 V360"></path><path d="M424 250 V360"></path><path d="M452 250 V360"></path><path d="M480 250 V360"></path><path d="M508 250 V360"></path><path d="M536 250 V360"></path><path d="M564 250 V360"></path><path d="M592 250 V360"></path></g>
+<path d="M190 246 H610" stroke="#e2b93b" stroke-width="5" stroke-linecap="round"></path>
+</g></svg>
