@@ -12,12 +12,15 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="نيل سيل">
+<meta name="apple-mobile-web-app-title" content="nilesale">
+<meta name="application-name" content="nilesale">
+<meta name="author" content="nilesale co">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.pk-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px}.pk-hero{display:flex;justify-content:center;color:var(--accent,#c8102e);margin:6px 0 10px}
+.brand-foot{text-align:center;opacity:.7;margin:18px 0 8px}
 </style>
-<script src="js/config.js?v=10"></script>
+<script src="js/config.js?v=11"></script>
 <script src="js/vendor/supabase-2.117.2.js"></script>
-<script src="js/backend.js?v=10"></script>
+<script src="js/backend.js?v=11"></script>
 </head>
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3666,7 +3669,8 @@ function renderAccount(){var box=V.account;box.textContent='';box.appendChild(el
   el('div',{class:'setrow'},[el('span',{class:'lbl',text:t('language')}),seg([['ar','العربية'],['en','English']],lang,setLang,t('language'))]),
   el('div',{class:'setrow'},[el('span',{class:'lbl',text:t('textSize')}),seg([['n',t('fsN')],['l',t('fsL')],['xl',t('fsXL')]],fsz,setFs,t('textSize'))])
  ]));
- box.appendChild(el('p',{class:'about',text:t('aboutDemo')}));}
+ box.appendChild(el('p',{class:'about',text:t('aboutDemo')}));
+ box.appendChild(el('p',{class:'small brand-foot',dir:'ltr',text:'© '+dg('2026')+' nilesale co · www.nilesale.com'}));}
 
 /* ---------- sign-in (demo flows) ---------- */
 function isSignedIn(){return !!(account&&account.signedIn);}
