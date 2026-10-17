@@ -18,10 +18,23 @@
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.pk-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px}.pk-hero{display:flex;justify-content:center;color:var(--accent,#c8102e);margin:6px 0 10px}
 .brand-foot{text-align:center;opacity:.7;margin:18px 0 8px}
 .brand-btn{display:flex;align-items:center;justify-content:center;gap:10px}.brand-btn svg{flex:none;margin-top:-2px}
+.wiz-nav.sticky{position:sticky;bottom:calc(5rem + env(safe-area-inset-bottom,0px));z-index:30;background:var(--surface);border:1px solid var(--line);border-radius:1rem;padding:.75rem;box-shadow:0 10px 30px rgba(0,0,0,.18);flex-wrap:wrap;align-items:center}
+.wiz-nav.sticky:empty{display:none}
+@media (min-width:56.25rem){.wiz-nav.sticky{bottom:1rem}}
+.wiz-nav .pick-chip{flex:1 1 100%;display:flex;align-items:center;gap:.5rem;min-width:0}
+.wiz-nav .pick-chip .ci{display:inline-flex;color:var(--accent)}
+.wiz-nav .nav-row{flex:1 1 100%}
+@keyframes nsNavUp{from{transform:translateY(130%);opacity:0}to{transform:none;opacity:1}}
+.wiz-nav.pop{animation:nsNavUp .3s cubic-bezier(.2,.8,.2,1)}
+@media (prefers-reduced-motion:reduce){.wiz-nav.pop{animation:none}}
+.ph-row{display:flex;gap:.5rem}.ph-row .cc-sel{flex:0 0 auto;width:auto;max-width:9.5rem}.ph-row input{flex:1;min-width:0}
+.ph-hint{display:block;margin-top:.25rem}
+.pay-mark{display:inline-flex;align-items:center;gap:.25rem;font-weight:700;letter-spacing:.01em}
+.method .pay-mark svg{width:18px;height:18px}
 </style>
-<script src="js/config.js?v=13"></script>
+<script src="js/config.js?v=14"></script>
 <script src="js/vendor/supabase-2.117.2.js"></script>
-<script src="js/backend.js?v=13"></script>
+<script src="js/backend.js?v=14"></script>
 </head>
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1018,7 +1031,7 @@ auctionOver:["انتهى المزاد","The auction has ended"],
 quota:["امتلأت قاعدة البيانات، احذف إعلانات قديمة","Storage is full. Delete old listings."],
 needIdentity:["افتح الصفحة وأنت مسجّل دخول عشان تستخدم هذي الميزة.","Open this page while signed in to use this."],
 stepOf:["الخطوة {n} من ٣","Step {n} of 3"],
-step1T:["وش تبي تعلن؟","What are you listing?"],
+step1T:["ماذا تريد أن تعلن؟","What would you like to list?"],
 step2T:["التفاصيل","Details"],
 step3T:["السعر والتواصل","Price & contact"],
 chooseCat:["القسم","Category"],
@@ -1589,6 +1602,15 @@ pkOn:["الدخول بالبصمة مفعّل","Fingerprint sign-in is on"],
 pkDone:["تم! المرة الجاية ادخل بالبصمة أو Face ID","Done! Next time, sign in with your fingerprint or Face ID"],
 pkFail:["ما تفعّلت البصمة. جرّب مرة ثانية.","Couldn't turn on fingerprint sign-in. Try again."],
 pkExists:["البصمة مفعّلة من قبل على هذا الجهاز","Fingerprint sign-in is already on for this device"],
+payVia:["ادفع عبر","Pay with"],
+phoneFromAcct:["من بيانات حسابك، وتقدر تغيّره","From your account. You can change it."],
+phErr_20:["رقم الموبايل المصري ١١ رقم ويبدأ بـ ٠١٠ أو ٠١١ أو ٠١٢ أو ٠١٥. ومع مفتاح الدولة يصير +٢٠ وبعده ١٠ أرقام بدون الصفر.","An Egyptian mobile number is 11 digits starting with 010, 011, 012 or 015. With the country code it is +20 followed by 10 digits (no leading 0)."],
+phErr_974:["رقم الجوال القطري ٨ أرقام ويبدأ بـ ٣ أو ٥ أو ٦ أو ٧.","A Qatari mobile number is 8 digits starting with 3, 5, 6 or 7."],
+phErr_966:["رقم الجوال السعودي ١٠ أرقام ويبدأ بـ ٠٥.","A Saudi mobile number is 10 digits starting with 05."],
+phErr_971:["رقم الجوال الإماراتي ١٠ أرقام ويبدأ بـ ٠٥.","A UAE mobile number is 10 digits starting with 05."],
+phErr_965:["رقم الجوال الكويتي ٨ أرقام ويبدأ بـ ٤ أو ٥ أو ٦ أو ٩.","A Kuwaiti mobile number is 8 digits starting with 4, 5, 6 or 9."],
+phErr_973:["رقم الجوال البحريني ٨ أرقام ويبدأ بـ ٣ أو ٦.","A Bahraini mobile number is 8 digits starting with 3 or 6."],
+phErr_968:["رقم الجوال العُماني ٨ أرقام ويبدأ بـ ٧ أو ٩.","An Omani mobile number is 8 digits starting with 7 or 9."],
 demoAuth:["تسجيل الدخول في هذي النسخة تجريبي: ما تنرسل رسالة نصية ولا يتم الاتصال بآبل أو جوجل. في التطبيق النهائي يتم عن طريق خدمة تحقق حقيقية.","Sign-in in this version is a demo: no text message is sent and Apple or Google aren't contacted. The live app will use a real verification service."],
 terms:["بالمتابعة توافق على شروط الاستخدام وسياسة الخصوصية.","By continuing you agree to the Terms of Use and Privacy Policy."],
 phoneT:["رقم جوالك","Your phone number"],
@@ -1702,8 +1724,8 @@ perMonth:["لمدة شهر","For one month"],
 later:["مو الحين","Not now"],
 payT:["الدفع","Payment"],
 payMethod:["طريقة الدفع","Payment method"],
-applePay:["آبل باي","Apple Pay"],
-googlePay:["جوجل باي","Google Pay"],
+applePay:["Apple Pay","Apple Pay"],
+googlePay:["Google Pay","Google Pay"],
 cardM:["بطاقة بنكية","Card"],
 payWithApple:["ادفع عبر آبل باي","Pay with Apple Pay"],
 payWithGoogle:["ادفع عبر جوجل باي","Pay with Google Pay"],
@@ -2407,6 +2429,21 @@ function cardList(arr){return arr.map(function(x){return card(x);});}
 function isoDate(ts){try{return new Date(Number(ts)).toISOString();}catch(e){return '';}}
 function shortDate(ts){try{return new Date(Number(ts)).toLocaleDateString(lang==='ar'?'ar-EG':'en-US',{day:'numeric',month:'short',year:'numeric'});}catch(e){return '';}}
 function fullDate(ts){try{return new Date(Number(ts)).toLocaleString(lang==='ar'?'ar-EG':'en-US',{day:'numeric',month:'long',year:'numeric',hour:'numeric',minute:'2-digit'});}catch(e){return '';}}
+var PH_RULES={'+20':{re:/^1[0125]\d{8}$/,trunk:'0',ph:'01012345678'},'+974':{re:/^[3567]\d{7}$/,trunk:'',ph:'55123456'},'+966':{re:/^5\d{8}$/,trunk:'0',ph:'0512345678'},'+971':{re:/^5[0-9]\d{7}$/,trunk:'0',ph:'0501234567'},'+965':{re:/^[4569]\d{7}$/,trunk:'',ph:'51234567'},'+973':{re:/^[36]\d{7}$/,trunk:'',ph:'36123456'},'+968':{re:/^[79]\d{7}$/,trunk:'',ph:'91234567'}};
+/* reads a mobile number typed with or without the country code (+20 / 0020 / 20) and checks it against that country's format */
+function phoneParse(cc,raw){var s=latin(raw||'').trim(),d=s.replace(/\D/g,'');if(!d)return null;var intl=s.charAt(0)==='+'||d.indexOf('00')===0;
+ if(intl){if(d.indexOf('00')===0)d=d.slice(2);var hit='';Object.keys(PH_RULES).forEach(function(k){var c=k.slice(1);if(d.indexOf(c)===0&&k.length>hit.length)hit=k;});if(!hit)return null;cc=hit;d=d.slice(cc.length-1);}
+ var r=PH_RULES[cc];if(!r)return null;var c2=cc.slice(1);
+ if(!intl&&d.indexOf(c2)===0&&!r.re.test(d.replace(r.trunk?new RegExp('^'+r.trunk):/^$/,''))&&r.re.test(d.slice(c2.length)))d=d.slice(c2.length);
+ if(r.trunk&&d.charAt(0)===r.trunk)d=d.slice(1);
+ if(!r.re.test(d))return null;
+ return {cc:cc,nsn:d,e164:cc+d,local:cc==='+20'?'0'+d:cc+d,input:(r.trunk||'')+d};}
+function phoneErrFor(cc){return t('phErr_'+String(cc||'+20').slice(1))||t('phoneErr');}
+function phonePh(cc){var r=PH_RULES[cc]||PH_RULES['+20'];return dg(r.ph);}
+function acctPhone(){var a=account;if(!a||!a.phone)return null;return phoneParse('+20',a.phone);}
+function ccSelect(id,val,on){var s=el('select',{class:'inp cc-sel',id:id,'aria-label':t('countryL')});OPT.cc.forEach(function(o){s.appendChild(el('option',{value:o.k,text:o[lang]+' \u200e+'+dg(o.k.slice(1))}));});s.value=val||'+20';s.addEventListener('change',function(){on(s.value);});return s;}
+function phoneBook(){try{return JSON.parse(localStorage.getItem('nilesale.phonebook')||'{}')||{};}catch(e){return {};}}
+function rememberPhone(ph,name){try{var b=phoneBook();b[ph]=String(name||'').slice(0,60);localStorage.setItem('nilesale.phonebook',JSON.stringify(b));}catch(e){}}
 function intlPhone(p){var s=latin(p).trim();var d=s.replace(/\D/g,'');if(!d)return '';if(s.charAt(0)==='+')return d;if(d.indexOf('00')===0)return d.slice(2);if(d.charAt(0)==='0')return '20'+d.slice(1);if(d.length===10&&d.charAt(0)==='1')return '20'+d;return d;}
 function waLink(x,intl){return 'https://wa.me/'+intl+'?text='+encodeURIComponent(t('waMsg',{title:x.title||''}));}
 function smsLink(x,intl){return 'sms:+'+intl+'?&body='+encodeURIComponent(t('waMsg',{title:x.title||''}));}
@@ -3650,10 +3687,11 @@ function row(x){var st=statusOf(x);var th=el('span',{class:'thumb'});if(x.photos
  return el('button',{type:'button',class:'row',onclick:function(){openDetail(x.id);}},[th,el('span',{class:'rt'},[el('b',{dir:txtDir(dispTitle(x)),text:dispTitle(x)}),el('span',{class:'small'},[rtier?el('span',{class:'tierb '+rtier,text:t(rtier)}):null,rtier?' ':null,priceText(x)])]),el('span',{class:'pill '+st.cls,text:t('st_'+st.k)})]);}
 var GOOGLE_D='M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z';
 function brandLogo(dd){var ns='http://www.w3.org/2000/svg';var s=document.createElementNS(ns,'svg');s.setAttribute('width','18');s.setAttribute('height','18');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('fill','currentColor');s.setAttribute('aria-hidden','true');var p=document.createElementNS(ns,'path');p.setAttribute('d',dd);s.appendChild(p);return s;}
+function payMark(m){return el('span',{class:'pay-mark',dir:'ltr'},[m==='apple'?appleLogo():brandLogo(GOOGLE_D),el('span',{text:'Pay'})]);}
 function appleLogo(){var ns='http://www.w3.org/2000/svg';var s=document.createElementNS(ns,'svg');s.setAttribute('width','20');s.setAttribute('height','20');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('fill','currentColor');s.setAttribute('aria-hidden','true');var p=document.createElementNS(ns,'path');p.setAttribute('d','M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701');s.appendChild(p);return s;}
 function authButtons(onPick){return el('div',{class:'authbtns'},[el('button',{type:'button',class:'btn btn-apple btn-block btn-lg brand-btn',onclick:function(){onPick('apple');}},[appleLogo(),t('withApple')]),el('button',{type:'button',class:'btn btn-google btn-block btn-lg brand-btn',onclick:function(){onPick('google');}},[brandLogo(GOOGLE_D),t('withGoogle')]),el('button',{type:'button',class:'btn btn-block btn-lg',onclick:function(){onPick('phone');}},[ic('phone',18),t('withPhone')])]);}
 function renderAccount(){var box=V.account;box.textContent='';box.appendChild(el('h1',{class:'ptitle',text:t('accountT')}));
- if(isSignedIn()){var a=account;var contactTxt=a.method==='email'?a.email:a.method==='phone'?a.phone:(a.email||'');var phoneTxt=a.method!=='phone'&&a.phoneLocal?a.phoneLocal:'';
+ if(isSignedIn()){var a=account;var contactTxt=a.method==='email'?a.email:a.method==='phone'?(a.phoneLocal||a.phone):(a.email||'');var phoneTxt=a.method!=='phone'&&a.phoneLocal?a.phoneLocal:'';
   box.appendChild(el('div',{class:'panel prof-card'},[el('div',{class:'prof'},[el('div',{class:'avatar','aria-hidden':'true',text:initial(a.name)}),el('div',{class:'pcol'},[el('b',{class:'pname',text:a.name}),T['verified_'+a.method]?el('span',{class:'vbadge'},[ic('shield',14),t('verified_'+a.method)]):null,contactTxt?el('span',{class:'small',dir:'ltr',text:a.method==='phone'?dg(contactTxt):contactTxt}):null,phoneTxt?el('span',{class:'small',dir:'ltr',text:dg(phoneTxt)}):null])]),el('div',{class:'pcol'},[el('button',{type:'button',class:'btn btn-sm',onclick:function(){openProfile(null);},text:t('editInfo')}),el('button',{type:'button',class:'btn btn-sm',onclick:signOut,text:t('signOut')})])]));
   if(realAcct()&&pkOk())box.appendChild(account.passkey?el('p',{class:'ready'},[ic('finger',18),el('span',{text:t('pkOn')})]):el('div',{class:'panel'},[el('p',{class:'muted',text:t('pkOfferP')}),el('button',{type:'button',class:'btn btn-primary',onclick:function(){turnOnPasskey(function(){render();});}},[ic('finger',18),t('pkTurnOn')])]));
   var mine=listings.filter(function(x){return x.sellerId===uid;});
@@ -3723,14 +3761,14 @@ function renderAuth(){var a=authFlow,box=$('dlgIn');if(!a||!a.step)return;box.te
   focusEl=an;}
  if(a.step==='phone'){
   var ccSel=el('select',{class:'inp',id:'auCc'});OPT.cc.forEach(function(o){ccSel.appendChild(el('option',{value:o.k,text:o[lang]+' ‎+'+dg(o.k.slice(1))}));});ccSel.value=a.cc||'+20';
-  var ph=el('input',{class:'inp',id:'auPhone',type:'tel',inputmode:'tel',autocomplete:'tel-national',dir:'ltr',placeholder:t('phonePh'),value:a.phoneRaw||''});
+  var ph=el('input',{class:'inp',id:'auPhone',type:'tel',inputmode:'tel',autocomplete:'tel-national',dir:'ltr',placeholder:phonePh(a.cc||'+20'),value:a.phoneRaw||''});ccSel.addEventListener('change',function(){ph.placeholder=phonePh(ccSel.value);});
   form.appendChild(el('div',{class:'field'},[el('label',{for:'auCc',text:t('countryL')}),ccSel]));
   form.appendChild(el('div',{class:'field'},[el('label',{for:'auPhone',text:t('phoneNumL')}),ph]));
   var e1=errEl(a);if(e1)form.appendChild(e1);
   form.appendChild(el('button',{type:'submit',class:'btn btn-primary btn-block btn-lg',text:t('sendCode')}));
   form.addEventListener('submit',function(ev){ev.preventDefault();var cc=ccSel.value,d=digitsOnly(ph.value);a.cc=cc;a.phoneRaw=ph.value;
-   if(cc==='+20'){d=d.replace(/^0/,'');if(!/^1[0125]\d{8}$/.test(d)){a.err=t('phoneErr');renderAuth();return;}}else if(d.length<7||d.length>12){a.err=t('phoneErr');renderAuth();return;}
-   a.method='phone';a.phone=cc+d;a.phoneLocal=cc==='+20'?'0'+d:cc+d;a.to=cc+' '+d;a.code=newCode();a.err='';a.step='code';renderAuth();});
+   var pp=phoneParse(cc,ph.value);if(!pp){a.err=phoneErrFor(cc);renderAuth();return;}a.cc=pp.cc;
+   a.method='phone';a.phone=pp.e164;a.phoneLocal=pp.local;a.to=pp.cc+' '+pp.nsn;a.code=newCode();a.err='';a.step='code';renderAuth();});
   focusEl=ph;}
  if(a.step==='code'){
   box.appendChild(el('p',{class:'muted'},tNode('codeSent','to',el('b',{dir:'ltr',text:dg(a.to)}))));
@@ -3740,7 +3778,7 @@ function renderAuth(){var a=authFlow,box=$('dlgIn');if(!a||!a.step)return;box.te
   var e3=errEl(a);if(e3)form.appendChild(e3);
   form.appendChild(el('button',{type:'submit',class:'btn btn-primary btn-block btn-lg',disabled:a.busy,text:t('verify')}));
   form.appendChild(el('button',{type:'button',class:'link',onclick:function(){a.code=newCode();a.err='';renderAuth();},text:t('resend')}));
-  var verify=function(){if(a.busy)return;if(digitsOnly(ci.value)!==a.code){a.err=t('codeErr');renderAuth();return;}a.err='';a.method='phone';var known=(account&&account.name)||(me&&me.name);if(known)finishAuth(known);else{a.step='name';renderAuth();}};
+  var verify=function(){if(a.busy)return;if(digitsOnly(ci.value)!==a.code){a.err=t('codeErr');renderAuth();return;}a.err='';a.method='phone';var known=phoneBook()[a.phone]||(account&&account.phone===a.phone?account.name:'');if(known)finishAuth(known);else{a.step='name';renderAuth();}};
   form.addEventListener('submit',function(ev){ev.preventDefault();verify();});
   ci.addEventListener('input',function(){if(digitsOnly(ci.value).length===6)verify();});
   focusEl=ci;}
@@ -3763,19 +3801,19 @@ function renderAuth(){var a=authFlow,box=$('dlgIn');if(!a||!a.step)return;box.te
   box.appendChild(el('p',{class:'muted',text:t('profileP')}));
   var pn=el('input',{class:'inp',id:'prName',type:'text',autocomplete:'name',maxlength:'60',value:a.name!=null?a.name:((account&&account.name)||'')});
   var pcc=el('select',{class:'inp',id:'prCc'});OPT.cc.forEach(function(o){pcc.appendChild(el('option',{value:o.k,text:o[lang]+' ‎+'+dg(o.k.slice(1))}));});
-  var ex=(account&&account.phone)||'',exCc='+20',exNum='';var best='';OPT.cc.forEach(function(o){if(ex.indexOf(o.k)===0&&o.k.length>best.length)best=o.k;});if(best){exCc=best;exNum=(best==='+20'?'0':'')+ex.slice(best.length);}
+  var ex=(account&&account.phone)||'',exCc='+20',exNum='';var best='';OPT.cc.forEach(function(o){if(ex.indexOf(o.k)===0&&o.k.length>best.length)best=o.k;});if(best){exCc=best;var exp=phoneParse(best,ex);exNum=exp?exp.input:ex.slice(best.length);}
   pcc.value=a.cc||exCc;
-  var pp=el('input',{class:'inp',id:'prPhone',type:'tel',inputmode:'tel',autocomplete:'tel-national',dir:'ltr',placeholder:t('phonePh'),value:a.phoneRaw!=null?a.phoneRaw:exNum});
+  var pp0=el('input',{class:'inp',id:'prPhone',type:'tel',inputmode:'tel',autocomplete:'tel-national',dir:'ltr',placeholder:phonePh(pcc.value),value:a.phoneRaw!=null?a.phoneRaw:exNum});pcc.addEventListener('change',function(){pp0.placeholder=phonePh(pcc.value);});
   form.appendChild(el('div',{class:'field'},[el('label',{for:'prName',text:t('nameL')}),pn]));
   form.appendChild(el('div',{class:'field'},[el('label',{for:'prCc',text:t('countryL')}),pcc]));
-  form.appendChild(el('div',{class:'field'},[el('label',{for:'prPhone',text:t('phoneNumL')}),pp]));
+  form.appendChild(el('div',{class:'field'},[el('label',{for:'prPhone',text:t('phoneNumL')}),pp0]));
   var e6=errEl(a);if(e6)form.appendChild(e6);
   form.appendChild(el('button',{type:'submit',class:'btn btn-primary btn-block btn-lg',disabled:a.busy,text:t('saveBtn')}));
-  form.addEventListener('submit',function(ev){ev.preventDefault();var v=pn.value.trim(),cc=pcc.value,d=digitsOnly(pp.value);a.name=pn.value;a.cc=cc;a.phoneRaw=pp.value;
+  form.addEventListener('submit',function(ev){ev.preventDefault();var v=pn.value.trim(),cc=pcc.value;a.name=pn.value;a.cc=cc;a.phoneRaw=pp0.value;
    if(!v){a.err=t('nameErr');renderAuth();return;}
-   if(cc==='+20'){d=d.replace(/^0/,'');if(!/^1[0125]\d{8}$/.test(d)){a.err=t('phoneErr');renderAuth();return;}}else if(d.length<7||d.length>12){a.err=t('phoneErr');renderAuth();return;}
-   a.err='';saveProfile(v.slice(0,60),cc+d,cc==='+20'?'0'+d:cc+d);});
-  focusEl=a.name==null&&account&&account.name?pp:pn;}
+   var pp=phoneParse(cc,pp0.value);if(!pp){a.err=phoneErrFor(cc);renderAuth();return;}
+   a.err='';saveProfile(v.slice(0,60),pp.e164,pp.local);});
+  focusEl=a.name==null&&account&&account.name?pp0:pn;}
  box.appendChild(form);
  if(focusEl)setTimeout(function(){try{focusEl.focus();}catch(e){}},40);}
 /* ---------- featuring & payments (demo: nothing is charged, card details never leave this screen) ---------- */
@@ -3803,7 +3841,7 @@ function renderPay(){var p=payFlow,box=$('dlgIn');if(!p||!p.step)return;box.text
  box.appendChild(el('div',{class:'paysum'},[el('span',{text:p.what}),el('b',{text:money(p.amount)})]));
  box.appendChild(el('span',{class:'lbl',id:'pmL',text:t('payMethod')}));
  var mrow=el('div',{class:'methods',role:'radiogroup','aria-labelledby':'pmL'});
- [['apple',t('applePay')],['google',t('googlePay')],['card',t('cardM')]].forEach(function(m){mrow.appendChild(el('button',{type:'button',role:'radio','aria-checked':String(p.method===m[0]),class:'method',onclick:function(){p.method=m[0];p.err='';renderPay();}},[m[0]==='card'?ic('card',18):null,m[1]]));});
+ [['apple',t('applePay')],['google',t('googlePay')],['card',t('cardM')]].forEach(function(m){mrow.appendChild(el('button',{type:'button',role:'radio','aria-checked':String(p.method===m[0]),'aria-label':m[1],class:'method',onclick:function(){p.method=m[0];p.err='';renderPay();}},m[0]==='card'?[ic('card',18),m[1]]:[payMark(m[0])]));});
  box.appendChild(mrow);
  var form=el('form',{class:'sheet-form',novalidate:true});
  if(p.method==='card'){var c=p.card;
@@ -3815,7 +3853,7 @@ function renderPay(){var p=payFlow,box=$('dlgIn');if(!p||!p.step)return;box.text
  if(p.err)form.appendChild(el('p',{class:'err',role:'alert',text:p.err}));
  var cls=p.method==='apple'?'btn-apple':p.method==='google'?'btn-google':'btn-primary';
  var lbl=p.method==='apple'?t('payWithApple'):p.method==='google'?t('payWithGoogle'):t('payAmt',{amt:money(p.amount)});
- form.appendChild(el('button',{type:'submit',class:'btn btn-block btn-lg '+cls,text:lbl}));
+ form.appendChild(el('button',{type:'submit',class:'btn btn-block btn-lg brand-btn '+cls,'aria-label':lbl},p.method==='card'?[lbl]:[t('payVia'),payMark(p.method)]));
  form.appendChild(el('p',{class:'demo',text:t('demoPay')+(p.method==='card'?' '+t('cardSafe'):'')}));
  form.addEventListener('submit',function(ev){ev.preventDefault();doPay();});
  box.appendChild(form);}
@@ -3828,13 +3866,13 @@ async function applyBoost(p){var x=findListing(p.listingId);if(!db||!x){closeDlg
  catch(e){if(payFlow===p){p.step='method';p.err=t('boostFail');renderPay();}}}
 async function finishAuth(name){var a=authFlow;if(!db||!uid||a.busy)return;a.busy=true;var now=Date.now();var prev=account||{};
  var acc={method:a.method,name:String(name).slice(0,60),signedIn:true,createdAt:prev.createdAt||now,email:a.method==='email'?a.email:(prev.email||''),phone:a.method==='phone'?a.phone:(prev.phone||''),phoneLocal:a.method==='phone'?a.phoneLocal:(prev.phoneLocal||'')};
- var joined=(profiles[uid]&&profiles[uid].joinedAt)||prev.createdAt||now;
+ var joined=(profiles[uid]&&profiles[uid].joinedAt)||prev.createdAt||now;if(a.method==='phone'&&a.phone)rememberPhone(a.phone,acc.name);
  try{await db.doc('data/users/'+uid+'/account').set(acc);await db.doc('profiles/'+uid).set({name:acc.name,method:a.method,joinedAt:joined});account=acc;profiles[uid]={name:acc.name,method:a.method,joinedAt:joined};var after=a.after;closeAuth();toast(t('welcome',{name:acc.name}));updateHeader();render();if(after)after();}
  catch(e){a.busy=false;a.err=t('authFail');renderAuth();}}
 async function signOut(){if(!db||!uid||!account)return;if(window.__nsAuth&&window.__nsAuth.enabled){try{await window.__nsAuth.signOut();}catch(e){}}try{await db.doc('data/users/'+uid+'/account').update({signedIn:false});}catch(e){}account=Object.assign({},account,{signedIn:false});updateHeader();toast(t('signedOut'));render();}
 
 /* ---------- post wizard ---------- */
-function newDraft(){var d={step:1,dist:'',nbh:'',cat:S.cat!=='all'?S.cat:'',type:'fixed',spec:{},photos:[],title:'',desc:'',price:'',city:'cairo',phone:(account&&account.phoneLocal)||'',minInc:'',dur:'24',err:'',busy:false,uploading:0};if(d.cat)applyDefaults(d);return d;}
+function newDraft(){var d={step:1,dist:'',nbh:'',cat:S.cat!=='all'?S.cat:'',type:'fixed',spec:{},photos:[],title:'',desc:'',price:'',city:'cairo',phone:(acctPhone()||{}).input||'',phoneCc:(acctPhone()||{}).cc||'+20',minInc:'',dur:'24',err:'',busy:false,uploading:0};if(d.cat)applyDefaults(d);return d;}
 function applyDefaults(d){var sp={};(FIELDS[d.cat]||[]).forEach(function(f){
   if(f.kind==='sel')sp[f.k]=f.def||(OPT[f.opts][0]||{}).k;
   else if(f.kind==='make'){var C0=dsOf(f.ds);sp[f.k]=C0.keys[0];}
@@ -3861,21 +3899,23 @@ function renderPost(){var box=V.post;box.textContent='';var d=draft||(draft=newD
  if(d.step===1)step1(body,d);else if(d.step===2)step2(body,d);else step3(body,d);
  w.appendChild(body);
  if(d.err)w.appendChild(el('p',{class:'err mt',role:'alert',text:d.err}));
- var nav=el('div',{class:'wiz-nav'});
+ var nav=el('div',{class:'wiz-nav sticky'+(d._pop?' pop':'')});d._pop=false;
+ if(d.step===1){if(!d.cat){w.appendChild(nav);box.appendChild(w);return;}var cc0=CATS.filter(function(c){return c.k===d.cat;})[0];
+  if(RE_CATS.indexOf(d.cat)>=0)nav.appendChild(el('div',{class:'nav-row'},[seg([['sale',t('forSale')],['rent',t('forRent')]],d.spec.purpose||'sale',function(v){d.spec.purpose=v;renderPost();},t('f_purpose'))]));
+  if(cc0)nav.appendChild(el('div',{class:'pick-chip'},[el('span',{class:'ci'},[ic(cc0.d,20)]),el('b',{text:cc0[lang]}),el('span',{class:'small muted',text:'· '+t(d.type==='auction'?'auction':'fixed')})]));}
  if(d.step>1)nav.appendChild(el('button',{type:'button',class:'btn btn-lg',onclick:function(){d.err='';d.step--;renderPost();focusWizard();},text:t('prev')}));
  if(d.step<3)nav.appendChild(el('button',{type:'button',class:'btn btn-primary btn-lg',onclick:function(){var e=validate(d,d.step);d.err=e;if(!e)d.step++;renderPost();if(!e)focusWizard();},text:t('next')}));
  else nav.appendChild(el('button',{type:'button',class:'btn btn-primary btn-lg',disabled:d.busy,onclick:function(){publish(d);},text:d.type==='auction'?t('startAuctionBtn'):t('publish')}));
  w.appendChild(nav);
  box.appendChild(w);}
 function step1(b,d){
+ b.appendChild(el('span',{class:'lbl',text:t('adType')}));
+ b.appendChild(seg([['fixed',t('fixed')],['auction',t('auction')]],d.type,function(v){var y=window.scrollY;d.type=v;renderPost();try{window.scrollTo(0,y);}catch(e){}},t('adType')));
+ if(d.type==='auction')b.appendChild(el('p',{class:'note',text:t('auctionNote')}));
  b.appendChild(el('span',{class:'lbl',text:t('chooseCat')}));
  var g=el('div',{class:'cats pick',role:'group','aria-label':t('chooseCat')});
- CATS.forEach(function(c){g.appendChild(el('button',{type:'button',class:'cat','aria-pressed':String(d.cat===c.k),onclick:function(){if(d.cat!==c.k){d.cat=c.k;applyDefaults(d);}d.err='';renderPost();}},[el('span',{class:'ci'},[ic(c.d,26)]),el('span',{text:c[lang]})]));});
- b.appendChild(g);
- b.appendChild(el('span',{class:'lbl',text:t('adType')}));
- b.appendChild(seg([['fixed',t('fixed')],['auction',t('auction')]],d.type,function(v){d.type=v;renderPost();},t('adType')));
- if(RE_CATS.indexOf(d.cat)>=0){b.appendChild(el('span',{class:'lbl',text:t('f_purpose')}));b.appendChild(seg([['sale',t('forSale')],['rent',t('forRent')]],d.spec.purpose||'sale',function(v){d.spec.purpose=v;renderPost();},t('f_purpose')));}
- if(d.type==='auction')b.appendChild(el('p',{class:'note',text:t('auctionNote')}));}
+ CATS.forEach(function(c){g.appendChild(el('button',{type:'button',class:'cat','aria-pressed':String(d.cat===c.k),onclick:function(){var y=window.scrollY;if(!d.cat)d._pop=true;if(d.cat!==c.k){d.cat=c.k;applyDefaults(d);}d.err='';renderPost();try{window.scrollTo(0,y);}catch(e){}var nb=document.querySelector('.wiz-nav.sticky .btn-primary');if(nb)try{nb.focus({preventScroll:true});}catch(e){}}},[el('span',{class:'ci'},[ic(c.d,26)]),el('span',{text:c[lang]})]));});
+ b.appendChild(g);}
 function refreshAutoTitle(d){var i=$('fTitle');if(i&&(FIELDS[d.cat]||[]).length)i.placeholder=autoTitle(d.cat,d.spec)||t('titlePh');}
 function previewPlate(sp){return {type:sp.type,letters:[sp.l1,sp.l2,sp.l3].filter(Boolean),num:digitsOnly(sp.num).slice(0,4)||'0'};}
 function updatePlatePrev(d){var b=$('platePrev');if(b){b.textContent='';b.appendChild(plateEl(previewPlate(d.spec)));}}
@@ -4038,7 +4078,12 @@ function step3(b,d){var g=el('div',{class:'fgrid'});
  g.appendChild(selectField('fCity',t('cityL'),OPT.city,d.city,function(v){d.city=v;d.dist='';d.nbh='';renderPost();}));
  var LLd=LOC[d.city]||[];if(LLd.length)g.appendChild(selectField('fDist',t('distL'),[{k:'',ar:t('chooseDist'),en:t('chooseDist')}].concat(LLd),d.dist||'',function(v){d.dist=v;d.nbh='';renderPost();}));
  var aaD=locFind(d.city,d.dist);if(aaD&&aaD.subs.length)g.appendChild(selectField('fNbh',t('nbhL'),[{k:'',ar:t('chooseNbh'),en:t('chooseNbh')}].concat(aaD.subs),d.nbh||'',function(v){d.nbh=v;upd();}));
- g.appendChild(inputField('fPhone',t('phoneL'),d.phone,{type:'tel',inputmode:'tel',autocomplete:'tel',placeholder:t('phonePh'),dir:'ltr'},function(v){d.phone=v;}));
+ var ap=acctPhone();if(!d.phone&&ap){d.phone=ap.input;d.phoneCc=ap.cc;}if(!d.phoneCc)d.phoneCc='+20';
+ var phIn=el('input',{class:'inp',id:'fPhone',type:'tel',inputmode:'tel',autocomplete:'tel-national',dir:'ltr',placeholder:phonePh(d.phoneCc),value:d.phone||''});
+ var phHint=el('span',{class:'small muted ph-hint'});function phH(){var mine=ap&&ap.cc===d.phoneCc&&(phoneParse(d.phoneCc,d.phone)||{}).e164===ap.e164;phHint.textContent=mine?t('phoneFromAcct'):'';}
+ phIn.addEventListener('input',function(){d.phone=phIn.value;phH();});
+ var phSel=ccSelect('fPhoneCc',d.phoneCc,function(v){d.phoneCc=v;phIn.placeholder=phonePh(v);phH();});phH();
+ g.appendChild(el('div',{class:'field'},[el('label',{for:'fPhone',text:t('phoneL')}),el('div',{class:'ph-row'},[phSel,phIn]),phHint]));
  if(d.type==='auction'){g.appendChild(inputField('fInc',t('minIncL'),d.minInc,{inputmode:'numeric',placeholder:t('incPh')},function(v){d.minInc=v;}));g.appendChild(selectField('fDur',t('durL'),OPT.dur,d.dur,function(v){d.dur=v;}));}
  b.appendChild(g);
  d._pm=null;var sugItem=priceItem(d.cat,d.spec,d.title||autoTitle(d.cat,d.spec),d.desc);if(sugItem){var sugBox=el('div',{class:d.cat==='watches'?'sug wguide':'sug'});if(d.cat==='watches'){b.insertBefore(sugBox,g);watchGuide(sugBox,sugItem,d);}else{b.appendChild(sugBox);fillSug(sugBox,sugItem,d);}}
@@ -4061,10 +4106,10 @@ function validate(d,step){
   return '';}
  if(!Number(digitsOnly(d.price)))return t('errPrice');
  if(RE_CATS.indexOf(d.cat)>=0&&(LOC[d.city]||[]).length&&!d.dist)return t('errDist');
- if(digitsOnly(d.phone).length<8)return t('errPhone');
+ if(!phoneParse(d.phoneCc||'+20',d.phone))return phoneErrFor(d.phoneCc||'+20');
  return '';}
 function buildDoc(d){var sp=JSON.parse(JSON.stringify(d.spec||{}));
- var doc={title:String(d.title||'').trim()||autoTitle(d.cat,sp)||t('untitled'),desc:String(d.desc||'').trim(),price:Number(digitsOnly(d.price))||0,category:d.cat,city:d.city,phone:String(d.phone||'').trim(),type:d.type,sellerId:uid,createdAt:Date.now(),photos:d.photos.map(function(p){return p.id;}),lang:lang,autoT:!String(d.title||'').trim()&&!!autoTitle(d.cat,sp)};
+ var doc={title:String(d.title||'').trim()||autoTitle(d.cat,sp)||t('untitled'),desc:String(d.desc||'').trim(),price:Number(digitsOnly(d.price))||0,category:d.cat,city:d.city,phone:(phoneParse(d.phoneCc||'+20',d.phone)||{}).local||String(d.phone||'').trim(),type:d.type,sellerId:uid,createdAt:Date.now(),photos:d.photos.map(function(p){return p.id;}),lang:lang,autoT:!String(d.title||'').trim()&&!!autoTitle(d.cat,sp)};
  if(d.cat==='cars'){if(sp.model==='other')sp.model=String(sp.modelOther||'').trim();delete sp.modelOther;var km=digitsOnly(sp.km);sp.km=km===''?'':Number(km);if(sp.trim==='other')sp.trim=String(sp.trimOther||'').trim();delete sp.trimOther;sp.trim=String(sp.trim||'').trim();doc.car=sp;}
  else if(d.cat==='moto'){if(sp.model==='other')sp.model=String(sp.modelOther||'').trim();delete sp.modelOther;var mkm=digitsOnly(sp.km);sp.km=mkm===''?'':Number(mkm);doc.moto=sp;}
  else if(d.cat==='realestate'){sp.area=Number(digitsOnly(sp.area))||0;if(sp.purpose==='rent'){delete sp.pay;delete sp.reg;}else{delete sp.period;delete sp.deposit;}if(!reHasRooms(sp)){delete sp.rooms;delete sp.baths;}doc.re=sp;}
