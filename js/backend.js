@@ -207,7 +207,7 @@
   if (cfg.supabaseUrl && cfg.supabaseAnonKey && window.supabase && typeof window.supabase.createClient === 'function') {
     try {
       sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
-        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' }
+        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce', experimental: { passkey: true } }
       });
     } catch (e) { console.warn('[Nile Sale] Supabase did not start', e); }
   }
@@ -226,6 +226,19 @@
         .then(function (r) { if (r && r.error) throw r.error; });
     },
     signOut: function () { return sb ? sb.auth.signOut().catch(function () {}) : Promise.resolve(); },
+    // fingerprint / Face ID sign-in (passkeys)
+    passkeyOk: function () { return !!sb && cfg.passkeys !== false && !!window.PublicKeyCredential && !!(sb.auth.signInWithPasskey); },
+    signInPasskey: function (pending) {
+      try { sessionStorage.setItem(PENDING_KEY, JSON.stringify(pending || {})); } catch (e) {}
+      return sb.auth.signInWithPasskey().then(function (r) {
+        if (r && r.error) throw r.error;
+        location.reload();
+      }).catch(function (e) { throw pkErr(e); });
+    },
+    registerPasskey: function () {
+      return sb.auth.registerPasskey().then(function (r) { if (r && r.error) throw r.error; return r.data; })
+        .catch(function (e) { throw pkErr(e); });
+    },
     // keep name + phone on the Supabase account too, so they come back on any device
     saveProfile: function (o) {
       if (!sb) return Promise.resolve();
@@ -239,6 +252,14 @@
     }
   };
   window.__nsAuth = auth;
+  function pkErr(e) {
+    var s = String((e && (e.code || e.error_code || e.name)) || '') + ' ' + String((e && e.message) || '');
+    console.warn('[Nile Sale] passkey', e);
+    if (/NotAllowed|ABORT|cancel/i.test(s)) return err('cancel');
+    if (/credential_not_found/i.test(s)) return err('no_passkey');
+    if (/credential_exists|InvalidState|already/i.test(s)) return err('exists');
+    return err('passkey_failed', s);
+  }
 
   /* ---------- Google sign-in with Google Identity Services ---------- */
   var gisLoading = null;
@@ -353,7 +374,8 @@
     uid = id;
     try { localStorage.setItem(AUTH_UID_KEY, id); } catch (e) {}
     var md = u.user_metadata || {};
-    var provider = (u.app_metadata && u.app_metadata.provider) === 'apple' ? 'apple' : 'google';
+    var provs = (u.app_metadata && u.app_metadata.providers) || [];
+    var provider = (u.app_metadata && u.app_metadata.provider) === 'apple' || provs.indexOf('apple') >= 0 && provs.indexOf('google') < 0 ? 'apple' : 'google';
     var name = String(md.full_name || md.name || (u.email || '').split('@')[0] || '').slice(0, 60);
     var accPath = 'data/users/' + id + '/account';
     var prev = store.docs[accPath] || {};
