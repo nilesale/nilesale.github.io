@@ -219,6 +219,8 @@
     signIn: function (p, pending) {
       if (!auth.has(p)) return Promise.reject(err('provider_off'));
       try { sessionStorage.setItem(PENDING_KEY, JSON.stringify(pending || {})); } catch (e) {}
+      // Google: Google's own button hands us an ID token, so no client secret is needed
+      if (p === 'google' && cfg.googleClientId) return googleSignIn();
       var back = location.origin + location.pathname;
       return sb.auth.signInWithOAuth({ provider: p, options: { redirectTo: back } })
         .then(function (r) { if (r && r.error) throw r.error; });
@@ -231,6 +233,84 @@
     }
   };
   window.__nsAuth = auth;
+
+  /* ---------- Google sign-in with Google Identity Services ---------- */
+  var gisLoading = null;
+  function loadGis() {
+    if (window.google && google.accounts && google.accounts.id) return Promise.resolve();
+    if (gisLoading) return gisLoading;
+    gisLoading = new Promise(function (ok, bad) {
+      var s = document.createElement('script');
+      s.src = 'https://accounts.google.com/gsi/client'; s.async = true;
+      s.onload = function () { ok(); };
+      s.onerror = function () { gisLoading = null; bad(err('gis_load')); };
+      document.head.appendChild(s);
+    });
+    return gisLoading;
+  }
+  function sha256Hex(str) {
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(str)).then(function (buf) {
+      return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+    });
+  }
+  function googleSignIn() {
+    var ar = (document.documentElement.lang || 'ar').indexOf('ar') === 0;
+    var raw = rid(32, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
+    return Promise.all([loadGis(), sha256Hex(raw)]).then(function (r) {
+      var hashed = r[1];
+      return new Promise(function (ok, bad) {
+        var done = false;
+        var box = document.createElement('div');
+        box.setAttribute('role', 'dialog');
+        box.style.cssText = 'position:fixed;inset:0;z-index:2147483000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px';
+        var card = document.createElement('div');
+        card.style.cssText = 'background:#fff;color:#111;border-radius:16px;padding:22px 18px;max-width:340px;width:100%;text-align:center;font-family:inherit;box-shadow:0 10px 40px rgba(0,0,0,.3)';
+        card.dir = ar ? 'rtl' : 'ltr';
+        var title = document.createElement('div');
+        title.textContent = ar ? 'تسجيل الدخول بحساب جوجل' : 'Sign in with Google';
+        title.style.cssText = 'font-weight:700;font-size:17px;margin-bottom:14px';
+        var slot = document.createElement('div');
+        slot.style.cssText = 'display:flex;justify-content:center;min-height:44px';
+        var msg = document.createElement('div');
+        msg.style.cssText = 'font-size:13px;color:#666;margin-top:12px;min-height:18px';
+        var cancel = document.createElement('button');
+        cancel.type = 'button';
+        cancel.textContent = ar ? 'إلغاء' : 'Cancel';
+        cancel.style.cssText = 'margin-top:12px;background:none;border:0;color:#555;font:inherit;font-size:14px;cursor:pointer;padding:8px 16px';
+        card.appendChild(title); card.appendChild(slot); card.appendChild(msg); card.appendChild(cancel);
+        box.appendChild(card); document.body.appendChild(box);
+        function close() { if (box.parentNode) box.parentNode.removeChild(box); }
+        function stop() { if (done) return; done = true; close(); bad(err('cancel')); }
+        cancel.onclick = stop;
+        box.addEventListener('click', function (e) { if (e.target === box) stop(); });
+        google.accounts.id.initialize({
+          client_id: cfg.googleClientId,
+          nonce: hashed,
+          ux_mode: 'popup',
+          use_fedcm_for_prompt: true,
+          callback: function (resp) {
+            if (done) return;
+            msg.textContent = ar ? 'جاري تسجيل الدخول…' : 'Signing in…';
+            sb.auth.signInWithIdToken({ provider: 'google', token: resp.credential, nonce: raw }).then(function (res) {
+              if (res.error) throw res.error;
+              done = true;
+              // reload so the whole app picks up the account (the unsent ad is kept)
+              location.reload();
+              ok();
+            }).catch(function (e) {
+              done = true; close();
+              console.warn('[Nile Sale] Google sign-in failed', e);
+              bad(e);
+            });
+          }
+        });
+        google.accounts.id.renderButton(slot, {
+          type: 'standard', theme: 'outline', size: 'large', shape: 'pill',
+          text: 'continue_with', locale: ar ? 'ar' : 'en', width: 280
+        });
+      });
+    });
+  }
 
   // move what this device posted before signing in over to the real account
   function moveOwner(a, b) {

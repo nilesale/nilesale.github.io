@@ -14,8 +14,10 @@
 window.NILESALE_CONFIG = {
   supabaseUrl: 'https://quvsdwcopaoyldpceuac.supabase.co',
   supabaseAnonKey: 'sb_publishable_L6CX14jyiomRmVJahOzGeQ_0daDBHHI',
+  // Google OAuth client id (public). Sign-in uses Google's own button, so no secret is needed here.
+  googleClientId: '863950479681-n6njad504p57vo48ru4t2d0p8dvtlp54.apps.googleusercontent.com',
   providers: {
-    google: false, // switch to true once the Google secret is saved in Supabase
+    google: true,
     apple: false   // switch to true once Apple is enabled in Supabase
   }
 };

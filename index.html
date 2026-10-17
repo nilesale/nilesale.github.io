@@ -3656,7 +3656,7 @@ function isSignedIn(){return !!(account&&account.signedIn);}
 function requireAuth(fn,reason){if(isSignedIn()){fn();return;}openAuth(fn,null,reason);}
 function openAuth(after,pick,reason){payFlow={};authFlow={step:'choose',after:after||null,reason:reason||'',err:'',busy:false};if(pick)pickAuth(authFlow,pick,true);renderAuth();try{if(!dlg.open)dlg.showModal();}catch(e){dlg.setAttribute('open','');}}
 function realAuthOn(p){return !!(window.__nsAuth&&window.__nsAuth.has&&window.__nsAuth.has(p));}
-function startRealAuth(a,p){a.err='';a.busy=true;var pend={};if(S.view==='post'&&draft){try{var dd=JSON.parse(JSON.stringify(draft));delete dd.busy;delete dd.err;dd.uploading=0;pend.draft=dd;}catch(e){}}toast(t('authRedirect'));window.__nsAuth.signIn(p,pend).catch(function(){a.busy=false;a.err=t('authFail');renderAuth();});}
+function startRealAuth(a,p){a.err='';a.busy=true;var pend={};if(S.view==='post'&&draft){try{var dd=JSON.parse(JSON.stringify(draft));delete dd.busy;delete dd.err;dd.uploading=0;pend.draft=dd;}catch(e){}}toast(t('authRedirect'));window.__nsAuth.signIn(p,pend).catch(function(e){a.busy=false;if(!(e&&e.code==='cancel'))a.err=t('authFail');renderAuth();});}
 function pickAuth(a,p,silent){a.err='';if(p==='phone')a.step='phone';else if(realAuthOn(p)){startRealAuth(a,p);return;}else{a.step='social';a.provider=p;}if(!silent)renderAuth();}
 function closeAuth(){closeDlg();}
 dlg.addEventListener('close',function(){authFlow={};payFlow={};priceFlow={};wFlow={};});
