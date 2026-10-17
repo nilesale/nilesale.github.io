@@ -56,9 +56,9 @@
 .last-b{margin-inline-start:.5rem;padding:.0625rem .5rem;border-radius:1rem;background:var(--accent);color:var(--accent-ink,#fff);font-size:.6875rem;font-weight:700}
 .btn-google .last-b,.btn:not(.btn-apple):not(.btn-primary) .last-b{background:var(--accent);color:#fff}
 </style>
-<script src="js/config.js?v=16"></script>
+<script src="js/config.js?v=17"></script>
 <script src="js/vendor/supabase-2.117.2.js"></script>
-<script src="js/backend.js?v=16"></script>
+<script src="js/backend.js?v=17"></script>
 </head>
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1745,6 +1745,38 @@ descPhJob_freelance:["اكتب إيش تقدر تسوي، وأمثلة من شغ
 appleSoonT:["الدخول عبر آبل", "Sign in with Apple"],
 appleSoonP:["الدخول عبر آبل بيتفعّل قريباً، لأنه يحتاج حساب مطوّر من آبل. لين ذاك الوقت ادخل بجوجل، والمرة الجاية بالبصمة أو Face ID.", "Sign in with Apple is coming soon. It needs an Apple developer account. Until then, use Google, and next time your fingerprint or Face ID."],
 lastUsed:["آخر مرة", "Last used"],
+f_fgroup:["القسم", "Section"],
+f_ftype:["النوع", "Type"],
+f_fother:["اكتب النوع أو الماركة", "Type or brand"],
+f_fitem:["القطعة", "Item"],
+f_clSize:["المقاس", "Size"],
+f_kidSize:["العمر", "Age"],
+f_shoeSize:["مقاس الحذاء", "Shoe size"],
+f_fcolor:["اللون", "Colour"],
+f_fcond:["الحالة", "Condition"],
+f_fauth:["الأصالة", "Authenticity"],
+fAllGroups:["كل الملابس", "All clothing"],
+shGFash:["القسم", "Section"],
+sizeW:["مقاس {s}", "size {s}"],
+f_pfgroup:["القسم", "Section"],
+f_pname:["اسم العطر", "Perfume name"],
+pnamePh:["مثال: سوفاج", "e.g. Sauvage"],
+f_pgender:["لمين؟", "For"],
+f_conc:["التركيز", "Concentration"],
+f_pvol:["الحجم", "Size"],
+f_oudW:["الوزن", "Weight"],
+f_oudForm:["الشكل", "Form"],
+f_oudSink:["الجودة في الماء", "Water test"],
+f_oilQty:["الكمية", "Quantity"],
+f_oudGrade:["الدرجة", "Grade"],
+f_bkQty:["الكمية", "Quantity"],
+f_pcondP:["الحالة", "Condition"],
+f_remain:["الكمية المتبقية", "Amount left"],
+pfAllGroups:["كل العطور", "All perfumes"],
+shGPerf:["القسم", "Section"],
+perfW:["عطر", "Perfume"],
+oudW:["عود", "Oud"],
+errFother:["اكتب النوع أو الماركة.", "Enter the type or brand."],
 demoAuth:["تسجيل الدخول في هذي النسخة تجريبي: ما تنرسل رسالة نصية ولا يتم الاتصال بآبل أو جوجل. في التطبيق النهائي يتم عن طريق خدمة تحقق حقيقية.","Sign-in in this version is a demo: no text message is sent and Apple or Google aren't contacted. The live app will use a real verification service."],
 terms:["بالمتابعة توافق على شروط الاستخدام وسياسة الخصوصية.","By continuing you agree to the Terms of Use and Privacy Policy."],
 phoneT:["رقم جوالك","Your phone number"],
@@ -2037,6 +2069,24 @@ var OPT={
  jobEdu:L([["any", "أي مؤهل", "Any"], ["mid", "مؤهل متوسط", "Diploma"], ["uni", "مؤهل عالي", "University degree"], ["master", "ماجستير أو أعلى", "Master's or higher"]]),
  jobUnit:L([["month", "شهرياً", "Per month"], ["day", "يومياً", "Per day"], ["hour", "بالساعة", "Per hour"], ["project", "بالمشروع", "Per project"], ["deal", "حسب الاتفاق", "As agreed"]]),
  jobPerks:L([["insurance", "تأمينات اجتماعية", "Social insurance"], ["medical", "تأمين طبي", "Medical insurance"], ["transport", "مواصلات", "Transport"], ["housing", "سكن", "Housing"], ["meals", "وجبات", "Meals"], ["commission", "عمولة", "Commission"], ["bonus", "حوافز", "Bonuses"], ["training", "تدريب مدفوع", "Paid training"]]),
+ fItem:L([["clothes", "ملابس", "Clothing"], ["shoes", "أحذية", "Shoes"], ["bags", "شنط", "Bags"], ["acc", "إكسسوارات", "Accessories"]]),
+ clSize:L([["free", "مقاس واحد (فري سايز)", "One size"], ["XS", "XS", "XS"], ["S", "S", "S"], ["M", "M", "M"], ["L", "L", "L"], ["XL", "XL", "XL"], ["XXL", "XXL", "XXL"], ["3XL", "3XL", "3XL"], ["4XL", "4XL", "4XL"], ["5XL", "5XL", "5XL"]]),
+ kidSize:L([["0-3m", "من يوم لـ ٣ شهور", "0–3 months"], ["3-6m", "من ٣ لـ ٦ شهور", "3–6 months"], ["6-12m", "من ٦ لـ ١٢ شهر", "6–12 months"], ["1-2", "من سنة لـ سنتين", "1–2 years"], ["2-3", "من ٢ لـ ٣ سنين", "2–3 years"], ["3-4", "من ٣ لـ ٤ سنين", "3–4 years"], ["4-5", "من ٤ لـ ٥ سنين", "4–5 years"], ["5-6", "من ٥ لـ ٦ سنين", "5–6 years"], ["7-8", "من ٧ لـ ٨ سنين", "7–8 years"], ["9-10", "من ٩ لـ ١٠ سنين", "9–10 years"], ["11-12", "من ١١ لـ ١٢ سنة", "11–12 years"], ["13-14", "من ١٣ لـ ١٤ سنة", "13–14 years"]]),
+ shoeSize:L([["16", "مقاس ١٦", "EU 16"], ["17", "مقاس ١٧", "EU 17"], ["18", "مقاس ١٨", "EU 18"], ["19", "مقاس ١٩", "EU 19"], ["20", "مقاس ٢٠", "EU 20"], ["21", "مقاس ٢١", "EU 21"], ["22", "مقاس ٢٢", "EU 22"], ["23", "مقاس ٢٣", "EU 23"], ["24", "مقاس ٢٤", "EU 24"], ["25", "مقاس ٢٥", "EU 25"], ["26", "مقاس ٢٦", "EU 26"], ["27", "مقاس ٢٧", "EU 27"], ["28", "مقاس ٢٨", "EU 28"], ["29", "مقاس ٢٩", "EU 29"], ["30", "مقاس ٣٠", "EU 30"], ["31", "مقاس ٣١", "EU 31"], ["32", "مقاس ٣٢", "EU 32"], ["33", "مقاس ٣٣", "EU 33"], ["34", "مقاس ٣٤", "EU 34"], ["35", "مقاس ٣٥", "EU 35"], ["36", "مقاس ٣٦", "EU 36"], ["37", "مقاس ٣٧", "EU 37"], ["38", "مقاس ٣٨", "EU 38"], ["39", "مقاس ٣٩", "EU 39"], ["40", "مقاس ٤٠", "EU 40"], ["41", "مقاس ٤١", "EU 41"], ["42", "مقاس ٤٢", "EU 42"], ["43", "مقاس ٤٣", "EU 43"], ["44", "مقاس ٤٤", "EU 44"], ["45", "مقاس ٤٥", "EU 45"], ["46", "مقاس ٤٦", "EU 46"], ["47", "مقاس ٤٧", "EU 47"], ["48", "مقاس ٤٨", "EU 48"]]),
+ fcond:L([["newtag", "جديد بالتيكت", "New with tags"], ["new", "جديد بدون تيكت", "New without tags"], ["likenew", "مستعمل كالجديد", "Like new"], ["used", "مستعمل", "Used"]]),
+ fAuth:L([["receipt", "أصلي بالفاتورة", "Original with receipt"], ["noreceipt", "أصلي بدون فاتورة", "Original, no receipt"]]),
+ fcolor:L([["black", "أسود", "Black"], ["white", "أبيض", "White"], ["grey", "رمادي", "Grey"], ["blue", "أزرق", "Blue"], ["navy", "كحلي", "Navy"], ["red", "أحمر", "Red"], ["green", "أخضر", "Green"], ["beige", "بيج", "Beige"], ["brown", "بني", "Brown"], ["pink", "وردي", "Pink"], ["yellow", "أصفر", "Yellow"], ["purple", "بنفسجي", "Purple"], ["orange", "برتقالي", "Orange"], ["gold", "ذهبي", "Gold"], ["silver", "فضي", "Silver"], ["multi", "ملوّن", "Multicolour"]]),
+ pgender:L([["men", "رجالي", "Men"], ["women", "نسائي", "Women"], ["unisex", "للجنسين (يونيسكس)", "Unisex"]]),
+ conc:L([["parfum", "بارفان", "Parfum"], ["edp", "أو دو بارفان", "Eau de parfum"], ["edt", "أو دو تواليت", "Eau de toilette"], ["edc", "أو دو كولون", "Eau de cologne"], ["oil", "زيت عطري", "Perfume oil"]]),
+ pvol:L([["30", "٣٠ مل", "30 ml"], ["50", "٥٠ مل", "50 ml"], ["75", "٧٥ مل", "75 ml"], ["80", "٨٠ مل", "80 ml"], ["90", "٩٠ مل", "90 ml"], ["100", "١٠٠ مل", "100 ml"], ["125", "١٢٥ مل", "125 ml"], ["150", "١٥٠ مل", "150 ml"], ["200", "٢٠٠ مل", "200 ml"]]),
+ oudW:L([["5", "٥ جرام", "5 g"], ["10", "١٠ جرام", "10 g"], ["tola", "تولة (١١٫٧ جرام)", "1 tola (11.7 g)"], ["25", "٢٥ جرام", "25 g"], ["50", "٥٠ جرام", "50 g"], ["100", "١٠٠ جرام", "100 g"], ["250", "ربع كيلو", "250 g"], ["500", "نص كيلو", "500 g"], ["1000", "كيلو", "1 kg"]]),
+ oudGrade:L([["super", "سوبر", "Super"], ["first", "درجة أولى", "Grade A"], ["second", "درجة ثانية", "Grade B"], ["commercial", "تجاري", "Commercial"]]),
+ oudSink:L([["sinker", "غارق", "Sinker"], ["semi", "نص غارق", "Semi-sinker"], ["floater", "طافي", "Floater"]]),
+ oudForm:L([["pieces", "قطع", "Pieces"], ["chips", "كسر صغير", "Chips"], ["block", "قطعة كاملة", "Whole piece"], ["powder", "نشارة", "Powder"]]),
+ oilQty:L([["quarter", "ربع تولة", "Quarter tola"], ["half", "نص تولة", "Half tola"], ["tola", "تولة", "1 tola"], ["3ml", "٣ مل", "3 ml"], ["6ml", "٦ مل", "6 ml"], ["12ml", "١٢ مل", "12 ml"]]),
+ bkQty:L([["box", "علبة", "Box"], ["50", "٥٠ جرام", "50 g"], ["100", "١٠٠ جرام", "100 g"], ["250", "ربع كيلو", "250 g"], ["500", "نص كيلو", "500 g"], ["1000", "كيلو", "1 kg"]]),
+ pcondP:L([["sealed", "جديد مغلّف", "New, sealed"], ["open", "جديد مفتوح", "New, opened"], ["used", "مستعمل", "Used"]]),
+ remain:L([["90", "متبقي ٩٠٪", "90% left"], ["75", "متبقي ٧٥٪", "75% left"], ["50", "متبقي ٥٠٪", "50% left"], ["25", "متبقي ٢٥٪", "25% left"]]),
  cc:L([['+20','مصر','Egypt'],['+974','قطر','Qatar'],['+966','السعودية','Saudi Arabia'],['+971','الإمارات','UAE'],['+965','الكويت','Kuwait'],['+973','البحرين','Bahrain'],['+968','عُمان','Oman']])
 };
 function findOpt(name,v){var list=OPT[name]||[];for(var i=0;i<list.length;i++){if(list[i].k===v||list[i].ar===v)return list[i];}return null;}
@@ -2133,7 +2183,7 @@ var WT_TOP=['rolex','patek','ap','rm','hublot','cartier','omega','tudor','vc','i
 function wrefInfo(sp){if(!sp)return null;var raw=(sp.ref==='other'||sp.brand==='other'||sp.model==='other')?String(sp.refOther||'').trim():String(sp.ref||'').trim();if(!raw)return null;var cm=mFind(WT_C,sp.brand,sp.model),list=(cm&&cm.trims)||[],rk=trimKey(raw);for(var i=0;i<list.length;i++){var o=list[i];if(o.k===raw||trimKey(o.en)===rk||trimKey(o.ar)===rk)return {k:o.k,ar:o.ar,en:o.en};}return {k:'x:'+rk,ar:raw,en:raw};}
 function wrefLabel(sp){var i=wrefInfo(sp);return i?i[lang]:'';}
 var CARS=CARS_C.map;
-function dsOf(n){return n==='appl'?APPL_C:n==='svc'?SVC_C:n==='parts'?PART_C:n==='jobs'?JOB_C:n==='moto'?MOTO_C:n==='phones'?PH_C:n==='pc'?PC_C:n==='watch'?WT_C:CARS_C;}
+function dsOf(n){return n==='fashion'?FASH_C:n==='perf'?PERF_C:n==='appl'?APPL_C:n==='svc'?SVC_C:n==='parts'?PART_C:n==='jobs'?JOB_C:n==='moto'?MOTO_C:n==='phones'?PH_C:n==='pc'?PC_C:n==='watch'?WT_C:CARS_C;}
 var GEAR_TYPES=[
  ['Graphics Card','parts','كروت شاشة','Graphics cards','M2 6h18v10H2z M20 9h2v4 M5 16v2 M17 16v2 M8 11m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0 M15 11m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0'],
  ['Motherboard','parts','لوحات أم','Motherboards','M4 3h16v18H4z M8 7h4v4H8z M15 7h2 M15 10h2 M8 14h8 M8 17h8'],
@@ -2198,11 +2248,22 @@ var JOB_RAW=[["sales", "مبيعات وخدمة عملاء", "Sales & customer s
 var JOB_IC={"sales": "M3 3h2l2 12h11l2-8H6 M9 20a1 1 0 1 0 0.01 0 M17 20a1 1 0 1 0 0.01 0", "admin": "M4 4h16v16H4z M8 8h8 M8 12h8 M8 16h5", "accounting": "M4 3h16v18H4z M8 7h8 M8 11h2 M12 11h2 M16 11h0 M8 15h2 M12 15h2", "tech": "M3 4h18v12H3z M8 20h8 M12 16v4 M10 8l-2 2 2 2 M14 8l2 2-2 2", "design": "M12 3a9 9 0 1 0 0 18c1 0 2-1 2-2s-1-2 0-3 2-1 3-1a4 4 0 0 0 4-4c0-4-4-8-9-8z M8 11h.01 M12 7h.01 M16 10h.01", "marketing": "M3 10v4l11 5V5z M14 8a4 4 0 0 1 0 8 M6 14v5h3", "engineering": "M4 15a8 8 0 0 1 16 0 M2 15h20v3H2z M12 7v4 M9 8v3 M15 8v3", "medical": "M12 4v16 M4 12h16 M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0", "teaching": "M2 9l10-5 10 5-10 5z M6 11v5c3 2 9 2 12 0v-5", "hospitality": "M7 3v8a2 2 0 0 0 4 0V3 M9 11v10 M17 3c-2 0-3 3-3 6s1 3 3 3v9", "crafts": "M14.5 5.5a4 4 0 0 0 4.9 4.9L10 19.8a2 2 0 0 1-2.8-2.8l9.4-9.4 M14.5 5.5l2-2", "drivers": "M3 13l2-5h14l2 5v5h-3v-2H6v2H3z M3 13h18 M7 15.5h.01 M17 15.5h.01", "security": "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z", "household": "M3 11l9-7 9 7 M5 10v10h14V10 M10 20v-5h4v5"};
 var JOB_TAGS={"Sales rep": "سيلز مبيعات", "Customer service": "كستمر سيرفس", "Call center": "كول سنتر", "Telesales": "تلي سيلز", "Cashier": "كاشير", "Shop assistant": "بياع", "Secretary": "سكرتير", "Data entry": "داتا انتري", "HR": "اتش ار", "Office manager": "مدير", "Receptionist": "ريسبشن", "Accountant": "محاسب", "Auditor": "مراجع", "Treasurer": "خزنة", "Financial analyst": "مالية", "Software developer": "برمجة ديفلوبر", "Web developer": "ويب", "Mobile developer": "موبايل", "IT technician": "آي تي", "Data analyst": "داتا", "Network engineer": "نتورك", "Graphic designer": "جرافيك", "UI/UX designer": "يو اي", "Video editor": "مونتاج", "Photographer": "تصوير", "Content creator": "محتوى", "Digital marketer": "ماركتنج", "Social media specialist": "سوشيال", "Copywriter": "كوبي", "PR specialist": "علاقات", "Civil engineer": "مدني", "Electrical engineer": "كهرباء", "Mechanical engineer": "ميكانيكا", "Architect": "معماري", "Site engineer": "موقع", "Doctor": "دكتور", "Nurse": "ممرضة", "Pharmacist": "صيدلية", "Lab technician": "معمل", "Physiotherapist": "علاج", "Teacher": "مدرس", "Nursery supervisor": "حضانة", "Trainer": "تدريب", "Tutor": "دروس", "Chef": "شيف", "Cook": "طباخ", "Waiter": "ويتر", "Barista": "قهوة", "Hotel staff": "فندق", "Delivery rider": "دليفري", "Electrician": "كهرباء", "Plumber": "سباكة", "Carpenter": "نجارة", "Painter": "نقاشة", "Welder": "لحام", "Tailor": "خياطة", "Car mechanic": "ميكانيكا", "AC technician": "تكييف", "Private driver": "سواق", "Truck driver": "نقل", "Bus driver": "أتوبيس", "Delivery driver": "توصيل", "Security guard": "أمن", "Doorman": "بواب", "Security supervisor": "مشرف", "Housekeeper": "شغالة", "Nanny": "مربية", "Elderly companion": "مرافق", "Home cook": "طباخة", "Gardener": "جنينة"};
 var APPL_C=buildCatalog(APPL_RAW),SVC_C=buildCatalog(SVC_RAW),PART_C=buildCatalog(PART_RAW),JOB_C=buildCatalog(JOB_RAW);
-var DS_IC={appl:APPL_IC,svc:SVC_IC,parts:PART_IC,jobs:JOB_IC};
+/* clothing and perfumes */
+var FASH_RAW=[["menBrands", "براندات رجالي", "Men's brands", "Gucci|جوتشي,Louis Vuitton|لويس فيتون,Dior|ديور,Prada|برادا,Armani|أرماني,Hugo Boss|هوجو بوس,Ralph Lauren|رالف لورين,Tommy Hilfiger|تومي هيلفيغر,Calvin Klein|كالفن كلاين,Lacoste|لاكوست,Burberry|بربري,Versace|فيرساتشي,Balenciaga|بالنسياجا,Dolce & Gabbana|دولتشي آند جابانا,Givenchy|جيفنشي,Moncler|مونكلير,Off-White|أوف وايت,Diesel|ديزل,Levi's|ليفايز,Nike|نايكي,Adidas|أديداس,Puma|بوما,Massimo Dutti|ماسيمو دوتي,Zara|زارا,Town Team|تاون تيم,Concrete|كونكريت,Activ|أكتيف"], ["womenBrands", "براندات نسائي", "Women's brands", "Chanel|شانيل,Dior|ديور,Gucci|جوتشي,Louis Vuitton|لويس فيتون,Hermès|هيرميس,Prada|برادا,Valentino|فالنتينو,Saint Laurent|سان لوران,Fendi|فندي,Celine|سيلين,Balenciaga|بالنسياجا,Michael Kors|مايكل كورس,Coach|كوتش,Guess|جيس,Furla|فورلا,Zara|زارا,Mango|مانجو,H&M|إتش آند إم,Bershka|بيرشكا,Massimo Dutti|ماسيمو دوتي,Stradivarius|ستراديفاريوس,Nike|نايكي,Adidas|أديداس,Shein|شي إن"], ["men", "ملابس رجالي", "Men's clothing", "Shirts|قمصان,T-shirts|تيشيرتات,Trousers|بناطيل,Jeans|جينز,Suits|بدل,Jackets|جواكت وجاكيتات,Hoodies|هوديز وسويتشيرت,Tracksuits|ترنجات,Sportswear|ملابس رياضية,Galabeya|جلاليب,Shorts|شورتات,Pajamas|بيجامات,Underwear|ملابس داخلية"], ["women", "ملابس نسائي", "Women's clothing", "Dresses|فساتين,Blouses|بلوزات,Trousers|بناطيل,Jeans|جينز,Skirts|جيبات,Abayas|عبايات,Hijab|طرح وحجاب,Isdal|إسدال,Jackets|جواكت,Sportswear|ملابس رياضية,Pajamas|بيجامات,Evening dresses|فساتين سهرة,Wedding dresses|فساتين زفاف,Maternity|ملابس حوامل"], ["kids", "ملابس أطفال", "Kids' clothing", "Newborn|مواليد,Boys|أولادي,Girls|بناتي,School uniform|يونيفورم مدارس,Kids sportswear|ملابس رياضية أطفال,Kids pajamas|بيجامات أطفال"], ["shoes", "أحذية", "Shoes", "Men formal|رجالي كلاسيك,Men casual|رجالي كاجوال,Sneakers|كوتشيات رياضية,Sandals|صنادل وشباشب,Heels|نسائي كعب عالي,Flats|نسائي فلات,Boots|بوت,Kids shoes|أحذية أطفال"], ["bags", "شنط وإكسسوارات", "Bags & accessories", "Handbags|شنط يد,Backpacks|شنط ظهر,Wallets|محافظ,Belts|أحزمة,Sunglasses|نظارات شمس,Jewelry|إكسسوارات ومجوهرات,Caps & hats|كابات وطواقي,Scarves|كوفيات وشالات"]];
+var FASH_IC={"menBrands": "M3 12V4h8l10 10-8 8z M7.5 7.5h.01", "womenBrands": "M6 8h12l1 13H5z M9 8V6a3 3 0 0 1 6 0v2", "men": "M8 3l-5 3 2 4 3-1v12h8V9l3 1 2-4-5-3c0 2-2 3-4 3s-4-1-4-3z", "women": "M9 2h6l-1 5 4 14H6l4-14z M10 7h4", "kids": "M9 5l-4 3 2 3 2-1v9h6v-9l2 1 2-3-4-3c0 1.4-1.3 2.4-3 2.4S9 6.4 9 5z", "shoes": "M3 17h18v3H3z M3 17c0-3 1-7 3-9 1 2 3 3 6 3l7 3c1.5.5 2 1.5 2 3", "bags": "M5 8h14l-1 12H6z M9 8V5h6v3 M9 12h6"};
+var PERF_RAW=[["french", "عطور فرنسية", "French perfumes", "Chanel|شانيل,Dior|ديور,Yves Saint Laurent|إيف سان لوران,Guerlain|جيرلان,Hermès|هيرميس,Givenchy|جيفنشي,Lancôme|لانكوم,Tom Ford|توم فورد,Creed|كريد,Maison Francis Kurkdjian|ميزون فرانسيس كركدجيان,Parfums de Marly|بارفان دي مارلي,Kilian|كيليان,Jo Malone|جو مالون,Armani|أرماني,Versace|فيرساتشي,Prada|برادا,Gucci|جوتشي,Paco Rabanne|باكو رابان,Jean Paul Gaultier|جان بول غوتييه,Carolina Herrera|كارولينا هيريرا,Montblanc|مون بلان,Hugo Boss|هوجو بوس,Narciso Rodriguez|نارسيسو رودريغيز,Xerjoff|زيرجوف,Initio|إنيشيو"], ["arabic", "عطور عربية", "Arabic perfumes", "Abdul Samad Al Qurashi|عبدالصمد القرشي,Ibrahim Al Qurashi|إبراهيم القرشي,Arabian Oud|العربية للعود,Ajmal|أجمل,Rasasi|الرصاصي,Lattafa|لطافة,Swiss Arabian|السويسرية العربية,Afnan|أفنان,Ard Al Zaafaran|أرض الزعفران,Al Majed Oud|الماجد للعود,Amouage|أمواج,Deraah|درعة,Asgharali|أصغر علي,Custom blends|خلطات خاصة"], ["bakhoor", "بخور ومعمول", "Bakhoor & incense", "Bakhoor|بخور معطّر,Maamoul|معمول,Dukhoon|دخون,Incense burners|مباخر,Electric burners|مباخر كهربائية"], ["oud", "خشب العود", "Oud wood", "Cambodian|كمبودي,Indian|هندي,Kalimantan|كلمنتان,Sioufi|سيوفي,Merauke|ميروكي,Laotian|لاوسي,Burmese|بورمي,Malaysian|ماليزي,Javanese|جاوي,Sumatran|سومطري,Thai|تايلندي,Vietnamese|فيتنامي,Sri Lankan|سريلانكي"], ["oil", "دهن العود", "Oud oil", "Cambodian oil|دهن عود كمبودي,Indian oil|دهن عود هندي,Malaysian oil|دهن عود ماليزي,Laotian oil|دهن عود لاوسي,Kalimantan oil|دهن عود كلمنتان,Sioufi oil|دهن عود سيوفي,Blended oil|دهن عود مخلوط"]];
+var PERF_IC={"french": "M9 2h6v3H9z M10 5v2 M14 5v2 M6 9a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z M9 13h6", "arabic": "M10 2h4v4h-4z M8 6h8l2 4v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V10z M8 13h8", "bakhoor": "M8 21h8 M9 21l1-6h4l1 6 M12 13c-2-2 2-3 0-5s2-3 0-5", "oud": "M3 10h18v4H3z M3 16h18v4H3z M7 10v4 M15 16v4 M5 4h14v4H5z", "oil": "M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"};
+var FASH_C=buildCatalog(FASH_RAW),PERF_C=buildCatalog(PERF_RAW);
+var DS_IC={appl:APPL_IC,svc:SVC_IC,parts:PART_IC,jobs:JOB_IC,fashion:FASH_IC,perf:PERF_IC};
+function fIsBrand(s){return s.group==='menBrands'||s.group==='womenBrands';}
+function fClothes(s){return s.group==='men'||s.group==='women'||(fIsBrand(s)&&keyOf('fItem',s.item)==='clothes');}
+function fShoes(s){return s.group==='shoes'||(fIsBrand(s)&&keyOf('fItem',s.item)==='shoes');}
+function pIsPerf(s){return s.group==='french'||s.group==='arabic';}
+function bkQtyOn(s){return s.group==='bakhoor'&&['Incense burners','Electric burners'].indexOf(s.sub)<0;}
 function subName(C,v){for(var i=0;i<C.keys.length;i++){var o=mFind(C,C.keys[i],v);if(o)return o[lang];}return v||'';}
 var JOB_MODE_D={hiring:['شركة أو صاحب عمل محتاج موظف','A company or employer is hiring'],seeking:['عندي خبرة وأدوّر على شغل','I am looking for a job'],freelance:['أشتغل بالمشروع أو بالقطعة','I work per project']};
 /* the home page groups, in the same order as Mzad Qatar */
-var CAT_GROUPS=[['vehicles','المركبات','Vehicles',['cars','moto','plates','parts']],['home','العقارات والبيت','Property & home',['realestate','land','commercial','furniture','appliances']],['tech','الإلكترونيات','Electronics',['electronics','phones','computers','numbers']],['more','خدمات ووظائف وأكثر','Services, jobs & more',['services','jobs','watches']]];
+var CAT_GROUPS=[['vehicles','المركبات','Vehicles',['cars','moto','plates','parts']],['home','العقارات والبيت','Property & home',['realestate','land','commercial','furniture','appliances']],['tech','الإلكترونيات','Electronics',['electronics','phones','computers','numbers']],['style','الموضة والعطور والساعات','Fashion, perfume & watches',['fashion','perfumes','watches']],['more','خدمات ووظائف','Services & jobs',['services','jobs']]];
 function aIs(){var a=[].slice.call(arguments);return function(s){return a.indexOf(s.type)>=0;};}
 function applTypeName(k,one){if(one&&APPL_ONE[k])return APPL_ONE[k][lang==='ar'?0:1];return bName(APPL_C,k);}
 function applBrandName(v){for(var i=0;i<APPL_C.keys.length;i++){var o=mFind(APPL_C,APPL_C.keys[i],v);if(o)return o[lang];}return v||'';}
@@ -2226,6 +2287,8 @@ var CATS=[
  {k:'watches',ar:'ساعات',en:'Watches',d:'M12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z M9.5 8.5L10 3h4l.5 5.5 M9.5 15.5L10 21h4l.5-5.5 M12 10.5v1.8l1.2.8'},
  {k:'services',ar:'خدمات',en:'Services',d:'M14.5 5.5a4 4 0 0 0 4.9 4.9L10 19.8a2 2 0 0 1-2.8-2.8l9.4-9.4 M14.5 5.5l2-2'},
  {k:'parts',ar:'قطع غيار سيارات',en:'Car parts',d:'M12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z M12 2v3 M12 19v3 M4.9 4.9l2.1 2.1 M17 17l2.1 2.1 M2 12h3 M19 12h3 M4.9 19.1L7 17 M17 7l2.1-2.1'},
+ {k:'fashion',ar:'ملابس وأحذية',en:'Clothing & shoes',d:'M8 3l-5 3 2 4 3-1v12h8V9l3 1 2-4-5-3c0 2-2 3-4 3s-4-1-4-3z'},
+ {k:'perfumes',ar:'عطور وبخور وعود',en:'Perfume, bakhoor & oud',d:'M9 2h6v3H9z M10 5v2 M14 5v2 M6 9a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z M9 13h6'},
  {k:'jobs',ar:'وظائف وأعمال حرة',en:'Jobs & freelance',d:'M3 7h18v13H3z M9 7V4h6v3 M3 12h18 M11 12v2h2v-2'}
 ];
 (function(){var o=[];CAT_GROUPS.forEach(function(g){g[3].forEach(function(k){var c=CATS.filter(function(x){return x.k===k;})[0];if(c&&o.indexOf(c)<0)o.push(c);});});CATS.forEach(function(c){if(o.indexOf(c)<0)o.push(c);});CATS=o;})();
@@ -2365,7 +2428,7 @@ function effPrice(x){return isAuc(x)?(Number(x.currentBid)||Number(x.price)||0):
 function priceText(x){if(x.job&&!isAuc(x)){var ju=keyOf('jobUnit',x.job.unit),jp=effPrice(x),jm=keyOf('jobMode',x.job.mode);if(!jp)return t(jm==='freelance'?'svcDeal':'jobDeal');var js=money(jp)+(ju&&ju!=='deal'?' '+t('jobPer_'+ju):'');return jm==='freelance'?t('svcFrom')+' '+js:jm==='seeking'?t('jobAsk')+' '+js:js;}
  if(x.svc&&!isAuc(x)){var su=keyOf('svcUnit',x.svc.unit),pr=effPrice(x);if(!pr)return t('svcDeal');var want=keyOf('svcMode',x.svc.mode)==='want';return t(want?'svcBudget':'svcFrom')+' '+money(pr)+(su&&su!=='deal'&&su!=='project'?' '+t('svcPer_'+su):'');}
  var s=money(effPrice(x));if(isRent(x))s+=' '+t('per_'+keyOf('period',specOf(x).period||'monthly'));return s;}
-function specOf(x){return x.appl||x.svc||x.part||x.job||x.car||x.moto||x.re||x.land||x.com||x.plate||x.mob||x.dev||x.pc||x.watch||{};}
+function specOf(x){return x.fash||x.perf||x.appl||x.svc||x.part||x.job||x.car||x.moto||x.re||x.land||x.com||x.plate||x.mob||x.dev||x.pc||x.watch||{};}
 function findListing(id){for(var i=0;i<listings.length;i++){if(listings[i].id===id)return listings[i];}return null;}
 function initial(n){var s=String(n||'?').trim();return s?s.charAt(0).toUpperCase():'?';}
 function monthYear(ts){try{return new Date(Number(ts)).toLocaleDateString(lang==='ar'?'ar-EG':'en-US',{month:'long',year:'numeric'});}catch(e){return '';}}
@@ -2403,6 +2466,13 @@ function autoTitle(catk,sp){
  if(catk==='numbers'){var d=digitsOnly(sp.num);return t('numWord',{op:lab('op',sp.op)})+(d?' '+dg(d):'');}
  if(catk==='computers'){var bn=sp.brand==='other'?String(sp.brandOther||'').trim():bName(PC_C,sp.brand);var pt=sp.type==='other'?String(sp.typeOther||'').trim():gtOne(sp.type);return joinName(bn,pcModelLabel(sp)||pt);}
  if(catk==='watches'){var wb=sp.brand==='other'?String(sp.brandOther||'').trim():bName(WT_C,sp.brand);var wc=(sp.brand==='other'||sp.model==='other')?String(sp.modelOther||'').trim():mName(WT_C,sp.brand,sp.model);return joinName(wb,joinName(wc,wrefLabel(sp)));}
+ if(catk==='fashion'){var fs=sp.sub==='other'?String(sp.subOther||'').trim():mName(FASH_C,sp.group,sp.sub);var fsz=fClothes(sp)?t('sizeW',{s:lab('clSize',sp.clSize)}):fShoes(sp)?lab('shoeSize',sp.shoeSize):sp.group==='kids'?lab('kidSize',sp.kidSize):'';
+  if(fIsBrand(sp))return [lab('fItem',sp.item),fs,fsz].filter(Boolean).join(' ');return [fs||bName(FASH_C,sp.group),fsz].filter(Boolean).join(' ');}
+ if(catk==='perfumes'){var ps=sp.sub==='other'?String(sp.subOther||'').trim():mName(PERF_C,sp.group,sp.sub);
+  if(pIsPerf(sp))return [t('perfW'),ps,String(sp.pname||'').trim(),lab('pvol',sp.pvol)].filter(Boolean).join(' ');
+  if(sp.group==='oud')return [t('oudW'),ps,lab('oudW',sp.oudW)].filter(Boolean).join(' ');
+  if(sp.group==='oil')return [ps,lab('oilQty',sp.oilQty)].filter(Boolean).join(' ');
+  return [ps,bkQtyOn(sp)?lab('bkQty',sp.bkQty):''].filter(Boolean).join(' ');}
  if(catk==='parts'){var pn=sp.part==='other'?String(sp.partOther||'').trim():subName(PART_C,sp.part);var pmd=sp.model==='other'?String(sp.modelOther||'').trim():modelName(sp.make,sp.model);return [pn||bName(PART_C,sp.group),makeName(sp.make),pmd].filter(Boolean).join(' ');}
  if(catk==='jobs'){var jr=sp.role==='other'?String(sp.roleOther||'').trim():subName(JOB_C,sp.role);jr=jr||bName(JOB_C,sp.field);var jm=keyOf('jobMode',sp.mode);return t(jm==='seeking'?'jobSeekT':jm==='freelance'?'jobFreeT':'jobHireT',{r:jr});}
  if(catk==='appliances'){var ab=sp.brand==='other'?String(sp.brandOther||'').trim():applBrandName(sp.brand);return [applTypeName(sp.type,true),ab,applSize(sp)].filter(Boolean).join(' ');}
@@ -2559,6 +2629,36 @@ var FIELDS={
   {k:'warranty',kind:'sel',opts:'warranty'},
   {k:'seller',kind:'sel',opts:'seller'}
  ],
+ fashion:[
+  {k:'group',kind:'gtiles',ds:'fashion',sub:'sub',lab:'f_fgroup'},
+  {k:'sub',kind:'model',ds:'fashion',bf:'group',chips:true,lab:'f_ftype',labFn:function(s){return fIsBrand(s)?'f_brand':'f_ftype';}},
+  {k:'subOther',kind:'text',lab:'f_fother',show:function(s){return s.sub==='other';},noFact:true},
+  {k:'item',kind:'sel',opts:'fItem',lab:'f_fitem',rerender:true,show:fIsBrand},
+  {k:'clSize',kind:'sel',opts:'clSize',def:'M',lab:'f_clSize',show:fClothes},
+  {k:'kidSize',kind:'sel',opts:'kidSize',def:'3-4',lab:'f_kidSize',show:function(s){return s.group==='kids';}},
+  {k:'shoeSize',kind:'sel',opts:'shoeSize',def:'42',lab:'f_shoeSize',show:fShoes},
+  {k:'color',kind:'sel',opts:'fcolor',lab:'f_fcolor'},
+  {k:'fcond',kind:'sel',opts:'fcond',lab:'f_fcond'},
+  {k:'auth',kind:'sel',opts:'fAuth',lab:'f_fauth',show:fIsBrand}
+ ],
+ perfumes:[
+  {k:'group',kind:'gtiles',ds:'perf',sub:'sub',lab:'f_pfgroup'},
+  {k:'sub',kind:'model',ds:'perf',bf:'group',chips:true,lab:'f_ftype',labFn:function(s){return pIsPerf(s)?'f_brand':'f_ftype';}},
+  {k:'subOther',kind:'text',lab:'f_fother',show:function(s){return s.sub==='other';},noFact:true},
+  {k:'pname',kind:'text',lab:'f_pname',ph:'pnamePh',optional:true,show:pIsPerf},
+  {k:'pgender',kind:'sel',opts:'pgender',lab:'f_pgender',cards:'sm',show:function(s){return s.group!=='oud';}},
+  {k:'conc',kind:'sel',opts:'conc',def:'edp',lab:'f_conc',show:pIsPerf},
+  {k:'pvol',kind:'sel',opts:'pvol',def:'100',lab:'f_pvol',show:pIsPerf},
+  {k:'oudW',kind:'sel',opts:'oudW',def:'tola',lab:'f_oudW',show:function(s){return s.group==='oud';}},
+  {k:'oudForm',kind:'sel',opts:'oudForm',lab:'f_oudForm',show:function(s){return s.group==='oud';}},
+  {k:'oudSink',kind:'sel',opts:'oudSink',def:'semi',lab:'f_oudSink',show:function(s){return s.group==='oud';}},
+  {k:'oilQty',kind:'sel',opts:'oilQty',def:'tola',lab:'f_oilQty',show:function(s){return s.group==='oil';}},
+  {k:'oudGrade',kind:'sel',opts:'oudGrade',def:'first',lab:'f_oudGrade',show:function(s){return s.group==='oud'||s.group==='oil';}},
+  {k:'bkQty',kind:'sel',opts:'bkQty',lab:'f_bkQty',show:bkQtyOn},
+  {k:'pcond',kind:'sel',opts:'pcondP',lab:'f_pcondP',rerender:true},
+  {k:'remain',kind:'sel',opts:'remain',lab:'f_remain',show:function(s){return keyOf('pcondP',s.pcond)==='used';}},
+  {k:'auth',kind:'sel',opts:'fAuth',lab:'f_fauth',show:pIsPerf}
+ ],
  parts:[
   {k:'group',kind:'gtiles',ds:'parts',sub:'part',lab:'f_pgroup'},
   {k:'part',kind:'model',ds:'parts',bf:'group',chips:true,lab:'f_ppart'},
@@ -2653,7 +2753,7 @@ var FIELDS={
  ]
 };
 function factVal(f,o){var v=o[f.k];
- if(f.kind==='model'&&(f.ds==='parts'||f.ds==='jobs'))return subName(dsOf(f.ds),v);
+ if(f.kind==='model'&&(f.ds==='parts'||f.ds==='jobs'||f.ds==='fashion'||f.ds==='perf'))return subName(dsOf(f.ds),v);
  if(f.kind==='gtiles')return f.ds==='appl'?applTypeName(v,true):bName(dsOf(f.ds),v);
  if(f.kind==='make')return bName(dsOf(f.ds),v);
  if(f.kind==='model')return mName(dsOf(f.ds),o[f.bf||'make'],v);
@@ -2674,11 +2774,13 @@ function fact(l,v,dir){return el('div',{class:'fact'},[el('span',{text:l}),el('b
 function factsFor(x){var defs=FIELDS[x.category]||[];var sp=specOf(x);var out=[];
  if(x.re||x.land||x.com){out.push(fact(t('f_purpose'),isRent(x)?t('forRent'):t('forSale')));var ll=locLabel(x,true);if(ll)out.push(fact(t('locL'),ll));}
  if(isAuc(x))out.push(fact(t('openingPrice'),money(x.price)));
- defs.forEach(function(f){if(f.kind==='multi'||f.noFact)return;if(f.show&&!f.show(sp))return;if(f.hideNa&&keyOf(f.opts,sp[f.k])==='na')return;if(f.hideIf!=null&&keyOf(f.opts,sp[f.k])===f.hideIf)return;var v=f.kind==='text'&&TR_SPEC.indexOf(f.k)>=0?dispSpec(x,f.k):factVal(f,sp);if(v!==''&&v!=null)out.push(fact(t(f.flab||f.lab||('f_'+f.k)),v,f.kind==='mob'?'ltr':(f.kind==='text'?txtDir(v):null)));});
+ defs.forEach(function(f){if(f.kind==='multi'||f.noFact)return;if(f.show&&!f.show(sp))return;if(f.hideNa&&keyOf(f.opts,sp[f.k])==='na')return;if(f.hideIf!=null&&keyOf(f.opts,sp[f.k])===f.hideIf)return;var v=f.kind==='text'&&TR_SPEC.indexOf(f.k)>=0?dispSpec(x,f.k):factVal(f,sp);if(v!==''&&v!=null)out.push(fact(t(f.labFn?f.labFn(sp):(f.flab||f.lab||('f_'+f.k))),v,f.kind==='mob'?'ltr':(f.kind==='text'?txtDir(v):null)));});
  return out;}
 
 /* ---------- cards ---------- */
 function cardMeta(x){var sp=specOf(x);
+ if(x.fash)return [bName(FASH_C,sp.group),sp.fcond?lab('fcond',sp.fcond):'',sp.auth?lab('fAuth',sp.auth):''].filter(Boolean).join(' · ');
+ if(x.perf)return [bName(PERF_C,sp.group),sp.pgender?lab('pgender',sp.pgender):'',sp.conc?lab('conc',sp.conc):sp.oudGrade?lab('oudGrade',sp.oudGrade):'',sp.pcond?lab('pcondP',sp.pcond):''].filter(Boolean).join(' · ');
  if(x.part)return [bName(PART_C,sp.group),sp.pcond?lab('partCond',sp.pcond):''].filter(Boolean).join(' · ');
  if(x.job)return [sp.jtype?lab('jobType',sp.jtype):'',sp.jexp?lab('jobExp',sp.jexp):'',sp.company||''].filter(Boolean).join(' · ');
  if(x.appl)return [applTypeName(sp.type,true),applSize(sp),sp.cond?lab('pcond',sp.cond):''].filter(Boolean).join(' · ');
@@ -2798,6 +2900,8 @@ function hay(x,noDesc){var sp=specOf(x),c=cat(x.category),p=[x.title,noDesc?'':x
  if(x.pc){var pb2=PC_C.map[bKey(PC_C,sp.brand)];p.push(pb2?pb2.ar+' '+pb2.en:sp.brand);var pt2=mFind(PC_C,sp.brand,sp.type);p.push(pt2?pt2.ar+' '+pt2.en:sp.type);p.push(gtName(sp.type));var pmi2=pcModelInfo(sp);if(pmi2)p.push(pmi2.ar+' '+pmi2.en);}
  if(x.watch){wTypesL(x).forEach(function(k){p.push(both('wtype',k));});if(sp.caliber)p.push(String(sp.caliber));var wb2=WT_C.map[bKey(WT_C,sp.brand)];p.push(wb2?wb2.ar+' '+wb2.en:sp.brand);var wm2=mFind(WT_C,sp.brand,sp.model);p.push(wm2?wm2.ar+' '+wm2.en:sp.model);var wi2=wrefInfo(sp);if(wi2)p.push(wi2.ar+' '+wi2.en);}
  if(x.moto){var mb2=MOTO_C.map[bKey(MOTO_C,sp.brand)];p.push(mb2?mb2.ar+' '+mb2.en:sp.brand);var mm2=mFind(MOTO_C,sp.brand,sp.model);p.push(mm2?mm2.ar+' '+mm2.en:sp.model);p.push(both('motoType',sp.mtype));}
+ if(x.fash){var fg2=FASH_C.map[sp.group];if(fg2)p.push(fg2.ar+' '+fg2.en);var fo2=sp.group?mFind(FASH_C,sp.group,sp.sub):null;p.push(fo2?fo2.ar+' '+fo2.en:sp.sub);p.push('ملابس لبس');}
+ if(x.perf){var pf2=PERF_C.map[sp.group];if(pf2)p.push(pf2.ar+' '+pf2.en);var po3=sp.group?mFind(PERF_C,sp.group,sp.sub):null;p.push(po3?po3.ar+' '+po3.en:sp.sub);p.push(sp.pname,both('pgender',sp.pgender),'عطر عطور ريحة');if(sp.group==='oud'||sp.group==='oil')p.push('عود');}
  if(x.part){var pg2=PART_C.map[sp.group];if(pg2)p.push(pg2.ar+' '+pg2.en);var po2=sp.group?mFind(PART_C,sp.group,sp.part):null;p.push(po2?po2.ar+' '+po2.en:sp.part);if(PART_TAGS[sp.part])p.push(PART_TAGS[sp.part]);var pm3=CARS[makeKey(sp.make)];p.push(pm3?pm3.ar+' '+pm3.en:sp.make);var pmm=findModel(sp.make,sp.model);p.push(pmm?pmm.ar+' '+pmm.en:sp.model);p.push(sp.pno,sp.years);}
  if(x.job){var jf2=JOB_C.map[sp.field];if(jf2)p.push(jf2.ar+' '+jf2.en);var jo2=sp.field?mFind(JOB_C,sp.field,sp.role):null;p.push(jo2?jo2.ar+' '+jo2.en:sp.role);if(JOB_TAGS[sp.role])p.push(JOB_TAGS[sp.role]);p.push(sp.company,'وظيفة شغل عمل');}
  if(x.appl){var at2=APPL_C.map[sp.type];if(at2)p.push(at2.ar+' '+at2.en);if(APPL_ONE[sp.type])p.push(APPL_ONE[sp.type].join(' '));p.push(sp.brand,applBrandName(sp.brand),sp.mdl);}
@@ -3601,6 +3705,19 @@ function buildShop(){var C={},Y=new Date().getFullYear();
  C.services=mk({bar:['group','mode','where','loc','price'],top:[['shGSvc',[sgroup,ssub]],price],groups:[['wFgBasic',[svf.mode,svf.prov,svf.where,svf.cover,svf.exp,svf.perks]],adG],
   fx:[sgroup,ssub,svf.mode,svf.prov,svf.where,svf.cover,svf.exp,svf.perks,price,sale,loc,age,photo],
   drill:function(){return S.f.group?[groupHead(sgroup,SVC_C,SVC_IC),oneChips(ssub)]:[el('p',{class:'gt-intro',text:t('svcIntro')}),tileDrill(sgroup,SVC_C,SVC_IC,true)];},bands:function(){return BANDS.services;}});
+ /* clothing and shoes */
+ function subOpts(C,gk){return function(f){var src=f&&f[gk]&&C.map[f[gk]]?[C.map[f[gk]]]:C.keys.map(function(k){return C.map[k];});var seen={},out=[];src.forEach(function(m){m.models.forEach(function(o){if(!seen[o.k]){seen[o.k]=1;out.push([o.k,o[lang]]);}});});return out;};}
+ var fgroup=FOne('group','f_fgroup',function(){return FASH_C.keys.map(function(k){return [k,FASH_C.map[k][lang]];});},{also:['sub'],any:'fAllGroups',val:function(x){return sp(x).group||'';},lbl:function(v){return bName(FASH_C,v);},icon:function(v){return FASH_IC[v]||null;},onSet:function(f){delete f.sub;}});
+ var fsub=FOne('sub','f_ftype',subOpts(FASH_C,'group'),{any:'sAllSubs',val:function(x){return sp(x).sub||'';},lbl:function(v){return subName(FASH_C,v);}});
+ var ff={cl:FOpt('clSize','clSize','f_clSize'),sh:FOpt('shoeSize','shoeSize','f_shoeSize'),kd:FOpt('kidSize','kidSize','f_kidSize',{pfx:true}),cond:FOpt('fcond','fcond','f_fcond'),color:FOpt('color','fcolor','f_fcolor',{pfx:true}),auth:FOpt('auth','fAuth','f_fauth',{pfx:true}),item:FOpt('item','fItem','f_fitem',{pfx:true})};
+ C.fashion=mk({bar:['group','clSize','shoeSize','fcond','price'],top:[['shGFash',[fgroup,fsub]],price],groups:[['wFgBasic',[ff.item,ff.cl,ff.sh,ff.kd,ff.cond,ff.color,ff.auth]],adG],
+  fx:[fgroup,fsub,ff.item,ff.cl,ff.sh,ff.kd,ff.cond,ff.color,ff.auth,price,sale,loc,age,photo],drill:function(){return S.f.group?[groupHead(fgroup,FASH_C,FASH_IC),oneChips(fsub)]:[tileDrill(fgroup,FASH_C,FASH_IC,true)];},bands:function(){return BANDS.goods;}});
+ /* perfumes, bakhoor and oud */
+ var pfgroup=FOne('group','f_pfgroup',function(){return PERF_C.keys.map(function(k){return [k,PERF_C.map[k][lang]];});},{also:['sub'],any:'pfAllGroups',val:function(x){return sp(x).group||'';},lbl:function(v){return bName(PERF_C,v);},icon:function(v){return PERF_IC[v]||null;},onSet:function(f){delete f.sub;}});
+ var pfsub=FOne('sub','f_ftype',subOpts(PERF_C,'group'),{any:'sAllSubs',val:function(x){return sp(x).sub||'';},lbl:function(v){return subName(PERF_C,v);}});
+ var pff={gender:FOpt('pgender','pgender','f_pgender'),conc:FOpt('conc','conc','f_conc',{pfx:true}),vol:FOpt('pvol','pvol','f_pvol',{pfx:true}),grade:FOpt('oudGrade','oudGrade','f_oudGrade',{pfx:true}),sink:FOpt('oudSink','oudSink','f_oudSink',{pfx:true}),cond:FOpt('pcond','pcondP','f_pcondP'),auth:FOpt('auth','fAuth','f_fauth',{pfx:true})};
+ C.perfumes=mk({bar:['group','pgender','pcond','price','sale'],top:[['shGPerf',[pfgroup,pfsub]],price],groups:[['wFgBasic',[pff.gender,pff.conc,pff.vol,pff.grade,pff.sink,pff.cond,pff.auth]],adG],
+  fx:[pfgroup,pfsub,pff.gender,pff.conc,pff.vol,pff.grade,pff.sink,pff.cond,pff.auth,price,sale,loc,age,photo],drill:function(){return S.f.group?[groupHead(pfgroup,PERF_C,PERF_IC),oneChips(pfsub)]:[tileDrill(pfgroup,PERF_C,PERF_IC,true)];},bands:function(){return BANDS.goods;}});
  /* car spare parts */
  var pgroup=FOne('group','f_pgroup',function(){return PART_C.keys.map(function(k){return [k,PART_C.map[k][lang]];});},{also:['part'],any:'pAllGroups',val:function(x){return sp(x).group||'';},lbl:function(v){return bName(PART_C,v);},icon:function(v){return PART_IC[v]||null;},onSet:function(f){delete f.part;}});
  var ppart=FOne('part','f_ppart',function(f){var src=f&&f.group&&PART_C.map[f.group]?[PART_C.map[f.group]]:PART_C.keys.map(function(k){return PART_C.map[k];});var out=[];src.forEach(function(m){m.models.forEach(function(o){out.push([o.k,o[lang]]);});});return out;},{any:'sAllSubs',val:function(x){return sp(x).part||'';},lbl:function(v){return subName(PART_C,v);}});
@@ -4320,7 +4437,7 @@ function foldEl(f,d){var sp=d.spec,id='sp_'+f.k,name=t(f.flab||f.lab||('f_'+f.k)
  wrap._sync=function(){if(f.kind!=='wtypes')return;if(!sp._typesTouched)sp.types=wInferTypes(sp);refresh();if(wrap.classList.contains('open'))build();};
  refresh();if(d._open===f.k){wrap.classList.add('open');head.setAttribute('aria-expanded','true');build();}
  return wrap;}
-function fieldEl(f,d){if(f.fold)return foldEl(f,d);if(f.kind==='wsub')return el('div',{class:'field wide wsub'},[el('span',{text:t(f.lab)})]);var sp=d.spec,id='sp_'+f.k,label=t(f.lab||('f_'+f.k))+(f.optional?' '+t('optional'):'');
+function fieldEl(f,d){if(f.fold)return foldEl(f,d);if(f.kind==='wsub')return el('div',{class:'field wide wsub'},[el('span',{text:t(f.lab)})]);var sp=d.spec,id='sp_'+f.k,label=t(f.labFn?f.labFn(sp):(f.lab||('f_'+f.k)))+(f.optional?' '+t('optional'):'');
  var wide=f.wide||f.kind==='multi'||f.kind==='platePreview'||f.kind==='letters';
  var w=el('div',{class:'field'+(wide?' wide':'')});
  function after(){refreshAutoTitle(d);if(d.cat==='plates')updatePlatePrev(d);}
@@ -4470,6 +4587,7 @@ function validate(d,step){
   if(d.cat==='moto'&&sp.model==='other'&&!String(sp.modelOther||'').trim())return t('errModel');
   if(d.cat==='appliances'&&sp.brand==='other'&&!String(sp.brandOther||'').trim())return t('errBrandOther');
   if(d.cat==='services'&&sp.sub==='other'&&!String(sp.subOther||'').trim())return t('errSvcSub');
+  if((d.cat==='fashion'||d.cat==='perfumes')&&sp.sub==='other'&&!String(sp.subOther||'').trim())return t('errFother');
   if(d.cat==='parts'&&sp.part==='other'&&!String(sp.partOther||'').trim())return t('errPart');
   if(d.cat==='parts'&&sp.model==='other'&&!String(sp.modelOther||'').trim())return t('errClass');
   if(d.cat==='jobs'&&sp.role==='other'&&!String(sp.roleOther||'').trim())return t('errRole');
@@ -4494,6 +4612,8 @@ function buildDoc(d){var sp=JSON.parse(JSON.stringify(d.spec||{}));
  else if(d.cat==='computers'){if(sp.type==='other')sp.type=String(sp.typeOther||'').trim();delete sp.typeOther;if(sp.brand==='other')sp.brand=String(sp.brandOther||'').trim();delete sp.brandOther;if(sp.model==='other')sp.model=String(sp.modelOther||'').trim();delete sp.modelOther;if(keyOf('pcond',sp.cond)==='new')delete sp.cosmetic;if(!pcBig(sp)&&sp.type!=='Memory')delete sp.ram;if(!pcBig(sp)&&sp.type!=='Storage')delete sp.storage;doc.pc=sp;}
  else if(d.cat==='phones'){if(sp.model==='other')sp.model=String(sp.modelOther||'').trim();delete sp.modelOther;var bt=digitsOnly(sp.battery);sp.battery=bt===''?'':Math.min(100,Number(bt));if(keyOf('pcond',sp.cond)==='new'){delete sp.cosmetic;delete sp.battery;delete sp.clean;sp.issues=[];}else if(keyOf('clean',sp.clean)!=='issues'){sp.issues=[];}doc.dev=sp;}
  else if(d.cat==='watches'){var wIt0=priceItem('watches',sp,d.title||autoTitle('watches',sp),d.desc),wEs0=wIt0?priceMem[estId(wIt0)]:null,wRe0=wEs0?Math.round(Number((wEs0.egp||{}).retail)||0):0,wRu0=wEs0?Math.round(Number((wEs0.usd||{}).retail)||0):0;if(wRe0>0)sp.retail={egp:wRe0,usd:wRu0>0?wRu0:0,at:Date.now()};else delete sp.retail;var wty=(sp._typesTouched&&Array.isArray(sp.types))?sp.types.filter(function(k,i,a){return WT_TORDER.indexOf(k)>=0&&a.indexOf(k)===i;}):wInferTypes(sp);sp.types=wty;delete sp._typesTouched;delete sp._typesSig;var wOth=sp.brand==='other';if(wOth)sp.brand=String(sp.brandOther||'').trim();delete sp.brandOther;if(wOth||sp.model==='other'){sp.model=String(sp.modelOther||'').trim();sp.ref=String(sp.refOther||'').trim();}else if(sp.ref==='other')sp.ref=String(sp.refOther||'').trim();delete sp.modelOther;delete sp.refOther;delete sp._note;delete sp._find;delete sp._more;delete sp._sum;var wpw=digitsOnly(String(sp.power==null?'':sp.power));sp.power=wpw===''?'':Number(wpw);sp.caliber=latin(String(sp.caliber||'')).trim().slice(0,30);sp.ack=true;sp.ackAt=Date.now();Object.keys(sp).forEach(function(k){if(k.charAt(0)==='_')delete sp[k];});doc.watch=sp;}
+ if(d.cat==='fashion'){stripHidden('fashion',sp);if(sp.sub==='other')sp.sub=String(sp.subOther||'').trim();delete sp.subOther;doc.fash=sp;}
+ else if(d.cat==='perfumes'){stripHidden('perfumes',sp);if(sp.sub==='other')sp.sub=String(sp.subOther||'').trim();delete sp.subOther;sp.pname=String(sp.pname||'').trim().slice(0,50);doc.perf=sp;}
  if(d.cat==='parts'){stripHidden('parts',sp);if(sp.part==='other')sp.part=String(sp.partOther||'').trim();delete sp.partOther;if(sp.model==='other')sp.model=String(sp.modelOther||'').trim();delete sp.modelOther;sp.pno=latin(String(sp.pno||'')).trim().slice(0,40);doc.part=sp;}
  else if(d.cat==='jobs'){stripHidden('jobs',sp);if(sp.role==='other')sp.role=String(sp.roleOther||'').trim();delete sp.roleOther;doc.job=sp;}
  if(d.cat==='appliances'){stripHidden('appliances',sp);if(sp.brand==='other')sp.brand=String(sp.brandOther||'').trim();delete sp.brandOther;sp.mdl=latin(String(sp.mdl||'')).trim().slice(0,40);doc.appl=sp;}
