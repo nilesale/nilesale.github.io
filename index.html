@@ -56,9 +56,9 @@
 .last-b{margin-inline-start:.5rem;padding:.0625rem .5rem;border-radius:1rem;background:var(--accent);color:var(--accent-ink,#fff);font-size:.6875rem;font-weight:700}
 .btn-google .last-b,.btn:not(.btn-apple):not(.btn-primary) .last-b{background:var(--accent);color:#fff}
 </style>
-<script src="js/config.js?v=18"></script>
+<script src="js/config.js?v=19"></script>
 <script src="js/vendor/supabase-2.117.2.js"></script>
-<script src="js/backend.js?v=18"></script>
+<script src="js/backend.js?v=19"></script>
 </head>
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1102,7 +1102,7 @@ errClass:["اكتب الصنف.","Enter the class."],
 errArea:["اكتب المساحة بالمتر المربع.","Enter the area in square meters."],
 errPlate:["اكتب أرقام النمرة.","Enter the plate digits."],
 errMob:["اكتب رقم موبايل مصري صحيح من ١١ رقم يبدأ بـ ٠١٠ أو ٠١١ أو ٠١٢ أو ٠١٥.","Enter a valid 11-digit Egyptian mobile number starting with 010, 011, 012 or 015."],
-errNoDb:["النشر غير متاح في هذا العرض.","Posting isn't available in this view."],
+errNoDb:["النشر غير متاح في هذا العرض.","Posting isn't available in this view."], cloudNeed:["عشان يشوفه الكل، ادخل بحساب جوجل أو بالبصمة. الدخول برقم الجوال بيتفعّل قريب.","So everyone can see it, continue with Google or a passkey. Phone sign-in is coming soon."], netFail:["ما فيه اتصال بالإنترنت، تأكد من الشبكة وحاول مرة ثانية.","No internet connection. Check your network and try again."],
 postFail:["ما انتشر الإعلان، حاول مرة ثانية.","Couldn't publish the listing. Try again."],
 posted:["تم نشر الإعلان","Listing published"],
 auctionStarted:["بدأ المزاد","Auction started"],
@@ -4117,7 +4117,7 @@ function renderDetail(){var box=V.detail;box.textContent='';
 function auctionPanel(x,done,mine){var p=el('div',{class:'panel apanel',id:'apanel'});
  var cur=effPrice(x),step=Number(x.minInc)||500;if(S.incFor!==x.id){S.inc=step;S.incFor=x.id;}
  p.appendChild(el('div',{class:'abox'},[el('div',{},[el('div',{class:'albl',text:x.bidCount?t('highestBid'):t('openingPrice')}),el('div',{class:'abig',text:money(cur)})]),el('div',{},[el('div',{class:'albl',text:done?t('auctionLbl'):t('endsIn')}),el('div',{class:'bigclock','data-ends':String(x.endsAt),text:clockText(x.endsAt)})])]));
- p.appendChild(el('p',{class:'small',text:t('participants',{n:num(entries.length)})+(x.relists?' · '+t('relistN',{n:num(x.relists)}):'')}));
+ p.appendChild(el('p',{class:'small',text:t('participants',{n:num(Math.max(entries.length,Number(x.entryCount)||0))})+(x.relists?' · '+t('relistN',{n:num(x.relists)}):'')}));
  var entered=!!(uid&&entries.some(function(e){return e.id===uid;}));
  if(!done&&!mine&&!entered){
   var gate=el('div',{class:'gate'},[el('b',{text:t('entryT',{fee:money(ENTRY_FEE)})}),el('p',{text:t('entryP')})]);
@@ -4169,11 +4169,11 @@ async function placeBid(amount){var x=findListing(S.detailId);if(!db||!x||S.busy
  if(x.bidCount&&amount<=effPrice(x)){toast(t('higherBid'));return;}
  S.busy=true;renderDetail();
  try{await db.collection('listings/'+x.id+'/bids').add({amount:amount,bidderId:uid,at:Date.now()});await db.doc('listings/'+x.id).update({currentBid:amount,bidCount:(Number(x.bidCount)||0)+1,lastBidderId:uid});toast(t('bidOk',{amt:money(amount)}));}
- catch(e){toast(e&&e.code==='quota_exceeded'?t('quota'):t('bidFail'));}
+ catch(e){var bc=e&&e.code;if(bc==='need_account'){S.busy=false;renderDetail();openAuth(null,null,'cloud');return;}toast(bc==='quota_exceeded'?t('quota'):bc==='bid_low'?t('higherBid'):bc==='ended'?t('auctionOver'):bc==='need_entry'?t('payFirst'):bc==='network'?t('netFail'):t('bidFail'));}
  S.busy=false;renderDetail();}
 async function payEntry(){var x=findListing(S.detailId);if(!db||!x||!uid||S.busy)return;S.busy=true;renderDetail();
  try{await db.doc('listings/'+x.id+'/entries/'+uid).set({fee:ENTRY_FEE,at:Date.now()});S.payStep=false;var en=(prefs.entered||[]).slice();if(en.indexOf(x.id)<0)en.unshift(x.id);prefs.entered=en;savePrefs();toast(t('paidOk'));}
- catch(e){toast(t('payFail'));}
+ catch(e){var ec=e&&e.code;if(ec==='need_account'){S.busy=false;renderDetail();openAuth(null,null,'cloud');return;}toast(ec==='ended'?t('auctionOver'):ec==='network'?t('netFail'):t('payFail'));}
  S.busy=false;renderDetail();}
 async function relist(){var x=findListing(S.detailId);if(!db||!x||S.busy)return;var used=Number(x.relists)||0;if(used>=FREE_RELISTS||x.bidCount)return;S.busy=true;renderDetail();
  try{await db.doc('listings/'+x.id).update({endsAt:Date.now()+(Number(x.durationH)||24)*3600000,relists:used+1,currentBid:0,bidCount:0,createdAt:Date.now()});toast(t('relistOk'));}
@@ -4193,10 +4193,10 @@ function appleLogo(){var ns='http://www.w3.org/2000/svg';var s=document.createEl
 function lastAuth(){try{return localStorage.getItem('nilesale.lastAuth')||'';}catch(e){return '';}}
 function setLastAuth(m){try{localStorage.setItem('nilesale.lastAuth',m);}catch(e){}}
 function lastBadge(m){return lastAuth()===m?el('span',{class:'last-b',text:t('lastUsed')}):null;}
-function authButtons(onPick){var bs=[['google',el('button',{type:'button',class:'btn btn-google btn-block btn-lg brand-btn',onclick:function(){onPick('google');}},[brandLogo(GOOGLE_D),t('withGoogle'),lastBadge('google')])],
+function authButtons(onPick,noPhone){var bs=[['google',el('button',{type:'button',class:'btn btn-google btn-block btn-lg brand-btn',onclick:function(){onPick('google');}},[brandLogo(GOOGLE_D),t('withGoogle'),lastBadge('google')])],
  ['apple',el('button',{type:'button',class:'btn btn-apple btn-block btn-lg brand-btn',onclick:function(){onPick('apple');}},[appleLogo(),t('withApple'),lastBadge('apple')])],
  ['phone',el('button',{type:'button',class:'btn btn-block btn-lg brand-btn',onclick:function(){onPick('phone');}},[ic('phone',18),t('withPhone'),lastBadge('phone')])]],la=lastAuth();
- bs.sort(function(x,y){return (y[0]===la)-(x[0]===la);});return el('div',{class:'authbtns'},bs.map(function(b){return b[1];}));}
+ if(noPhone)bs=bs.filter(function(b){return b[0]!=='phone';});bs.sort(function(x,y){return (y[0]===la)-(x[0]===la);});return el('div',{class:'authbtns'},bs.map(function(b){return b[1];}));}
 function renderAccount(){var box=V.account;box.textContent='';box.appendChild(el('h1',{class:'ptitle',text:t('accountT')}));
  if(isSignedIn()){var a=account;var contactTxt=a.method==='email'?a.email:a.method==='phone'?(a.phoneLocal||a.phone):(a.email||'');var phoneTxt=a.method!=='phone'&&a.phoneLocal?a.phoneLocal:'';
   box.appendChild(el('div',{class:'panel prof-card'},[el('div',{class:'prof'},[el('div',{class:'avatar','aria-hidden':'true',text:initial(a.name)}),el('div',{class:'pcol'},[el('b',{class:'pname',text:a.name}),T['verified_'+a.method]?el('span',{class:'vbadge'},[ic('shield',14),t('verified_'+a.method)]):null,contactTxt?el('span',{class:'small',dir:'ltr',text:a.method==='phone'?dg(contactTxt):contactTxt}):null,phoneTxt?el('span',{class:'small',dir:'ltr',text:dg(phoneTxt)}):null])]),el('div',{class:'pcol'},[el('button',{type:'button',class:'btn btn-sm',onclick:function(){openProfile(null);},text:t('editInfo')}),el('button',{type:'button',class:'btn btn-sm',onclick:signOut,text:t('signOut')})])]));
@@ -4222,7 +4222,7 @@ function renderAccount(){var box=V.account;box.textContent='';box.appendChild(el
  box.appendChild(el('p',{class:'small brand-foot',dir:'ltr',text:'© '+dg('2026')+' nilesale co · www.nilesale.com'}));}
 
 /* ---------- sign-in (demo flows) ---------- */
-function isSignedIn(){return !!(account&&account.signedIn);}
+function isSignedIn(){return !!(account&&account.signedIn);} function needCloud(){var a=window.__nsAuth;return !!(a&&a.cloud&&a.session&&!a.session());}
 function pkOk(){return !!(window.__nsAuth&&window.__nsAuth.passkeyOk&&window.__nsAuth.passkeyOk());}
 function realAcct(){return !!(account&&account.signedIn&&(account.method==='google'||account.method==='apple'));}
 function startPasskey(a){a.err='';a.busy=true;renderAuth();var pend={};if(S.view==='post'&&draft){try{var dd=JSON.parse(JSON.stringify(draft));delete dd.busy;delete dd.err;dd.uploading=0;pend.draft=dd;}catch(e){}}
@@ -4230,7 +4230,7 @@ function startPasskey(a){a.err='';a.busy=true;renderAuth();var pend={};if(S.view
 async function turnOnPasskey(onDone){try{await window.__nsAuth.registerPasskey();}catch(e){var c=e&&e.code;if(c==='cancel')return false;if(c!=='exists'){toast(t('pkFail'));return false;}}
  try{await db.doc('data/users/'+uid+'/account').update({passkey:true});}catch(e){}account=Object.assign({},account,{passkey:true});toast(t('pkDone'));if(onDone)onDone();return true;}
 function needsProfile(){return !!(account&&account.signedIn&&(account.method==='google'||account.method==='apple')&&!account.phone);}
-function requireAuth(fn,reason){if(isSignedIn()){if(needsProfile()){openProfile(fn);return;}fn();return;}openAuth(fn,null,reason);}
+function requireAuth(fn,reason){if(isSignedIn()&&!needCloud()){if(needsProfile()){openProfile(fn);return;}fn();return;}openAuth(fn,null,reason||(isSignedIn()?'cloud':''));}
 function openProfile(after){payFlow={};authFlow={step:'profile',after:after||null,err:'',busy:false};renderAuth();try{if(!dlg.open)dlg.showModal();}catch(e){dlg.setAttribute('open','');}}
 async function saveProfile(name,phone,phoneLocal){var a=authFlow;if(!db||!uid||a.busy)return;a.busy=true;var first=!account||!account.phone;
  try{await db.doc('data/users/'+uid+'/account').update({name:name,phone:phone,phoneLocal:phoneLocal});var pr=profiles[uid]||{};await db.doc('profiles/'+uid).set(Object.assign({},pr,{name:name}));
@@ -4255,7 +4255,7 @@ function renderAuth(){var a=authFlow,box=$('dlgIn');if(!a||!a.step)return;box.te
  box.appendChild(el('div',{class:'sheet-head'},[a.step!=='choose'&&a.step!=='profile'&&a.step!=='pkOffer'?el('button',{type:'button',class:'btn btn-icon','aria-label':t('back'),onclick:function(){a.err='';a.step=backTo;renderAuth();}},[backIcon()]):el('span',{class:'spacer'}),el('h2',{id:'dlgT',text:t(titleKey)}),el('button',{type:'button',class:'btn btn-icon','aria-label':t('close'),onclick:closeAuth},[ic('close',18)])]));
  if(!db||!uid){box.appendChild(el('p',{text:t('noIdentity')}));return;}
  if(a.reason==='publish'&&a.step==='choose')box.appendChild(el('p',{class:'ready'},[ic('check',18),el('span',{text:t('readyToPublish')})]));
- if(a.step==='choose'){box.appendChild(el('p',{class:'muted',text:t('signInP')}));if(pkOk())box.appendChild(el('button',{type:'button',class:'btn btn-primary btn-block btn-lg pk-btn',disabled:a.busy,onclick:function(){startPasskey(a);}},[ic('finger',20),t('withPasskey'),lastBadge('passkey')]));if(a.err)box.appendChild(el('p',{class:'err',role:'alert',text:a.err}));box.appendChild(authButtons(function(p){pickAuth(a,p);}));box.appendChild(el('p',{class:'demo',text:t(realAuthOn('google')&&realAuthOn('apple')?'authRealBoth':realAuthOn('google')?'authRealGoogle':'demoAuth')}));box.appendChild(el('p',{class:'small',text:t('terms')}));return;}
+ if(a.step==='choose'){var nc=needCloud();box.appendChild(el('p',{class:'muted',text:t('signInP')}));if(nc)box.appendChild(el('p',{class:'ready'},[ic('shield',18),el('span',{text:t('cloudNeed')})]));if(pkOk())box.appendChild(el('button',{type:'button',class:'btn btn-primary btn-block btn-lg pk-btn',disabled:a.busy,onclick:function(){startPasskey(a);}},[ic('finger',20),t('withPasskey'),lastBadge('passkey')]));if(a.err)box.appendChild(el('p',{class:'err',role:'alert',text:a.err}));box.appendChild(authButtons(function(p){pickAuth(a,p);},nc));box.appendChild(el('p',{class:'demo',text:t(realAuthOn('google')&&realAuthOn('apple')?'authRealBoth':realAuthOn('google')?'authRealGoogle':'demoAuth')}));box.appendChild(el('p',{class:'small',text:t('terms')}));return;}
  var form=el('form',{class:'sheet-form',novalidate:true}),focusEl=null;
  if(a.step==='social'){
   box.appendChild(el('p',{class:'muted',text:t('socialP',{p:t('p_'+a.provider)})}));
@@ -4656,11 +4656,11 @@ function buildDoc(d){var sp=JSON.parse(JSON.stringify(d.spec||{}));
  return doc;}
 async function publish(d){var e=validate(d,3);if(e){d.err=e;renderPost();return;}
  if(!db||!uid){d.err=t('errNoDb');renderPost();return;}
- if(!isSignedIn()){openAuth(function(){if(draft===d&&S.view==='post')publish(d);},null,'publish');return;}
+ if(!isSignedIn()||needCloud()){openAuth(function(){if(draft===d&&S.view==='post')publish(d);},null,'publish');return;}
  d.busy=true;d.err='';renderPost();
  var doc=buildDoc(d);
  try{var ref=await db.collection('listings').add(doc);var isA=d.type==='auction';draft=null;toast(isA?t('auctionStarted'):t('posted'));if(!findListing(ref.id))listings.unshift(Object.assign({id:ref.id},doc));trAfterPost(Object.assign({id:ref.id},doc));S.stack=[];S.detailId=ref.id;S.payStep=false;S.confirmDel=false;openDetailSubs(ref.id);setView('detail');setTimeout(function(){if(S.view==='detail'&&S.detailId===ref.id)openBoost(ref.id,true);},450);}
- catch(ex){d.busy=false;d.err=ex&&ex.code==='quota_exceeded'?t('quota'):t('postFail');renderPost();}}
+ catch(ex){d.busy=false;var xc=ex&&ex.code;if(xc==='need_account'){renderPost();openAuth(function(){if(draft===d&&S.view==='post')publish(d);},null,'publish');return;}d.err=xc==='quota_exceeded'?t('quota'):xc==='network'?t('netFail'):t('postFail');renderPost();}}
 
 /* ---------- language, header, settings ---------- */
 function updateHeader(){var ab=$('acctBtn');ab.textContent='';if(isSignedIn())ab.appendChild(el('span',{class:'avatar-sm',text:initial(account.name)}));else ab.appendChild(ic('user',20));ab.setAttribute('aria-label',t('navAccount'));$('langLbl').textContent=t('langBtn');$('langBtn').setAttribute('aria-label',t('langAria'));}

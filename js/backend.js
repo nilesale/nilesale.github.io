@@ -6,13 +6,17 @@
  * provides the same interface on a normal website, so the app code
  * stays almost untouched.
  *
- * Where data lives in this version:
- *   - listings, accounts, favourites → this browser's localStorage
- *   - uploaded photos                → this browser's IndexedDB
- * So every visitor sees the demo listings plus what THEY add on THEIR
- * device. Nothing is shared between visitors yet. The next step is to
- * replace this file with a Supabase-backed version that has the same
- * interface (doc / collection / onSnapshot / add / set / update / delete).
+ * Where data lives:
+ *   - shared listings, bids, auction entries, public profiles,
+ *     and each person's private account / favourites
+ *       → Supabase (Postgres with row level security), cached in
+ *         localStorage so the site opens instantly and works offline
+ *   - listing photos → Supabase Storage (public "photos" bucket);
+ *     photos picked before signing in wait in IndexedDB and are
+ *     uploaded when the listing is published
+ *   - demo listings (ids with a dash) stay local on every device
+ * The app talks to the same small interface as before
+ * (doc / collection / onSnapshot / add / set / update / delete).
  */
 (function () {
   'use strict';
@@ -35,6 +39,9 @@
   function idOf(path) { return path.slice(path.lastIndexOf('/') + 1); }
   function later(fn) { setTimeout(fn, 0); }
   function err(code, msg) { var e = new Error(msg || code); e.code = code; return e; }
+  var RID = /^[a-z0-9]{8,40}$/;          // ids of shared listings and bids (demo ids contain a dash)
+  var PHOTO = /^[0-9a-f]{32}$/;          // photo ids
+  var upPhotos = {};                     // photos already in cloud storage
 
   /* ---------- document store (localStorage) ---------- */
   var store = { docs: {}, meta: {} };
@@ -88,6 +95,7 @@
 
   function listen(l) {
     l.live = true; listeners.push(l); later(function () { if (l.live) fire(l); });
+    if (l.kind === 'query') { var m = /^listings\/([a-z0-9]{8,40})\/(bids|entries)$/.exec(l.q.coll); if (m) later(function () { syncSub(m[1], m[2]); }); }
     return function () { l.live = false; listeners = listeners.filter(function (x) { return x !== l; }); };
   }
 
@@ -96,22 +104,23 @@
     if (!saveStore()) return Promise.reject(err('quota_exceeded', 'Storage is full on this device'));
     notify(path); return Promise.resolve();
   }
+  function localDel(path) {
+    var prefix = path + '/';
+    Object.keys(store.docs).forEach(function (p) { if (p === path || p.indexOf(prefix) === 0) delete store.docs[p]; });
+    saveStore(); notify(path);
+  }
 
   function docRef(path) {
     return {
       id: idOf(path), path: path,
       get: function () { return Promise.resolve(docSnap(path)); },
-      set: function (data) { return write(path, data); },
+      set: function (data) { return put(path, clone(data), 'set'); },
       update: function (part) {
         var cur = store.docs[path];
         if (cur === undefined) return Promise.reject(err('not_found', 'Document does not exist'));
-        return write(path, Object.assign({}, cur, clone(part)));
+        return put(path, Object.assign({}, cur, clone(part)), 'update');
       },
-      delete: function () {
-        var prefix = path + '/';
-        Object.keys(store.docs).forEach(function (p) { if (p === path || p.indexOf(prefix) === 0) delete store.docs[p]; });
-        saveStore(); notify(path); return Promise.resolve();
-      },
+      delete: function () { return del(path); },
       onSnapshot: function (cb, onErr) { return listen({ kind: 'doc', path: path, cb: cb, onErr: onErr }); }
     };
   }
@@ -121,7 +130,7 @@
       limit: function (n) { return query(coll, order, n); },
       get: function () { return Promise.resolve(runQuery({ coll: coll, order: order, limit: limit })); },
       onSnapshot: function (cb, onErr) { return listen({ kind: 'query', q: { coll: coll, order: order, limit: limit }, cb: cb, onErr: onErr }); },
-      add: function (data) { var id = rid(20); var p = coll + '/' + id; return write(p, data).then(function () { return { id: id, path: p }; }); },
+      add: function (data) { var id = rid(20); var p = coll + '/' + id; return put(p, clone(data), 'add').then(function () { return { id: id, path: p }; }); },
       doc: function (id) { return docRef(coll + '/' + (id || rid(20))); }
     };
   }
@@ -156,11 +165,33 @@
       });
     });
   }
+  function idbGet(id) {
+    return idb().then(function (d) {
+      if (!d) return null;
+      return new Promise(function (res) {
+        try {
+          var req = d.transaction('blobs', 'readonly').objectStore('blobs').get(id);
+          req.onsuccess = function () { res(req.result || null); };
+          req.onerror = function () { res(null); };
+        } catch (e) { res(null); }
+      });
+    });
+  }
   var assets = {
     upload: function (blob) {
       if (!blob || !blob.size) return Promise.reject(err('unsupported_type'));
       if (blob.size > MAX_UPLOAD) return Promise.reject(err('too_large'));
       var id = rid(32, '0123456789abcdef');
+      // signed in: straight to cloud storage, so the photo is visible to everyone
+      if (sb && sUid()) {
+        return sb.storage.from('photos').upload('p/' + id, blob, { contentType: blob.type || 'image/jpeg', cacheControl: '31536000', upsert: false })
+          .then(function (r) {
+            if (r && r.error) throw err(/size|large|exceed/i.test(String(r.error.message)) ? 'too_large' : /mime|type/i.test(String(r.error.message)) ? 'unsupported_type' : 'upload_failed', String(r.error.message));
+            upPhotos[id] = 1;
+            try { blobUrls[id] = URL.createObjectURL(blob); } catch (e) {}
+            return { id: id, url: blobUrls[id] || photoUrl(id) };
+          });
+      }
       return idb().then(function (d) {
         if (!d) throw err('quota_or_state');
         return new Promise(function (res, rej) {
@@ -173,6 +204,7 @@
     },
     delete: function (id) {
       if (blobUrls[id]) { try { URL.revokeObjectURL(blobUrls[id]); } catch (e) {} delete blobUrls[id]; }
+      if (sb && sUid() && PHOTO.test(String(id))) sb.storage.from('photos').remove(['p/' + id]).catch(function () {});
       return idb().then(function (d) {
         if (!d) return;
         return new Promise(function (res) { var tx = d.transaction('blobs', 'readwrite'); tx.objectStore('blobs').delete(id); tx.oncomplete = res; tx.onerror = res; });
@@ -188,6 +220,7 @@
     if (id.indexOf('logo_c_') === 0) return 'logos/cars/' + id.slice(7) + '.png';
     if (id.indexOf('logo_m_') === 0) return 'logos/moto/' + id.slice(7) + '.png';
     if (media[id]) return 'media/' + media[id];
+    if (sb && PHOTO.test(id)) return photoUrl(id);
     return 'media/missing.svg';
   };
 
@@ -211,8 +244,14 @@
       });
     } catch (e) { console.warn('[Nile Sale] Supabase did not start', e); }
   }
+  var session = null;
+  function sUid() { return session && session.user ? session.user.id : null; }
+  if (sb) { try { sb.auth.onAuthStateChange(function (ev, s) { session = s || null; }); } catch (e) {} }
   var auth = {
     enabled: !!sb,
+    cloud: !!sb,
+    // true when this device holds a real account session (Google / passkey), needed to publish, bid or enter auctions
+    session: function () { return !!sUid(); },
     error: '',
     justSignedIn: null,
     has: function (p) { return !!sb && !!(cfg.providers && cfg.providers[p]); },
@@ -400,6 +439,7 @@
     var urlErr = q.get('error_description') || q.get('error') || '';
     return sb.auth.getSession().then(function (r) {
       var s = r && r.data && r.data.session;
+      session = s && s.user ? s : null;
       if (s && s.user) adoptUser(s.user);
       else if (urlErr) auth.error = urlErr;
     }).catch(function (e) {
@@ -418,6 +458,209 @@
     canEdit: function () { return Promise.resolve(false); },
     profiles: function () { return Promise.resolve({}); }
   };
+
+  /* ---------- shared database (Supabase) ---------- */
+  function photoUrl(id) { return String(cfg.supabaseUrl || '').replace(/\/$/, '') + '/storage/v1/object/public/photos/p/' + id; }
+  function kindOf(path) {
+    var p = path.split('/');
+    if (p[0] === 'listings' && p.length === 2) return 'listing';
+    if (p[0] === 'listings' && p.length === 4 && p[2] === 'bids') return 'bid';
+    if (p[0] === 'listings' && p.length === 4 && p[2] === 'entries') return 'entry';
+    if (p[0] === 'profiles' && p.length === 2) return 'profile';
+    if (p[0] === 'data' && p[1] === 'users' && p.length === 4) return 'udoc';
+    return '';
+  }
+  function cloudErr(e) {
+    var m = String((e && (e.message || e.details)) || e || ''), c = e && e.code;
+    if (/bid too low/.test(m)) return err('bid_low', m);
+    if (/auction ended/.test(m)) return err('ended', m);
+    if (/entry required/.test(m)) return err('need_entry', m);
+    if (/own listing/.test(m)) return err('own_listing', m);
+    if (c === '42501' || /JWT|not authenticated|row-level security|sign in required/i.test(m)) return err('need_account', m);
+    if (/Failed to fetch|NetworkError|network|Load failed/i.test(m)) return err('network', m);
+    return err('cloud_failed', m);
+  }
+  function chk(r) { if (r && r.error) throw cloudErr(r.error); return r ? r.data : null; }
+  function soft(p) { return Promise.resolve(p).then(function (r) { if (r && r.error) console.warn('[Nile Sale] cloud', r.error); }).catch(function (e) { console.warn('[Nile Sale] cloud', e); }); }
+  function remember(id) { (store.meta.rl || (store.meta.rl = {}))[id] = 1; }
+  function forget(id) { if (store.meta.rl) delete store.meta.rl[id]; }
+  function dropListing(id) {
+    var p = 'listings/' + id, pre = p + '/';
+    Object.keys(store.docs).forEach(function (k) { if (k === p || k.indexOf(pre) === 0) delete store.docs[k]; });
+  }
+
+  // photos picked before signing in are uploaded when the listing goes out
+  function ensurePhotos(ids) {
+    ids = (ids || []).filter(function (id) { return PHOTO.test(String(id)) && !upPhotos[id] && !media[id]; });
+    return Promise.all(ids.map(function (id) {
+      return idbGet(id).then(function (blob) {
+        if (!blob) return;
+        return sb.storage.from('photos').upload('p/' + id, blob, { contentType: blob.type || 'image/jpeg', cacheControl: '31536000', upsert: false })
+          .then(function (r) {
+            if (r && r.error && !/exist|duplicate/i.test(String(r.error.message))) throw cloudErr(r.error);
+            upPhotos[id] = 1;
+          });
+      });
+    }));
+  }
+
+  var udocTimers = {};
+  function pushUdoc(me, key, data) {
+    if (!/^[a-z]{2,20}$/.test(key)) return;
+    clearTimeout(udocTimers[key]);
+    udocTimers[key] = setTimeout(function () {
+      soft(sb.from('user_docs').upsert({ user_id: me, key: key, data: data }, { onConflict: 'user_id,key' }));
+    }, 600);
+  }
+
+  // every write goes through here: shared things go to Supabase first, the rest stays on this device
+  function put(path, data, op) {
+    var k = sb ? kindOf(path) : '', id = idOf(path), me = sUid(), parts = path.split('/');
+    if (!k) return write(path, data);
+    if (k === 'listing') {
+      if (!RID.test(id)) return write(path, data);                       // demo ad
+      var cur = store.docs[path];
+      if (op !== 'add' && cur && cur.sellerId && cur.sellerId !== me) return write(path, data); // someone else's ad: this device only
+      if (!me) return op === 'add' ? Promise.reject(err('need_account')) : write(path, data);
+      return ensurePhotos(data.photos).then(function () {
+        if (op === 'add') return sb.from('listings').insert({ id: id, data: data }).select('data');
+        if (op === 'set') return sb.from('listings').upsert({ id: id, data: data }).select('data');
+        return sb.from('listings').update({ data: data }).eq('id', id).select('data');
+      }).then(function (r) {
+        var rows = chk(r) || [];
+        if (!rows.length) return write(path, data);                       // not ours in the cloud: keep it local
+        remember(id);
+        return write(path, rows[0].data || data);
+      }, function (e) { throw e && e.code ? e : cloudErr(e); });
+    }
+    if (k === 'bid') {
+      if (!RID.test(parts[1])) return write(path, data);
+      if (!me) return Promise.reject(err('need_account'));
+      return sb.from('bids').insert({ id: id, listing_id: parts[1], amount: Math.round(Number(data.amount) || 0) })
+        .then(function (r) { chk(r); return write(path, Object.assign({}, data, { bidderId: me })); }, function (e) { throw cloudErr(e); });
+    }
+    if (k === 'entry') {
+      if (!RID.test(parts[1])) return write(path, data);
+      if (!me) return Promise.reject(err('need_account'));
+      return sb.from('entries').insert({ listing_id: parts[1], fee: Math.max(0, Math.round(Number(data.fee) || 0)) })
+        .then(function (r) { if (r && r.error && r.error.code !== '23505') chk(r); return write('listings/' + parts[1] + '/entries/' + me, data); },
+              function (e) { throw cloudErr(e); });
+    }
+    var w = write(path, data);
+    if (k === 'profile' && me && id === me) soft(sb.from('profiles').upsert({ id: me, data: data }));
+    if (k === 'udoc' && me && parts[2] === me) pushUdoc(me, parts[3], data);
+    return w;
+  }
+  function del(path) {
+    var id = idOf(path), me = sUid(), cur = store.docs[path];
+    if (sb && kindOf(path) === 'listing' && RID.test(id) && me && cur && cur.sellerId === me) {
+      return sb.from('listings').delete().eq('id', id).then(function (r) { chk(r); forget(id); localDel(path); }, function (e) { throw cloudErr(e); });
+    }
+    localDel(path); return Promise.resolve();
+  }
+
+  /* reading shared data */
+  function syncListings() {
+    return sb.from('listings').select('id,data').order('created_at', { ascending: false }).limit(500).then(function (r) {
+      var rows = chk(r) || [], seen = {};
+      rows.forEach(function (row) { if (row && RID.test(row.id) && row.data) { store.docs['listings/' + row.id] = row.data; seen[row.id] = 1; } });
+      Object.keys(store.meta.rl || {}).forEach(function (id) { if (!seen[id]) dropListing(id); });   // removed by their owner
+      store.meta.rl = seen;
+      saveStore(); notify('listings/_');
+    });
+  }
+  function syncProfiles() {
+    return sb.from('profiles').select('id,data').limit(1000).then(function (r) {
+      (chk(r) || []).forEach(function (row) { if (row && row.data) store.docs['profiles/' + row.id] = row.data; });
+      saveStore(); notify('profiles/_');
+    });
+  }
+  function fetchProfile(id) {
+    soft(sb.from('profiles').select('id,data').eq('id', id).maybeSingle().then(function (r) {
+      if (r && r.data && r.data.data) { store.docs['profiles/' + id] = r.data.data; saveStore(); notify('profiles/' + id); }
+      return r;
+    }));
+  }
+  function mergeDoc(key, local, remote) {
+    if (!remote) return local;
+    if (!local) return remote;
+    var out = Object.assign({}, local, remote);
+    Object.keys(local).forEach(function (f) {
+      if (Array.isArray(local[f]) && Array.isArray(remote[f])) {
+        var seenJ = {}, all = [];
+        local[f].concat(remote[f]).forEach(function (v) { var j = JSON.stringify(v); if (!seenJ[j]) { seenJ[j] = 1; all.push(v); } });
+        out[f] = all.slice(0, 500);
+      }
+    });
+    if (key === 'account') { out.signedIn = local.signedIn; out.method = local.method || remote.method; }
+    return out;
+  }
+  function syncUser(me) {
+    return sb.from('user_docs').select('key,data').then(function (r) {
+      var got = {};
+      (chk(r) || []).forEach(function (row) { got[row.key] = row.data; });
+      ['account', 'prefs', 'watchbox'].forEach(function (key) {
+        var p = 'data/users/' + me + '/' + key, local = store.docs[p], merged = mergeDoc(key, local, got[key]);
+        if (merged === undefined) return;
+        store.docs[p] = merged; notify(p);
+        if (JSON.stringify(merged) !== JSON.stringify(got[key])) pushUdoc(me, key, merged);
+      });
+      saveStore();
+      // public profile (name, sign-in method, join date) so other people see who posted
+      var pr = store.docs['profiles/' + me];
+      if (pr) soft(sb.from('profiles').upsert({ id: me, data: { name: pr.name || '', method: pr.method || '', joinedAt: pr.joinedAt || Date.now() } }));
+    });
+  }
+  function syncSub(lid, sub) {
+    if (!sb) return;
+    var q = sub === 'bids'
+      ? sb.from('bids').select('id,bidder_id,amount,created_at').eq('listing_id', lid).order('amount', { ascending: false }).limit(50)
+      : sb.from('entries').select('user_id,fee,created_at').eq('listing_id', lid).limit(1000);
+    soft(q.then(function (r) {
+      if (!r || r.error) return r;
+      var pre = 'listings/' + lid + '/' + sub + '/';
+      Object.keys(store.docs).forEach(function (k) { if (k.indexOf(pre) === 0) delete store.docs[k]; });
+      (r.data || []).forEach(function (row) {
+        if (sub === 'bids') store.docs[pre + row.id] = { amount: Number(row.amount), bidderId: row.bidder_id, at: Date.parse(row.created_at) || 0 };
+        else store.docs[pre + row.user_id] = { fee: Number(row.fee) || 0, at: Date.parse(row.created_at) || 0 };
+      });
+      saveStore(); notify(pre + '_');
+      return r;
+    }));
+  }
+  // live: new ads, edits, deletions and bids show up without reloading
+  function goLive() {
+    try {
+      sb.channel('nilesale-live')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'listings' }, function (p) {
+          if (p.eventType === 'DELETE') {
+            var oid = p.old && p.old.id;
+            if (oid && RID.test(oid)) { dropListing(oid); forget(oid); saveStore(); notify('listings/' + oid); }
+            return;
+          }
+          var row = p.new;
+          if (!row || !RID.test(row.id) || !row.data) return;
+          store.docs['listings/' + row.id] = row.data; remember(row.id); saveStore(); notify('listings/' + row.id);
+          var sid = row.data.sellerId;
+          if (sid && !store.docs['profiles/' + sid]) fetchProfile(sid);
+        })
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'bids' }, function (p) {
+          var b = p.new;
+          if (!b || !RID.test(b.listing_id)) return;
+          var bp = 'listings/' + b.listing_id + '/bids/' + b.id;
+          store.docs[bp] = { amount: Number(b.amount), bidderId: b.bidder_id, at: Date.parse(b.created_at) || Date.now() };
+          saveStore(); notify(bp);
+        })
+        .subscribe();
+    } catch (e) { console.warn('[Nile Sale] live updates off', e); }
+  }
+  function cloudStart() {
+    if (!sb) return;
+    soft(syncListings()); soft(syncProfiles());
+    var me = sUid();
+    if (me) soft(syncUser(me));
+    goLive();
+  }
 
   /* ---------- first-run demo data ---------- */
   function loadSeed() {
@@ -438,7 +681,7 @@
   }
 
   loadStore();
-  var ready = Promise.all([loadSeed(), idbAll()]).then(startAuth);
+  var ready = Promise.all([loadSeed(), idbAll()]).then(startAuth).then(function () { cloudStart(); });
 
   var services = { db: db, user: user, assets: assets, sample: null, permissions: null };
   window.claude = {
