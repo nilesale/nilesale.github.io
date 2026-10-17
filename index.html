@@ -14,9 +14,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="نيل سيل">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
-<script src="js/config.js?v=8"></script>
+<script src="js/config.js?v=9"></script>
 <script src="js/vendor/supabase-2.117.2.js"></script>
-<script src="js/backend.js?v=8"></script>
+<script src="js/backend.js?v=9"></script>
 </head>
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1570,6 +1570,11 @@ withPhone:["المتابعة برقم الجوال (رسالة نصية)","Conti
 authRealBoth:["الدخول عبر آبل وجوجل حقيقي ومحمي. الدخول برقم الجوال لسا تجريبي.","Apple and Google sign-in are live. Phone sign-in is still a demo."],
 authRealGoogle:["الدخول عبر جوجل حقيقي ومحمي. آبل ورقم الجوال لسا تجريبيين.","Google sign-in is live. Apple and phone sign-in are still demos."],
 authRedirect:["جاري تحويلك لتسجيل الدخول…","Taking you to sign in…"],
+profileT:["كمّل بياناتك","Complete your details"],
+profileP:["اكتب اسمك ورقم جوالك عشان المشترين يقدرون يتواصلون معك.","Add your name and phone number so buyers can reach you."],
+saveBtn:["حفظ","Save"],
+editInfo:["تعديل بياناتي","Edit my details"],
+infoSaved:["انحفظت بياناتك","Your details are saved"],
 demoAuth:["تسجيل الدخول في هذي النسخة تجريبي: ما تنرسل رسالة نصية ولا يتم الاتصال بآبل أو جوجل. في التطبيق النهائي يتم عن طريق خدمة تحقق حقيقية.","Sign-in in this version is a demo: no text message is sent and Apple or Google aren't contacted. The live app will use a real verification service."],
 terms:["بالمتابعة توافق على شروط الاستخدام وسياسة الخصوصية.","By continuing you agree to the Terms of Use and Privacy Policy."],
 phoneT:["رقم جوالك","Your phone number"],
@@ -3630,8 +3635,8 @@ function row(x){var st=statusOf(x);var th=el('span',{class:'thumb'});if(x.photos
  return el('button',{type:'button',class:'row',onclick:function(){openDetail(x.id);}},[th,el('span',{class:'rt'},[el('b',{dir:txtDir(dispTitle(x)),text:dispTitle(x)}),el('span',{class:'small'},[rtier?el('span',{class:'tierb '+rtier,text:t(rtier)}):null,rtier?' ':null,priceText(x)])]),el('span',{class:'pill '+st.cls,text:t('st_'+st.k)})]);}
 function authButtons(onPick){return el('div',{class:'authbtns'},[el('button',{type:'button',class:'btn btn-apple btn-block btn-lg',onclick:function(){onPick('apple');},text:t('withApple')}),el('button',{type:'button',class:'btn btn-google btn-block btn-lg',onclick:function(){onPick('google');},text:t('withGoogle')}),el('button',{type:'button',class:'btn btn-block btn-lg',onclick:function(){onPick('phone');}},[ic('phone',18),t('withPhone')])]);}
 function renderAccount(){var box=V.account;box.textContent='';box.appendChild(el('h1',{class:'ptitle',text:t('accountT')}));
- if(isSignedIn()){var a=account;var contactTxt=a.method==='email'?a.email:a.method==='phone'?a.phone:'';
-  box.appendChild(el('div',{class:'panel prof-card'},[el('div',{class:'prof'},[el('div',{class:'avatar','aria-hidden':'true',text:initial(a.name)}),el('div',{class:'pcol'},[el('b',{class:'pname',text:a.name}),T['verified_'+a.method]?el('span',{class:'vbadge'},[ic('shield',14),t('verified_'+a.method)]):null,contactTxt?el('span',{class:'small',dir:'ltr',text:a.method==='phone'?dg(contactTxt):contactTxt}):null])]),el('button',{type:'button',class:'btn btn-sm',onclick:signOut,text:t('signOut')})]));
+ if(isSignedIn()){var a=account;var contactTxt=a.method==='email'?a.email:a.method==='phone'?a.phone:(a.email||'');var phoneTxt=a.method!=='phone'&&a.phoneLocal?a.phoneLocal:'';
+  box.appendChild(el('div',{class:'panel prof-card'},[el('div',{class:'prof'},[el('div',{class:'avatar','aria-hidden':'true',text:initial(a.name)}),el('div',{class:'pcol'},[el('b',{class:'pname',text:a.name}),T['verified_'+a.method]?el('span',{class:'vbadge'},[ic('shield',14),t('verified_'+a.method)]):null,contactTxt?el('span',{class:'small',dir:'ltr',text:a.method==='phone'?dg(contactTxt):contactTxt}):null,phoneTxt?el('span',{class:'small',dir:'ltr',text:dg(phoneTxt)}):null])]),el('div',{class:'pcol'},[el('button',{type:'button',class:'btn btn-sm',onclick:function(){openProfile(null);},text:t('editInfo')}),el('button',{type:'button',class:'btn btn-sm',onclick:signOut,text:t('signOut')})])]));
   var mine=listings.filter(function(x){return x.sellerId===uid;});
   box.appendChild(secHead(t('myAds')));
   box.appendChild(mine.length?el('div',{class:'list'},mine.map(function(x){return row(x);})):el('p',{class:'muted',text:t('noMyAds')}));
@@ -3641,7 +3646,7 @@ function renderAccount(){var box=V.account;box.textContent='';box.appendChild(el
   box.appendChild(secHead(t('wBoxT')));box.appendChild(el('div',{class:'panel wb-entry'},[el('p',{class:'muted',text:t('wBoxP')}),el('button',{type:'button',class:'btn',onclick:openWBox},[ic('star',16),t('wBoxOpen')])]));
   box.appendChild(secHead(t('wMyAlerts')));var alb=alertsBox(alerts(),{cat:true,noHead:true});box.appendChild(alb||el('p',{class:'muted',text:t('shNoAlerts')}));
  }else{
-  box.appendChild(el('div',{class:'panel'},[el('h2',{class:'h3',text:t('signInT')}),el('p',{class:'muted',text:t('signInP')}),authButtons(function(st){openAuth(null,st);}),el('p',{class:'demo',text:t('demoAuth')})]));
+  box.appendChild(el('div',{class:'panel'},[el('h2',{class:'h3',text:t('signInT')}),el('p',{class:'muted',text:t('signInP')}),authButtons(function(st){openAuth(null,st);}),el('p',{class:'demo',text:t(realAuthOn('google')&&realAuthOn('apple')?'authRealBoth':realAuthOn('google')?'authRealGoogle':'demoAuth')})]));
  }
  if(canLogos)box.appendChild(logosSection());
  box.appendChild(secHead(t('settings')));
@@ -3653,7 +3658,16 @@ function renderAccount(){var box=V.account;box.textContent='';box.appendChild(el
 
 /* ---------- sign-in (demo flows) ---------- */
 function isSignedIn(){return !!(account&&account.signedIn);}
-function requireAuth(fn,reason){if(isSignedIn()){fn();return;}openAuth(fn,null,reason);}
+function needsProfile(){return !!(account&&account.signedIn&&(account.method==='google'||account.method==='apple')&&!account.phone);}
+function requireAuth(fn,reason){if(isSignedIn()){if(needsProfile()){openProfile(fn);return;}fn();return;}openAuth(fn,null,reason);}
+function openProfile(after){payFlow={};authFlow={step:'profile',after:after||null,err:'',busy:false};renderAuth();try{if(!dlg.open)dlg.showModal();}catch(e){dlg.setAttribute('open','');}}
+async function saveProfile(name,phone,phoneLocal){var a=authFlow;if(!db||!uid||a.busy)return;a.busy=true;var first=!account||!account.phone;
+ try{await db.doc('data/users/'+uid+'/account').update({name:name,phone:phone,phoneLocal:phoneLocal});var pr=profiles[uid]||{};await db.doc('profiles/'+uid).set(Object.assign({},pr,{name:name}));
+  account=Object.assign({},account,{name:name,phone:phone,phoneLocal:phoneLocal});profiles[uid]=Object.assign({},pr,{name:name});
+  if(window.__nsAuth&&window.__nsAuth.saveProfile)window.__nsAuth.saveProfile({name:name,phone:phone,phoneLocal:phoneLocal});
+  if(draft&&!draft.phone)draft.phone=phoneLocal;
+  var after=a.after;closeAuth();toast(first?t('welcome',{name:name}):t('infoSaved'));updateHeader();render();if(after)after();}
+ catch(e){a.busy=false;a.err=t('authFail');renderAuth();}}
 function openAuth(after,pick,reason){payFlow={};authFlow={step:'choose',after:after||null,reason:reason||'',err:'',busy:false};if(pick)pickAuth(authFlow,pick,true);renderAuth();try{if(!dlg.open)dlg.showModal();}catch(e){dlg.setAttribute('open','');}}
 function realAuthOn(p){return !!(window.__nsAuth&&window.__nsAuth.has&&window.__nsAuth.has(p));}
 function startRealAuth(a,p){a.err='';a.busy=true;var pend={};if(S.view==='post'&&draft){try{var dd=JSON.parse(JSON.stringify(draft));delete dd.busy;delete dd.err;dd.uploading=0;pend.draft=dd;}catch(e){}}toast(t('authRedirect'));window.__nsAuth.signIn(p,pend).catch(function(e){a.busy=false;if(!(e&&e.code==='cancel'))a.err=t('authFail');renderAuth();});}
@@ -3664,9 +3678,9 @@ dlg.addEventListener('click',function(e){if(e.target===dlg)closeAuth();});
 function newCode(){return String(Math.floor(100000+Math.random()*900000));}
 function errEl(a){return a.err?el('p',{class:'err',role:'alert',text:a.err}):null;}
 function renderAuth(){var a=authFlow,box=$('dlgIn');if(!a||!a.step)return;box.textContent='';
- var titleKey={choose:'signInT',phone:'phoneT',code:'codeT',name:'nameT'}[a.step]||(a.provider==='google'?'googleT':'appleT');
+ var titleKey={choose:'signInT',phone:'phoneT',code:'codeT',name:'nameT',profile:'profileT'}[a.step]||(a.provider==='google'?'googleT':'appleT');
  var backTo=a.step==='code'?'phone':'choose';
- box.appendChild(el('div',{class:'sheet-head'},[a.step!=='choose'?el('button',{type:'button',class:'btn btn-icon','aria-label':t('back'),onclick:function(){a.err='';a.step=backTo;renderAuth();}},[backIcon()]):el('span',{class:'spacer'}),el('h2',{id:'dlgT',text:t(titleKey)}),el('button',{type:'button',class:'btn btn-icon','aria-label':t('close'),onclick:closeAuth},[ic('close',18)])]));
+ box.appendChild(el('div',{class:'sheet-head'},[a.step!=='choose'&&a.step!=='profile'?el('button',{type:'button',class:'btn btn-icon','aria-label':t('back'),onclick:function(){a.err='';a.step=backTo;renderAuth();}},[backIcon()]):el('span',{class:'spacer'}),el('h2',{id:'dlgT',text:t(titleKey)}),el('button',{type:'button',class:'btn btn-icon','aria-label':t('close'),onclick:closeAuth},[ic('close',18)])]));
  if(!db||!uid){box.appendChild(el('p',{text:t('noIdentity')}));return;}
  if(a.reason==='publish'&&a.step==='choose')box.appendChild(el('p',{class:'ready'},[ic('check',18),el('span',{text:t('readyToPublish')})]));
  if(a.step==='choose'){box.appendChild(el('p',{class:'muted',text:t('signInP')}));box.appendChild(authButtons(function(p){pickAuth(a,p);}));box.appendChild(el('p',{class:'demo',text:t(realAuthOn('google')&&realAuthOn('apple')?'authRealBoth':realAuthOn('google')?'authRealGoogle':'demoAuth')}));box.appendChild(el('p',{class:'small',text:t('terms')}));return;}
@@ -3711,6 +3725,23 @@ function renderAuth(){var a=authFlow,box=$('dlgIn');if(!a||!a.step)return;box.te
   form.appendChild(el('button',{type:'submit',class:'btn btn-primary btn-block btn-lg',disabled:a.busy,text:t('continueBtn')}));
   form.addEventListener('submit',function(ev){ev.preventDefault();var v=nn.value.trim();a.name=nn.value;if(!v){a.err=t('nameErr');renderAuth();return;}finishAuth(v);});
   focusEl=nn;}
+ if(a.step==='profile'){
+  box.appendChild(el('p',{class:'muted',text:t('profileP')}));
+  var pn=el('input',{class:'inp',id:'prName',type:'text',autocomplete:'name',maxlength:'60',value:a.name!=null?a.name:((account&&account.name)||'')});
+  var pcc=el('select',{class:'inp',id:'prCc'});OPT.cc.forEach(function(o){pcc.appendChild(el('option',{value:o.k,text:o[lang]+' ‎+'+dg(o.k.slice(1))}));});
+  var ex=(account&&account.phone)||'',exCc='+20',exNum='';var best='';OPT.cc.forEach(function(o){if(ex.indexOf(o.k)===0&&o.k.length>best.length)best=o.k;});if(best){exCc=best;exNum=(best==='+20'?'0':'')+ex.slice(best.length);}
+  pcc.value=a.cc||exCc;
+  var pp=el('input',{class:'inp',id:'prPhone',type:'tel',inputmode:'tel',autocomplete:'tel-national',dir:'ltr',placeholder:t('phonePh'),value:a.phoneRaw!=null?a.phoneRaw:exNum});
+  form.appendChild(el('div',{class:'field'},[el('label',{for:'prName',text:t('nameL')}),pn]));
+  form.appendChild(el('div',{class:'field'},[el('label',{for:'prCc',text:t('countryL')}),pcc]));
+  form.appendChild(el('div',{class:'field'},[el('label',{for:'prPhone',text:t('phoneNumL')}),pp]));
+  var e6=errEl(a);if(e6)form.appendChild(e6);
+  form.appendChild(el('button',{type:'submit',class:'btn btn-primary btn-block btn-lg',disabled:a.busy,text:t('saveBtn')}));
+  form.addEventListener('submit',function(ev){ev.preventDefault();var v=pn.value.trim(),cc=pcc.value,d=digitsOnly(pp.value);a.name=pn.value;a.cc=cc;a.phoneRaw=pp.value;
+   if(!v){a.err=t('nameErr');renderAuth();return;}
+   if(cc==='+20'){d=d.replace(/^0/,'');if(!/^1[0125]\d{8}$/.test(d)){a.err=t('phoneErr');renderAuth();return;}}else if(d.length<7||d.length>12){a.err=t('phoneErr');renderAuth();return;}
+   a.err='';saveProfile(v.slice(0,60),cc+d,cc==='+20'?'0'+d:cc+d);});
+  focusEl=a.name==null&&account&&account.name?pp:pn;}
  box.appendChild(form);
  if(focusEl)setTimeout(function(){try{focusEl.focus();}catch(e){}},40);}
 /* ---------- featuring & payments (demo: nothing is charged, card details never leave this screen) ---------- */
@@ -4071,7 +4102,7 @@ applyI18n();setView('home');
   db.doc('data/users/'+uid+'/prefs').onSnapshot(function(s){var d=s.exists?(s.data()||{}):{};var oa=JSON.stringify(prefs.wAlerts||[]);prefs={favs:Array.isArray(d.favs)?d.favs.slice():[],entered:Array.isArray(d.entered)?d.entered.slice():[],wAlerts:Array.isArray(d.wAlerts)?d.wAlerts.filter(function(a){return a&&typeof a==='object'&&typeof a.id==='string';}).slice(0,20):[]};if(S.view==='home'&&JSON.stringify(prefs.wAlerts)!==oa)renderHome();var seen={};document.querySelectorAll('[data-fav]').forEach(function(b){var id=b.getAttribute('data-fav');if(!seen[id]){seen[id]=1;syncFavButtons(id);}});if(S.view==='saved'||S.view==='account')render();},function(){});
  }
  render();
- try{var na=window.__nsAuth;if(na){if(na.error)toast(t('authFail'));else if(na.justSignedIn)toast(t('welcome',{name:na.justSignedIn.name||''}));var pend=na.takePending&&na.takePending();if(pend&&pend.draft&&typeof pend.draft==='object'&&!na.error){draft=Object.assign(newDraft(),pend.draft,{busy:false,err:'',uploading:0});S.stack=[];setView('post');}}}catch(e){}
+ try{var na=window.__nsAuth;if(na){var pend=na.takePending&&na.takePending();var restore=function(){if(pend&&pend.draft&&typeof pend.draft==='object'&&!na.error){draft=Object.assign(newDraft(),pend.draft,{busy:false,err:'',uploading:0});S.stack=[];setView('post');}};if(na.error)toast(t('authFail'));else if(db&&uid){db.doc('data/users/'+uid+'/account').get().then(function(s){var ac=s.exists?s.data():null;if(ac){account=ac;updateHeader();}restore();if(needsProfile())openProfile(null);else if(na.justSignedIn)toast(t('welcome',{name:(account&&account.name)||na.justSignedIn.name||''}));});}}}catch(e){}
 })();
 })();
 </script>

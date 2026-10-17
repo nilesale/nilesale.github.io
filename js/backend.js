@@ -226,6 +226,12 @@
         .then(function (r) { if (r && r.error) throw r.error; });
     },
     signOut: function () { return sb ? sb.auth.signOut().catch(function () {}) : Promise.resolve(); },
+    // keep name + phone on the Supabase account too, so they come back on any device
+    saveProfile: function (o) {
+      if (!sb) return Promise.resolve();
+      return sb.auth.updateUser({ data: { full_name: o.name, phone: o.phone, phone_local: o.phoneLocal } })
+        .catch(function (e) { console.warn('[Nile Sale] profile not saved online', e); });
+    },
     takePending: function () {
       var v = null;
       try { v = JSON.parse(sessionStorage.getItem(PENDING_KEY) || 'null'); sessionStorage.removeItem(PENDING_KEY); } catch (e) {}
@@ -354,6 +360,7 @@
     var now = Date.now();
     var acc = Object.assign({}, prev, {
       method: provider, name: prev.name || name, email: u.email || prev.email || '',
+      phone: prev.phone || String(md.phone || ''), phoneLocal: prev.phoneLocal || String(md.phone_local || ''),
       signedIn: true, createdAt: prev.createdAt || now
     });
     if (!prev.signedIn) auth.justSignedIn = { name: acc.name };
