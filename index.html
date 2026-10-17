@@ -19,9 +19,9 @@
 .brand-foot{text-align:center;opacity:.7;margin:18px 0 8px}
 .brand-btn{display:flex;align-items:center;justify-content:center;gap:10px}.brand-btn svg{flex:none;margin-top:-2px}
 </style>
-<script src="js/config.js?v=12"></script>
+<script src="js/config.js?v=13"></script>
 <script src="js/vendor/supabase-2.117.2.js"></script>
-<script src="js/backend.js?v=12"></script>
+<script src="js/backend.js?v=13"></script>
 </head>
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3648,8 +3648,10 @@ function statusOf(x){if(isAuc(x)){if(!isEnded(x))return {k:'live',cls:'p-live'};
 function row(x){var st=statusOf(x);var th=el('span',{class:'thumb'});if(x.photos&&x.photos.length)th.appendChild(photoImg(x.photos[0],''));else th.appendChild(ic(cat(x.category).d,22,'cat-ic'));
  var rtier=boostOf(x);
  return el('button',{type:'button',class:'row',onclick:function(){openDetail(x.id);}},[th,el('span',{class:'rt'},[el('b',{dir:txtDir(dispTitle(x)),text:dispTitle(x)}),el('span',{class:'small'},[rtier?el('span',{class:'tierb '+rtier,text:t(rtier)}):null,rtier?' ':null,priceText(x)])]),el('span',{class:'pill '+st.cls,text:t('st_'+st.k)})]);}
+var GOOGLE_D='M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z';
+function brandLogo(dd){var ns='http://www.w3.org/2000/svg';var s=document.createElementNS(ns,'svg');s.setAttribute('width','18');s.setAttribute('height','18');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('fill','currentColor');s.setAttribute('aria-hidden','true');var p=document.createElementNS(ns,'path');p.setAttribute('d',dd);s.appendChild(p);return s;}
 function appleLogo(){var ns='http://www.w3.org/2000/svg';var s=document.createElementNS(ns,'svg');s.setAttribute('width','20');s.setAttribute('height','20');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('fill','currentColor');s.setAttribute('aria-hidden','true');var p=document.createElementNS(ns,'path');p.setAttribute('d','M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701');s.appendChild(p);return s;}
-function authButtons(onPick){return el('div',{class:'authbtns'},[el('button',{type:'button',class:'btn btn-apple btn-block btn-lg brand-btn',onclick:function(){onPick('apple');}},[appleLogo(),t('withApple')]),el('button',{type:'button',class:'btn btn-google btn-block btn-lg',onclick:function(){onPick('google');},text:t('withGoogle')}),el('button',{type:'button',class:'btn btn-block btn-lg',onclick:function(){onPick('phone');}},[ic('phone',18),t('withPhone')])]);}
+function authButtons(onPick){return el('div',{class:'authbtns'},[el('button',{type:'button',class:'btn btn-apple btn-block btn-lg brand-btn',onclick:function(){onPick('apple');}},[appleLogo(),t('withApple')]),el('button',{type:'button',class:'btn btn-google btn-block btn-lg brand-btn',onclick:function(){onPick('google');}},[brandLogo(GOOGLE_D),t('withGoogle')]),el('button',{type:'button',class:'btn btn-block btn-lg',onclick:function(){onPick('phone');}},[ic('phone',18),t('withPhone')])]);}
 function renderAccount(){var box=V.account;box.textContent='';box.appendChild(el('h1',{class:'ptitle',text:t('accountT')}));
  if(isSignedIn()){var a=account;var contactTxt=a.method==='email'?a.email:a.method==='phone'?a.phone:(a.email||'');var phoneTxt=a.method!=='phone'&&a.phoneLocal?a.phoneLocal:'';
   box.appendChild(el('div',{class:'panel prof-card'},[el('div',{class:'prof'},[el('div',{class:'avatar','aria-hidden':'true',text:initial(a.name)}),el('div',{class:'pcol'},[el('b',{class:'pname',text:a.name}),T['verified_'+a.method]?el('span',{class:'vbadge'},[ic('shield',14),t('verified_'+a.method)]):null,contactTxt?el('span',{class:'small',dir:'ltr',text:a.method==='phone'?dg(contactTxt):contactTxt}):null,phoneTxt?el('span',{class:'small',dir:'ltr',text:dg(phoneTxt)}):null])]),el('div',{class:'pcol'},[el('button',{type:'button',class:'btn btn-sm',onclick:function(){openProfile(null);},text:t('editInfo')}),el('button',{type:'button',class:'btn btn-sm',onclick:signOut,text:t('signOut')})])]));
