@@ -1,5 +1,5 @@
 /* Nile Sale service worker: makes the site installable and keeps it opening offline. */
-var VERSION = 'nilesale-v7';
+var VERSION = 'nilesale-v8';
 var CORE = [
   './',
   'index.html',
@@ -39,7 +39,8 @@ self.addEventListener('fetch', function (e) {
     return;
   }
   // pages, code and data: network first so updates show up, cache when offline
-  e.respondWith(fetch(req).then(function (res) {
+  // no-cache: always ask the server if the file changed (cheap, uses ETag)
+  e.respondWith(fetch(req, { cache: 'no-cache' }).then(function (res) {
     var copy = res.clone(); caches.open(VERSION).then(function (c) { c.put(req, copy); }); return res;
   }).catch(function () { return caches.match(req).then(function (hit) { return hit || caches.match('index.html'); }); }));
 });
