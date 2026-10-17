@@ -232,6 +232,7 @@
       try { sessionStorage.setItem(PENDING_KEY, JSON.stringify(pending || {})); } catch (e) {}
       return sb.auth.signInWithPasskey().then(function (r) {
         if (r && r.error) throw r.error;
+        try { localStorage.setItem('nilesale.lastAuth', 'passkey'); } catch (e) {}
         location.reload();
       }).catch(function (e) { throw pkErr(e); });
     },
@@ -325,6 +326,7 @@
             sb.auth.signInWithIdToken({ provider: 'google', token: resp.credential, nonce: raw }).then(function (res) {
               if (res.error) throw res.error;
               done = true;
+              try { localStorage.setItem('nilesale.lastAuth', 'google'); } catch (e) {}
               // reload so the whole app picks up the account (the unsent ad is kept)
               location.reload();
               ok();

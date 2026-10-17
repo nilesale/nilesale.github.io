@@ -50,10 +50,15 @@
 .nt-head{display:flex;align-items:center;gap:.625rem;margin:.25rem 0 .5rem;flex-wrap:wrap}
 .nt-back{display:inline-flex;align-items:center;gap:.25rem}
 .nt-cur{display:inline-flex;align-items:center;gap:.5rem;font-size:1rem}
+.catgroups{display:flex;flex-direction:column;gap:.5rem}
+.catg-h{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;margin:.75rem 0 .125rem;font-size:1rem}
+.catg-h.sm{display:block;margin:1rem 0 .375rem;font-size:.875rem;font-weight:700;color:var(--muted)}
+.last-b{margin-inline-start:.5rem;padding:.0625rem .5rem;border-radius:1rem;background:var(--accent);color:var(--accent-ink,#fff);font-size:.6875rem;font-weight:700}
+.btn-google .last-b,.btn:not(.btn-apple):not(.btn-primary) .last-b{background:var(--accent);color:#fff}
 </style>
-<script src="js/config.js?v=15"></script>
+<script src="js/config.js?v=16"></script>
 <script src="js/vendor/supabase-2.117.2.js"></script>
-<script src="js/backend.js?v=15"></script>
+<script src="js/backend.js?v=16"></script>
 </head>
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1694,6 +1699,52 @@ errSvcSub:["اكتب نوع الخدمة.", "Describe the service."],
 errBrandOther:["اكتب اسم الماركة.", "Enter the brand name."],
 descPhSvc:["اشرح خدمتك: إيش تسوي، خبرتك، المناطق اللي تغطيها ومواعيد الشغل","Describe your service: what you do, your experience, areas and working hours"],
 descPhWant:["اشرح الشغلة اللي تحتاجها، والمكان والموعد المناسب","Describe the job you need done, where and when"],
+f_pgroup:["القسم", "Part group"],
+f_ppart:["القطعة", "Part"],
+f_ppartOther:["اكتب اسم القطعة", "Part name"],
+f_fitMake:["تركب على سيارة", "Fits make"],
+f_fitModel:["الموديل", "Model"],
+f_fitYears:["سنين الموديل", "Model years"],
+fitYearsPh:["مثال: من ٢٠١٥ لـ ٢٠٢٠", "e.g. 2015 to 2020"],
+f_partCond:["حالة القطعة", "Condition"],
+f_partOrigin:["بلد الصنع", "Made in"],
+f_partNo:["رقم القطعة", "Part number"],
+partNoPh:["مكتوب على القطعة أو الكرتونة", "Printed on the part or box"],
+pAllGroups:["كل القطع", "All parts"],
+shGPart2:["القطعة", "Part"],
+errPart:["اكتب اسم القطعة.", "Enter the part name."],
+f_jobMode:["نوع الإعلان", "Listing"],
+f_jfield:["المجال", "Field"],
+f_jrole:["الوظيفة", "Role"],
+f_jroleOther:["اكتب الوظيفة", "Job title"],
+f_jcompany:["اسم الشركة", "Company name"],
+f_jtype:["نوع الدوام", "Job type"],
+f_jexp:["الخبرة", "Experience"],
+f_jedu:["المؤهل", "Education"],
+f_junit:["الراتب", "Pay"],
+f_jperks:["المزايا", "Benefits"],
+jAllFields:["كل المجالات", "All fields"],
+shGJob:["الوظيفة", "Job"],
+jobIntro:["اختار المجال، وبعدها الوظيفة", "Pick a field, then the role"],
+jobHireT:["مطلوب {r}", "Hiring: {r}"],
+jobSeekT:["{r} يبحث عن عمل", "{r} looking for work"],
+jobFreeT:["{r} (عمل حر)", "{r} (freelance)"],
+jobDeal:["الراتب بالاتفاق", "Pay as agreed"],
+jobAsk:["الراتب المطلوب", "Expected"],
+jobSalary:["الراتب", "Pay"],
+jobPer_month:["شهرياً", "/ month"],
+jobPer_day:["يومياً", "/ day"],
+jobPer_hour:["/ الساعة", "/ hour"],
+jobPer_project:["/ المشروع", "/ project"],
+jobSalaryL:["الراتب ({u})", "Pay ({u})"],
+jobAskL:["الراتب المطلوب ({u})", "Expected pay ({u})"],
+errRole:["اكتب اسم الوظيفة.", "Enter the job title."],
+descPhJob_hiring:["اكتب مهام الوظيفة والشروط ومواعيد الشغل ومكانه", "Duties, requirements, hours and location"],
+descPhJob_seeking:["اكتب خبرتك وشهاداتك والشغل اللي تدور عليه", "Your experience, qualifications and the work you want"],
+descPhJob_freelance:["اكتب إيش تقدر تسوي، وأمثلة من شغلك، ومدة التسليم", "What you do, examples of your work and delivery time"],
+appleSoonT:["الدخول عبر آبل", "Sign in with Apple"],
+appleSoonP:["الدخول عبر آبل بيتفعّل قريباً، لأنه يحتاج حساب مطوّر من آبل. لين ذاك الوقت ادخل بجوجل، والمرة الجاية بالبصمة أو Face ID.", "Sign in with Apple is coming soon. It needs an Apple developer account. Until then, use Google, and next time your fingerprint or Face ID."],
+lastUsed:["آخر مرة", "Last used"],
 demoAuth:["تسجيل الدخول في هذي النسخة تجريبي: ما تنرسل رسالة نصية ولا يتم الاتصال بآبل أو جوجل. في التطبيق النهائي يتم عن طريق خدمة تحقق حقيقية.","Sign-in in this version is a demo: no text message is sent and Apple or Google aren't contacted. The live app will use a real verification service."],
 terms:["بالمتابعة توافق على شروط الاستخدام وسياسة الخصوصية.","By continuing you agree to the Terms of Use and Privacy Policy."],
 phoneT:["رقم جوالك","Your phone number"],
@@ -1978,6 +2029,14 @@ var OPT={
  svcCover:L([["city", "محافظتي بس", "My governorate only"], ["near", "المحافظات القريبة", "Nearby governorates"], ["egypt", "كل مصر", "All of Egypt"], ["world", "داخل وخارج مصر", "Egypt and abroad"]]),
  svcDays:L([["na", "بدون تحديد", "Not specified"], ["1", "خلال يوم", "Within a day"], ["3", "خلال ٣ أيام", "Within 3 days"], ["7", "خلال أسبوع", "Within a week"], ["14", "خلال أسبوعين", "Within 2 weeks"], ["30", "خلال شهر", "Within a month"]]),
  svcPerks:L([["urgent", "طوارئ ٢٤ ساعة", "24/7 emergency"], ["sameday", "نفس اليوم", "Same day"], ["freeVisit", "معاينة مجانية", "Free inspection"], ["guarantee", "ضمان على الشغل", "Work guarantee"], ["materials", "الخامات عليّا", "Materials included"], ["invoice", "فاتورة رسمية", "Official invoice"], ["weekend", "شغال في الإجازات", "Works on holidays"], ["women", "فريق نسائي متاح", "Women team available"], ["revisions", "تعديلات مجانية", "Free revisions"], ["cert", "معتمد وحاصل على شهادة", "Certified"]]),
+ partCond:L([["orig", "جديد أصلي (وكالة)", "New, genuine"], ["after", "جديد تجاري (بديل)", "New, aftermarket"], ["used", "مستعمل (استيراد أو فك)", "Used"], ["reman", "مجدد", "Remanufactured"]]),
+ partOrigin:L([["na", "غير محدد", "Not specified"], ["jp", "ياباني", "Japanese"], ["kr", "كوري", "Korean"], ["de", "ألماني", "German"], ["cn", "صيني", "Chinese"], ["tw", "تايواني", "Taiwanese"], ["tr", "تركي", "Turkish"], ["us", "أمريكي", "American"], ["eg", "مصري", "Egyptian"], ["other", "أخرى", "Other"]]),
+ jobMode:L([["hiring", "وظيفة شاغرة", "Job opening"], ["seeking", "أبحث عن عمل", "Looking for work"], ["freelance", "عمل حر (فريلانس)", "Freelance"]]),
+ jobType:L([["full", "دوام كامل", "Full time"], ["part", "دوام جزئي", "Part time"], ["remote", "عن بُعد", "Remote"], ["shift", "بالوردية", "Shifts"], ["project", "بالمشروع أو بالقطعة", "Per project"], ["intern", "تدريب", "Internship"]]),
+ jobExp:L([["none", "بدون خبرة", "No experience"], ["junior", "من سنة لـ ٣ سنين", "1–3 years"], ["mid", "من ٣ لـ ٥ سنين", "3–5 years"], ["senior", "أكثر من ٥ سنين", "5+ years"], ["manager", "مستوى إداري", "Management"]]),
+ jobEdu:L([["any", "أي مؤهل", "Any"], ["mid", "مؤهل متوسط", "Diploma"], ["uni", "مؤهل عالي", "University degree"], ["master", "ماجستير أو أعلى", "Master's or higher"]]),
+ jobUnit:L([["month", "شهرياً", "Per month"], ["day", "يومياً", "Per day"], ["hour", "بالساعة", "Per hour"], ["project", "بالمشروع", "Per project"], ["deal", "حسب الاتفاق", "As agreed"]]),
+ jobPerks:L([["insurance", "تأمينات اجتماعية", "Social insurance"], ["medical", "تأمين طبي", "Medical insurance"], ["transport", "مواصلات", "Transport"], ["housing", "سكن", "Housing"], ["meals", "وجبات", "Meals"], ["commission", "عمولة", "Commission"], ["bonus", "حوافز", "Bonuses"], ["training", "تدريب مدفوع", "Paid training"]]),
  cc:L([['+20','مصر','Egypt'],['+974','قطر','Qatar'],['+966','السعودية','Saudi Arabia'],['+971','الإمارات','UAE'],['+965','الكويت','Kuwait'],['+973','البحرين','Bahrain'],['+968','عُمان','Oman']])
 };
 function findOpt(name,v){var list=OPT[name]||[];for(var i=0;i<list.length;i++){if(list[i].k===v||list[i].ar===v)return list[i];}return null;}
@@ -2074,7 +2133,7 @@ var WT_TOP=['rolex','patek','ap','rm','hublot','cartier','omega','tudor','vc','i
 function wrefInfo(sp){if(!sp)return null;var raw=(sp.ref==='other'||sp.brand==='other'||sp.model==='other')?String(sp.refOther||'').trim():String(sp.ref||'').trim();if(!raw)return null;var cm=mFind(WT_C,sp.brand,sp.model),list=(cm&&cm.trims)||[],rk=trimKey(raw);for(var i=0;i<list.length;i++){var o=list[i];if(o.k===raw||trimKey(o.en)===rk||trimKey(o.ar)===rk)return {k:o.k,ar:o.ar,en:o.en};}return {k:'x:'+rk,ar:raw,en:raw};}
 function wrefLabel(sp){var i=wrefInfo(sp);return i?i[lang]:'';}
 var CARS=CARS_C.map;
-function dsOf(n){return n==='appl'?APPL_C:n==='svc'?SVC_C:n==='moto'?MOTO_C:n==='phones'?PH_C:n==='pc'?PC_C:n==='watch'?WT_C:CARS_C;}
+function dsOf(n){return n==='appl'?APPL_C:n==='svc'?SVC_C:n==='parts'?PART_C:n==='jobs'?JOB_C:n==='moto'?MOTO_C:n==='phones'?PH_C:n==='pc'?PC_C:n==='watch'?WT_C:CARS_C;}
 var GEAR_TYPES=[
  ['Graphics Card','parts','كروت شاشة','Graphics cards','M2 6h18v10H2z M20 9h2v4 M5 16v2 M17 16v2 M8 11m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0 M15 11m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0'],
  ['Motherboard','parts','لوحات أم','Motherboards','M4 3h16v18H4z M8 7h4v4H8z M15 7h2 M15 10h2 M8 14h8 M8 17h8'],
@@ -2130,7 +2189,20 @@ var APPL_IC={"fridge": "M7 2h10a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V3
 var SVC_RAW=[["home", "صيانة وتشطيب المنزل", "Home repair & finishing", "Plumbing|سباكة,Electrical|كهرباء,Carpentry|نجارة,Painting|نقاشة ودهانات,Aluminum|ألوميتال وألومنيوم,Ironwork|حدادة,Doors & windows|أبواب وشبابيك,Drain cleaning|تسليك مجاري وصرف صحي,Tiles|سيراميك وبلاط,Gypsum board|جبس بورد وأسقف,Waterproofing|عزل أسطح وعزل مائي,Glass & mirrors|زجاج ومرايات,Locksmith|فتح وتغيير أقفال,Handyman|صيانة عامة"], ["appliance", "صيانة الأجهزة والتكييف", "Appliance & AC repair", "AC installation|تركيب تكييف,AC repair|صيانة وشحن تكييف,Fridge repair|صيانة ثلاجات وديب فريزر,Washer repair|صيانة غسالات,Cooker repair|صيانة بوتاجازات وأفران,Heater repair|صيانة سخانات,TV repair|صيانة شاشات وتلفزيونات,Satellite|تركيب دش ورسيفر,Water filters|فلاتر مياه,Small appliances|صيانة أجهزة صغيرة,Computer & phone repair|صيانة كمبيوتر وموبايل,CCTV|كاميرات مراقبة وإنذار"], ["cleaning", "تنظيف ومكافحة حشرات", "Cleaning & pest control", "Home cleaning|تنظيف شقق وفلل,Carpet & sofa|غسيل سجاد وأنتريهات,Water tanks|تنظيف خزانات مياه,Pools|تنظيف حمامات سباحة,Facades & glass|تنظيف واجهات وزجاج,Post-construction|تنظيف بعد التشطيب,Office cleaning|تنظيف مكاتب وشركات,Pest control|مكافحة حشرات وقوارض,Disinfection|تعقيم وتطهير,Laundry|مغسلة وكي ملابس"], ["moving", "نقل وتوصيل", "Moving & delivery", "Moving within Egypt|نقل عفش داخل مصر,International moving|نقل عفش لخارج مصر,Furniture assembly|فك وتركيب أثاث,Packing|تغليف,Furniture crane|ونش رفع أثاث,Parcel delivery|توصيل طلبات وشحنات,Personal rides|مشاوير وتوصيل أفراد,School rides|توصيل طلاب ومدارس,Women drivers|توصيل نسائي,Business delivery|توصيل للشركات,Truck rental|تأجير نقل وربع نقل"], ["construction", "مقاولات وبناء", "Construction & contracting", "Apartment finishing|تشطيب شقق,Building contracting|مقاولات بناء,Architecture|تصميم معماري وإنشائي,Engineering supervision|إشراف هندسي,Marble & granite|رخام وجرانيت,Building materials|مواد بناء,Construction tools|معدات وأدوات بناء,Demolition|هدم وتكسير,Pool construction|إنشاء حمامات سباحة,Solar panels|طاقة شمسية"], ["decor", "ديكور وتصميم داخلي", "Decor & interior design", "Interior design|تصميم داخلي,Wallpaper|ورق حائط,Gypsum decor|ديكورات جبس,Curtains|ستائر,Upholstery|تنجيد ومفروشات,Entrance decor|ديكور مداخل,Exterior decor|ديكور خارجي وواجهات,Lighting design|إضاءة وديكور,Kitchens|مطابخ,Wood & parquet|خشب وباركيه"], ["garden", "حدائق وزراعة", "Gardens & agriculture", "Landscaping|تنسيق حدائق,Garden care|عناية بالحدائق,Irrigation|شبكات ري,Seeds & seedlings|بذور وشتلات,Fertilizers|أسمدة ومبيدات زراعية,Artificial grass|نجيلة صناعية,Garden decor|ديكور حدائق,Farm services|خدمات زراعية"], ["auto", "خدمات السيارات", "Car services", "Towing|ونش وسحب سيارات,Mechanic|ميكانيكا,Auto electrician|كهرباء سيارات,Inspection|فحص سيارات,Car AC|تكييف سيارات,Batteries|بطاريات,Tires|كاوتش وإطارات,Car upholstery|تنجيد فرش,Paint & bodywork|دوكو وسمكرة,Tint & protection|فيميه وحماية,Detailing|غسيل وتلميع,Motorcycle repair|صيانة موتوسيكلات,EV charging|شحن سيارات كهربائية,Licensing|تراخيص ونقل ملكية,Car shipping|شحن وتصدير سيارات"], ["events", "أفراح ومناسبات", "Weddings & events", "Halls & tents|قاعات وخيم,Photography|تصوير فوتوغرافي وفيديو,DJ & sound|دي جي وصوتيات,Lighting & laser|إضاءة وليزر,Decoration|زينة وكوشة,Catering|ضيافة وبوفيه,Chairs & tables|كراسي وترابيزات,Event planner|تنظيم حفلات,Zaffa & bands|زفة وفرق,Makeup artist|ميك أب آرتيست,Wedding cars|عربيات زفاف,Cakes|تورت وحلويات"], ["education", "دروس وتعليم", "Lessons & tutoring", "Math|رياضيات,Physics|فيزياء,Chemistry|كيمياء,Biology|أحياء وعلوم,Arabic|لغة عربية,English|لغة إنجليزية,French & German|فرنساوي وألماني,Other languages|لغات أخرى,Religion|تربية دينية,Quran|تحفيظ قرآن,Coding|كمبيوتر وبرمجة,University subjects|مواد جامعية,Kids foundation|تأسيس أطفال,Music|موسيقى,Sports & swimming|رياضة وسباحة,Driving lessons|تعليم سواقة"], ["digital", "تصميم وبرمجة وتسويق", "Design, tech & marketing", "Logo & graphics|تصميم لوجو وجرافيك,Websites|تصميم وبرمجة مواقع,Mobile apps|برمجة تطبيقات,Social media|إدارة سوشيال ميديا,Paid ads|إعلانات ممولة,SEO|تحسين الظهور في جوجل,Content writing|كتابة محتوى,Translation|ترجمة,Video editing|مونتاج فيديو,Motion graphics|موشن جرافيك,Product photography|تصوير منتجات,Voice over|تعليق صوتي,Online stores|متاجر إلكترونية,IT support|دعم فني وشبكات"], ["business", "خدمات الأعمال", "Business services", "Accounting & tax|محاسبة وضرائب,Company formation|تأسيس شركات,Paperwork|تخليص أوراق ومعاملات,Legal|محاماة واستشارات قانونية,Certified translation|ترجمة معتمدة,Consulting|استشارات إدارية,Courier|مندوب ومراسل,Printing|طباعة ودعاية,Brokerage|سمسرة عقارات,Recruitment|توظيف وموارد بشرية"], ["personal", "خدمات شخصية وأسرية", "Personal & family", "Babysitting|جليسة أطفال,Elderly care|رعاية مسنين,Home nursing|تمريض منزلي,Home cooking|أكل بيتي,Beauty at home|كوافير وتجميل منزلي,Tailoring|خياطة وتفصيل,Personal trainer|مدرب شخصي,Pet care|رعاية حيوانات أليفة,Domestic help|عاملات منزلية,Barber|حلاق منزلي"], ["projects", "بيع مشاريع", "Businesses for sale", "Restaurants & cafes|مطاعم وكافيهات,Retail shops|محلات تجارية,Bakeries|مخابز ومطابخ,Salons & spa|صالونات وسبا,Gyms|صالات رياضية,Laundries|مغاسل ملابس,Farms|مزارع وتربية حيوانات,Factories|مصانع وورش,Websites & apps|مواقع وتطبيقات,Studios|استوديوهات,Jewelry shops|محلات ذهب ومجوهرات,Pharmacies|صيدليات,Other projects|مشاريع أخرى"]];
 var SVC_IC={"home": "M3 11l9-7 9 7 M5 10v10h14V10 M10 20v-5h4v5", "appliance": "M14.5 5.5a4 4 0 0 0 4.9 4.9L10 19.8a2 2 0 0 1-2.8-2.8l9.4-9.4 M14.5 5.5l2-2", "cleaning": "M15 3l-4 9 M8 12h8l2 9H6z M10 16v3 M14 16v3", "moving": "M2 6h12v10H2z M14 9h4l3 3v4h-7z M6 18.5a1.5 1.5 0 1 0 0.01 0 M17 18.5a1.5 1.5 0 1 0 0.01 0", "construction": "M4 15a8 8 0 0 1 16 0 M2 15h20v3H2z M12 7v4 M9 8v3 M15 8v3", "decor": "M4 4h14v5H4z M18 6.5h2V11h-8v3 M11 14h2v7h-2z", "garden": "M12 21v-9 M12 12C12 7 8 4 4 4c0 5 3 8 8 8z M12 14c0-4 3-7 8-7 0 4-3 7-8 7z", "auto": "M3 13l2-5h14l2 5v5h-3v-2H6v2H3z M3 13h18 M7 15.5h.01 M17 15.5h.01", "events": "M12 3a5 6 0 0 1 5 6c0 4-3 6-5 6s-5-2-5-6a5 6 0 0 1 5-6z M12 15l-1 2h2z M12 17c0 2-2 2-2 4", "education": "M2 9l10-5 10 5-10 5z M6 11v5c3 2 9 2 12 0v-5 M22 9v5", "digital": "M3 4h18v12H3z M8 20h8 M12 16v4 M10 8l-2 2 2 2 M14 8l2 2-2 2", "business": "M3 7h18v13H3z M9 7V4h6v3 M3 12h18", "personal": "M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z", "projects": "M3 9l2-5h14l2 5 M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z M5 13v8h14v-8 M10 21v-5h4v5"};
 var SVC_TAGS={"Plumbing": "سباك مواسير حنفية", "Electrical": "كهربائي فني كهرباء", "Carpentry": "نجار خشب", "Painting": "نقاش دهان محارة", "Aluminum": "ألوميتال شبابيك", "Ironwork": "حداد", "Doors & windows": "باب شباك", "Drain cleaning": "مجاري بلاعة", "Tiles": "سيراميك بورسلين مبلط", "Gypsum board": "جبس بورد", "Waterproofing": "عزل", "Glass & mirrors": "زجاج", "Locksmith": "كالون مفتاح", "Handyman": "فني صيانة", "AC installation": "تكييف مكيف فني تكييف", "AC repair": "تكييف مكيف فريون", "Fridge repair": "ثلاجة تلاجة", "Washer repair": "غسالة", "Cooker repair": "بوتاجاز فرن", "Heater repair": "سخان", "TV repair": "شاشة تلفزيون", "Satellite": "دش رسيفر", "Water filters": "فلتر", "Small appliances": "خلاط مكنسة", "Computer & phone repair": "لابتوب موبايل", "CCTV": "كاميرا مراقبة", "Home cleaning": "تنظيف شقة", "Carpet & sofa": "سجاد كنب انتريه", "Water tanks": "خزان", "Pools": "حمام سباحة", "Facades & glass": "واجهة", "Post-construction": "تشطيب", "Office cleaning": "مكتب شركة", "Pest control": "حشرات صراصير فئران رش مبيدات", "Disinfection": "تعقيم", "Laundry": "مكوجي غسيل", "Moving within Egypt": "نقل عفش أثاث", "International moving": "شحن دولي", "Furniture assembly": "فك تركيب", "Packing": "تغليف", "Furniture crane": "ونش", "Parcel delivery": "توصيل شحن طلبات", "Personal rides": "مشوار سواق", "School rides": "مدارس طلاب", "Women drivers": "سيدات", "Business delivery": "شركات", "Truck rental": "عربية نقل", "Apartment finishing": "تشطيب", "Building contracting": "مقاول بناء", "Architecture": "مهندس معماري", "Engineering supervision": "إشراف", "Marble & granite": "رخام", "Building materials": "أسمنت حديد طوب", "Construction tools": "معدات", "Demolition": "هدم", "Pool construction": "حمام سباحة", "Solar panels": "ألواح شمسية", "Interior design": "ديكور", "Wallpaper": "ورق جدران", "Gypsum decor": "جبس", "Curtains": "ستارة", "Upholstery": "تنجيد", "Entrance decor": "مدخل", "Exterior decor": "واجهة", "Lighting design": "إضاءة نجف", "Kitchens": "مطبخ", "Wood & parquet": "باركيه", "Landscaping": "لاندسكيب جنينة", "Garden care": "جنايني", "Irrigation": "ري تنقيط", "Seeds & seedlings": "شتلات", "Fertilizers": "سماد", "Artificial grass": "نجيلة", "Garden decor": "ديكور", "Farm services": "مزرعة", "Towing": "ونش", "Mechanic": "ميكانيكي", "Auto electrician": "كهربائي سيارات", "Inspection": "فحص كمبيوتر", "Car AC": "تكييف", "Batteries": "بطارية", "Tires": "كاوتش", "Car upholstery": "فرش", "Paint & bodywork": "سمكري دوكو", "Tint & protection": "فيميه نانو", "Detailing": "غسيل تلميع", "Motorcycle repair": "موتوسيكل", "EV charging": "شاحن", "Licensing": "ترخيص مرور", "Car shipping": "شحن", "Halls & tents": "قاعة فرح خيمة", "Photography": "مصور تصوير", "DJ & sound": "دي جي صوت", "Lighting & laser": "ليزر", "Decoration": "كوشة زينة", "Catering": "بوفيه", "Chairs & tables": "كراسي", "Event planner": "منظم", "Zaffa & bands": "زفة", "Makeup artist": "ميكب", "Wedding cars": "عربية فرح", "Cakes": "تورتة", "Math": "مدرس رياضة ماث", "Physics": "مدرس", "Chemistry": "مدرس", "Biology": "علوم مدرس", "Arabic": "عربي مدرس", "English": "انجليزي إنجلش", "French & German": "فرنسي ألماني", "Other languages": "لغة", "Religion": "دين", "Quran": "قرآن", "Coding": "برمجة", "University subjects": "جامعة", "Kids foundation": "تأسيس", "Music": "بيانو جيتار", "Sports & swimming": "سباحة كابتن", "Driving lessons": "سواقة", "Logo & graphics": "لوجو جرافيك مصمم", "Websites": "موقع ويب", "Mobile apps": "تطبيق", "Social media": "فيسبوك انستجرام", "Paid ads": "إعلانات", "SEO": "جوجل", "Content writing": "كاتب", "Translation": "مترجم", "Video editing": "مونتاج", "Motion graphics": "موشن", "Product photography": "تصوير", "Voice over": "فويس", "Online stores": "متجر", "IT support": "شبكات", "Accounting & tax": "محاسب", "Company formation": "سجل تجاري", "Paperwork": "أوراق", "Legal": "محامي", "Certified translation": "ترجمة", "Consulting": "استشاري", "Courier": "مندوب", "Printing": "مطبعة", "Brokerage": "سمسار", "Recruitment": "توظيف", "Babysitting": "بيبي سيتر", "Elderly care": "مسن", "Home nursing": "ممرضة", "Home cooking": "أكل", "Beauty at home": "كوافير", "Tailoring": "خياط", "Personal trainer": "كوتش جيم", "Pet care": "قطط كلاب", "Domestic help": "عاملة", "Barber": "حلاق", "Restaurants & cafes": "مطعم كافيه", "Retail shops": "محل", "Bakeries": "مخبز", "Salons & spa": "صالون", "Gyms": "جيم", "Laundries": "مغسلة", "Farms": "مزرعة", "Factories": "مصنع", "Websites & apps": "موقع", "Studios": "استوديو", "Jewelry shops": "ذهب", "Pharmacies": "صيدلية", "Other projects": "مشروع"};
-var APPL_C=buildCatalog(APPL_RAW),SVC_C=buildCatalog(SVC_RAW);
+/* car spare parts: group -> parts */
+var PART_RAW=[["engine", "المحرك وملحقاته", "Engine", "Engine assembly|محرك كامل,Pistons & rings|بساتم وشنابر,Gaskets|جوانات,Timing belt|سير وكاتينة,Turbo|تيربو,Engine mounts|كراسي محرك,Fuel pump|طرمبة بنزين,Injectors|بخاخات,Spark plugs|بوجيهات"], ["transmission", "الفتيس وناقل الحركة", "Transmission", "Automatic gearbox|فتيس أوتوماتيك,Manual gearbox|فتيس عادي,Clutch kit|طقم دبرياج,Driveshaft|عمود كردان,CV joints|عكوس"], ["brakes", "الفرامل", "Brakes", "Brake pads|تيل فرامل,Brake discs|طنابير وديسكات,Calipers|كاليبرات,ABS parts|حساسات وموديول إيه بي إس,Brake fluid|زيت فرامل"], ["suspension", "العفشة والدركسيون", "Suspension & steering", "Shock absorbers|مساعدين,Control arms|مقصات,Ball joints|كبالن وبلي,Steering rack|علبة دركسيون,Tie rods|بارات ومسامير دركسيون,Springs|سوست"], ["electrical", "الكهرباء والإلكترونيات", "Electrical & electronics", "Car battery|بطاريات,Alternator|دينامو,Starter|مارش,Car sensors|حساسات,ECU|كمبيوتر السيارة,Wiring|ضفيرة كهرباء,Screens & audio|شاشات وكاسيت,Parking cameras|كاميرات وحساسات ركن"], ["lights", "الإضاءة", "Lights", "Headlights|فوانيس أمامية,Tail lights|فوانيس خلفية,Fog lights|كشافات ضباب,Bulbs & LED|لمبات وليد"], ["body", "الصاج والبودي", "Body parts", "Bumpers|إكصدامات,Fenders|رفارف,Hood|كبوت,Car doors|أبواب,Grille|شبكات أمامية,Side mirrors|مرايات جانبية,Trunk lid|شنطة"], ["glass", "الزجاج", "Glass", "Windshield|زجاج أمامي,Rear glass|زجاج خلفي,Door glass|زجاج أبواب,Sunroof glass|فتحة سقف"], ["cooling", "التبريد والتكييف", "Cooling & AC", "Radiator|رادياتير,Cooling fans|مراوح تبريد,Water pump|طرمبة مياه,AC compressor|كمبروسر تكييف,AC condenser|مكثف تكييف,Thermostat|ثرموستات"], ["wheels", "الكاوتش والجنوط", "Tires & rims", "Car tires|كاوتش,Rims|جنوط,Spare wheel|استبن,Tire sensors|حساسات ضغط الهواء"], ["oils", "الزيوت والفلاتر", "Oils & filters", "Engine oil|زيت موتور,Oil filter|فلتر زيت,Air filter|فلتر هواء,Cabin filter|فلتر تكييف,Fuel filter|فلتر بنزين,Coolant|مياه رادياتير"], ["interior", "الفرش والداخلية", "Interior", "Car seats|كراسي,Dashboard|تابلوه,Steering wheel|طارة,Floor mats|دواسات,Seat covers|تلبيسة كراسي"], ["exhaust", "الشكمان والعادم", "Exhaust", "Exhaust pipe|شكمان,Catalytic converter|علبة بيئة,Muffler|علب شكمان"], ["accessories", "الإكسسوارات", "Accessories", "Car covers|غطاء سيارة,Roof racks|شيالات سقف,Dash cams|كاميرات داش,Body kits|بودي كيت,Chargers & holders|شواحن وحوامل"]];
+var PART_IC={"engine": "M5 9h3l2-2h4l2 2h3v8H5z M3 11v4 M21 11v4 M9 9V6h6v3 M8 13h8", "transmission": "M6 4v16 M12 4v16 M18 4v8 M6 12h12", "brakes": "M12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0-16 0 M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0-6 0 M17 6l2-2", "suspension": "M7 3v5 M17 3v5 M5 8h4 M15 8h4 M7 8l1 13 M17 8l-1 13 M8 14h8", "electrical": "M13 2L5 14h6l-1 8 8-12h-6z", "lights": "M4 12a8 6 0 0 1 8-6v12a8 6 0 0 1-8-6z M15 8h6 M15 12h6 M15 16h6", "body": "M3 14l2-6h14l2 6v4H3z M7 18v2 M17 18v2 M6 14h12", "glass": "M4 18l3-12h10l3 12z M9 9l-1 5 M15 9l1 5", "cooling": "M12 2v20 M4 7l16 10 M20 7L4 17", "wheels": "M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0 M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0-8 0 M12 3v5 M12 16v5 M3 12h5 M16 12h5", "oils": "M8 3h8l-1 4h-6z M7 7h10v13H7z M10 11h4", "interior": "M7 3h7l1 9H8z M6 12h12v4H6z M8 16v5 M16 16v5", "exhaust": "M2 14h12a3 3 0 0 0 0-6H8 M14 11h6 M20 9v4", "accessories": "M12 2l2.5 5 5.5.8-4 3.9.9 5.5L12 14.6 7.1 17.2l.9-5.5-4-3.9 5.5-.8z"};
+var PART_TAGS={"Engine assembly": "موتور ماتور", "Pistons & rings": "بستم", "Gaskets": "جوان وش سلندر", "Timing belt": "كاتينة تايمنج", "Turbo": "تربو", "Engine mounts": "كرسي", "Fuel pump": "طلمبة", "Injectors": "بخاخ", "Spark plugs": "بوجيه", "Automatic gearbox": "جيربوكس", "Manual gearbox": "جيربوكس", "Clutch kit": "كلتش", "Driveshaft": "كردان", "CV joints": "عكس", "Brake pads": "تيل", "Brake discs": "طنبورة ديسك", "Calipers": "كاليبر", "ABS parts": "ABS", "Brake fluid": "زيت", "Shock absorbers": "مساعد", "Control arms": "مقص", "Ball joints": "كبالة بلية", "Steering rack": "دركسيون", "Tie rods": "بارة", "Springs": "سوستة", "Car battery": "بطارية", "Alternator": "دينامو", "Starter": "مارش", "Car sensors": "حساس", "ECU": "كمبيوتر", "Wiring": "ضفيرة", "Screens & audio": "شاشة كاسيت", "Parking cameras": "كاميرا", "Headlights": "فانوس", "Tail lights": "فانوس", "Fog lights": "كشاف", "Bulbs & LED": "لمبة", "Bumpers": "اكصدام صدام", "Fenders": "رفرف", "Hood": "كبوت", "Car doors": "باب", "Grille": "شبكة", "Side mirrors": "مراية", "Trunk lid": "شنطة", "Windshield": "قزاز", "Rear glass": "قزاز", "Door glass": "قزاز", "Sunroof glass": "سقف", "Radiator": "رادياتير", "Cooling fans": "مروحة", "Water pump": "طلمبة", "AC compressor": "كمبروسر", "AC condenser": "كوندنسر", "Thermostat": "بلف", "Car tires": "كاوتش إطار", "Rims": "جنط", "Spare wheel": "استبن", "Tire sensors": "حساس", "Engine oil": "زيت", "Oil filter": "فلتر", "Air filter": "فلتر", "Cabin filter": "فلتر", "Fuel filter": "فلتر", "Coolant": "مياه", "Car seats": "كرسي", "Dashboard": "تابلوه", "Steering wheel": "طارة دركسيون", "Floor mats": "دواسة", "Seat covers": "كسوة", "Exhaust pipe": "شكمان", "Catalytic converter": "بيئة كتلايزر", "Muffler": "علبة", "Car covers": "شمسية", "Roof racks": "شيالة", "Dash cams": "كاميرا", "Body kits": "بودي", "Chargers & holders": "شاحن"};
+/* jobs: field -> roles */
+var JOB_RAW=[["sales", "مبيعات وخدمة عملاء", "Sales & customer service", "Sales rep|مندوب مبيعات,Customer service|خدمة عملاء,Call center|كول سنتر,Telesales|تيلي سيلز,Cashier|كاشير,Shop assistant|بائع في محل"], ["admin", "إدارة ومكاتب", "Admin & office", "Secretary|سكرتارية,Data entry|إدخال بيانات,HR|موارد بشرية,Office manager|مدير مكتب,Receptionist|موظف استقبال"], ["accounting", "محاسبة ومالية", "Accounting & finance", "Accountant|محاسب,Auditor|مراجع حسابات,Treasurer|أمين خزينة,Financial analyst|محلل مالي"], ["tech", "تكنولوجيا وبرمجة", "Tech & programming", "Software developer|مبرمج,Web developer|مطور مواقع,Mobile developer|مطور تطبيقات,IT technician|دعم فني,Data analyst|محلل بيانات,Network engineer|مهندس شبكات"], ["design", "تصميم وإبداع", "Design & creative", "Graphic designer|مصمم جرافيك,UI/UX designer|مصمم واجهات,Video editor|مونتير,Photographer|مصور,Content creator|صانع محتوى"], ["marketing", "تسويق وإعلام", "Marketing & media", "Digital marketer|مسوق إلكتروني,Social media specialist|مسؤول سوشيال ميديا,Copywriter|كاتب محتوى,PR specialist|علاقات عامة"], ["engineering", "هندسة", "Engineering", "Civil engineer|مهندس مدني,Electrical engineer|مهندس كهرباء,Mechanical engineer|مهندس ميكانيكا,Architect|مهندس معماري,Site engineer|مهندس موقع"], ["medical", "طب وتمريض", "Medical & nursing", "Doctor|طبيب,Nurse|تمريض,Pharmacist|صيدلي,Lab technician|فني معمل,Physiotherapist|علاج طبيعي"], ["teaching", "تعليم وتدريب", "Teaching & training", "Teacher|مدرس,Nursery supervisor|مشرفة حضانة,Trainer|مدرب,Tutor|مدرس خصوصي"], ["hospitality", "مطاعم وفنادق", "Restaurants & hotels", "Chef|شيف,Cook|طباخ,Waiter|ويتر,Barista|باريستا,Hotel staff|موظف فندق,Delivery rider|طيار توصيل"], ["crafts", "حرف وصنايعية", "Skilled trades", "Electrician|كهربائي,Plumber|سباك,Carpenter|نجار,Painter|نقاش,Welder|لحام,Tailor|خياط,Car mechanic|ميكانيكي,AC technician|فني تكييف"], ["drivers", "سواقين ونقل", "Drivers & transport", "Private driver|سواق خاص,Truck driver|سواق نقل,Bus driver|سواق أتوبيس,Delivery driver|سواق توصيل"], ["security", "أمن وحراسة", "Security", "Security guard|فرد أمن,Doorman|بواب,Security supervisor|مشرف أمن"], ["household", "عمالة منزلية", "Household staff", "Housekeeper|عاملة منزلية,Nanny|مربية أطفال,Elderly companion|مرافق مسنين,Home cook|طباخة منزلية,Gardener|جنايني"]];
+var JOB_IC={"sales": "M3 3h2l2 12h11l2-8H6 M9 20a1 1 0 1 0 0.01 0 M17 20a1 1 0 1 0 0.01 0", "admin": "M4 4h16v16H4z M8 8h8 M8 12h8 M8 16h5", "accounting": "M4 3h16v18H4z M8 7h8 M8 11h2 M12 11h2 M16 11h0 M8 15h2 M12 15h2", "tech": "M3 4h18v12H3z M8 20h8 M12 16v4 M10 8l-2 2 2 2 M14 8l2 2-2 2", "design": "M12 3a9 9 0 1 0 0 18c1 0 2-1 2-2s-1-2 0-3 2-1 3-1a4 4 0 0 0 4-4c0-4-4-8-9-8z M8 11h.01 M12 7h.01 M16 10h.01", "marketing": "M3 10v4l11 5V5z M14 8a4 4 0 0 1 0 8 M6 14v5h3", "engineering": "M4 15a8 8 0 0 1 16 0 M2 15h20v3H2z M12 7v4 M9 8v3 M15 8v3", "medical": "M12 4v16 M4 12h16 M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0", "teaching": "M2 9l10-5 10 5-10 5z M6 11v5c3 2 9 2 12 0v-5", "hospitality": "M7 3v8a2 2 0 0 0 4 0V3 M9 11v10 M17 3c-2 0-3 3-3 6s1 3 3 3v9", "crafts": "M14.5 5.5a4 4 0 0 0 4.9 4.9L10 19.8a2 2 0 0 1-2.8-2.8l9.4-9.4 M14.5 5.5l2-2", "drivers": "M3 13l2-5h14l2 5v5h-3v-2H6v2H3z M3 13h18 M7 15.5h.01 M17 15.5h.01", "security": "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z", "household": "M3 11l9-7 9 7 M5 10v10h14V10 M10 20v-5h4v5"};
+var JOB_TAGS={"Sales rep": "سيلز مبيعات", "Customer service": "كستمر سيرفس", "Call center": "كول سنتر", "Telesales": "تلي سيلز", "Cashier": "كاشير", "Shop assistant": "بياع", "Secretary": "سكرتير", "Data entry": "داتا انتري", "HR": "اتش ار", "Office manager": "مدير", "Receptionist": "ريسبشن", "Accountant": "محاسب", "Auditor": "مراجع", "Treasurer": "خزنة", "Financial analyst": "مالية", "Software developer": "برمجة ديفلوبر", "Web developer": "ويب", "Mobile developer": "موبايل", "IT technician": "آي تي", "Data analyst": "داتا", "Network engineer": "نتورك", "Graphic designer": "جرافيك", "UI/UX designer": "يو اي", "Video editor": "مونتاج", "Photographer": "تصوير", "Content creator": "محتوى", "Digital marketer": "ماركتنج", "Social media specialist": "سوشيال", "Copywriter": "كوبي", "PR specialist": "علاقات", "Civil engineer": "مدني", "Electrical engineer": "كهرباء", "Mechanical engineer": "ميكانيكا", "Architect": "معماري", "Site engineer": "موقع", "Doctor": "دكتور", "Nurse": "ممرضة", "Pharmacist": "صيدلية", "Lab technician": "معمل", "Physiotherapist": "علاج", "Teacher": "مدرس", "Nursery supervisor": "حضانة", "Trainer": "تدريب", "Tutor": "دروس", "Chef": "شيف", "Cook": "طباخ", "Waiter": "ويتر", "Barista": "قهوة", "Hotel staff": "فندق", "Delivery rider": "دليفري", "Electrician": "كهرباء", "Plumber": "سباكة", "Carpenter": "نجارة", "Painter": "نقاشة", "Welder": "لحام", "Tailor": "خياطة", "Car mechanic": "ميكانيكا", "AC technician": "تكييف", "Private driver": "سواق", "Truck driver": "نقل", "Bus driver": "أتوبيس", "Delivery driver": "توصيل", "Security guard": "أمن", "Doorman": "بواب", "Security supervisor": "مشرف", "Housekeeper": "شغالة", "Nanny": "مربية", "Elderly companion": "مرافق", "Home cook": "طباخة", "Gardener": "جنينة"};
+var APPL_C=buildCatalog(APPL_RAW),SVC_C=buildCatalog(SVC_RAW),PART_C=buildCatalog(PART_RAW),JOB_C=buildCatalog(JOB_RAW);
+var DS_IC={appl:APPL_IC,svc:SVC_IC,parts:PART_IC,jobs:JOB_IC};
+function subName(C,v){for(var i=0;i<C.keys.length;i++){var o=mFind(C,C.keys[i],v);if(o)return o[lang];}return v||'';}
+var JOB_MODE_D={hiring:['شركة أو صاحب عمل محتاج موظف','A company or employer is hiring'],seeking:['عندي خبرة وأدوّر على شغل','I am looking for a job'],freelance:['أشتغل بالمشروع أو بالقطعة','I work per project']};
+/* the home page groups, in the same order as Mzad Qatar */
+var CAT_GROUPS=[['vehicles','المركبات','Vehicles',['cars','moto','plates','parts']],['home','العقارات والبيت','Property & home',['realestate','land','commercial','furniture','appliances']],['tech','الإلكترونيات','Electronics',['electronics','phones','computers','numbers']],['more','خدمات ووظائف وأكثر','Services, jobs & more',['services','jobs','watches']]];
 function aIs(){var a=[].slice.call(arguments);return function(s){return a.indexOf(s.type)>=0;};}
 function applTypeName(k,one){if(one&&APPL_ONE[k])return APPL_ONE[k][lang==='ar'?0:1];return bName(APPL_C,k);}
 function applBrandName(v){for(var i=0;i<APPL_C.keys.length;i++){var o=mFind(APPL_C,APPL_C.keys[i],v);if(o)return o[lang];}return v||'';}
@@ -2152,8 +2224,11 @@ var CATS=[
  {k:'electronics',ar:'إلكترونيات',en:'Electronics',d:'M3 4h18v12H3z M8 20h8 M12 16v4'},
  {k:'furniture',ar:'أثاث',en:'Furniture',d:'M5 11V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3 M3 12a2 2 0 0 1 3 1.7V15h12v-1.3A2 2 0 0 1 21 12v6H3z M5 18v2 M19 18v2'},
  {k:'watches',ar:'ساعات',en:'Watches',d:'M12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z M9.5 8.5L10 3h4l.5 5.5 M9.5 15.5L10 21h4l.5-5.5 M12 10.5v1.8l1.2.8'},
- {k:'services',ar:'خدمات',en:'Services',d:'M14.5 5.5a4 4 0 0 0 4.9 4.9L10 19.8a2 2 0 0 1-2.8-2.8l9.4-9.4 M14.5 5.5l2-2'}
+ {k:'services',ar:'خدمات',en:'Services',d:'M14.5 5.5a4 4 0 0 0 4.9 4.9L10 19.8a2 2 0 0 1-2.8-2.8l9.4-9.4 M14.5 5.5l2-2'},
+ {k:'parts',ar:'قطع غيار سيارات',en:'Car parts',d:'M12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z M12 2v3 M12 19v3 M4.9 4.9l2.1 2.1 M17 17l2.1 2.1 M2 12h3 M19 12h3 M4.9 19.1L7 17 M17 7l2.1-2.1'},
+ {k:'jobs',ar:'وظائف وأعمال حرة',en:'Jobs & freelance',d:'M3 7h18v13H3z M9 7V4h6v3 M3 12h18 M11 12v2h2v-2'}
 ];
+(function(){var o=[];CAT_GROUPS.forEach(function(g){g[3].forEach(function(k){var c=CATS.filter(function(x){return x.k===k;})[0];if(c&&o.indexOf(c)<0)o.push(c);});});CATS.forEach(function(c){if(o.indexOf(c)<0)o.push(c);});CATS=o;})();
 var CAT={};CATS.forEach(function(c){CAT[c.k]=c;});
 function cat(k){return CAT[k]||CAT.services;}
 
@@ -2287,9 +2362,10 @@ function isAuc(x){return x.type==='auction';}
 function isEnded(x){return isAuc(x)&&Number(x.endsAt)<=Date.now();}
 function isRent(x){var q=x&&(x.re||x.land||x.com);return !!(q&&q.purpose==='rent');}
 function effPrice(x){return isAuc(x)?(Number(x.currentBid)||Number(x.price)||0):(Number(x.price)||0);}
-function priceText(x){if(x.svc&&!isAuc(x)){var su=keyOf('svcUnit',x.svc.unit),pr=effPrice(x);if(!pr)return t('svcDeal');var want=keyOf('svcMode',x.svc.mode)==='want';return t(want?'svcBudget':'svcFrom')+' '+money(pr)+(su&&su!=='deal'&&su!=='project'?' '+t('svcPer_'+su):'');}
+function priceText(x){if(x.job&&!isAuc(x)){var ju=keyOf('jobUnit',x.job.unit),jp=effPrice(x),jm=keyOf('jobMode',x.job.mode);if(!jp)return t(jm==='freelance'?'svcDeal':'jobDeal');var js=money(jp)+(ju&&ju!=='deal'?' '+t('jobPer_'+ju):'');return jm==='freelance'?t('svcFrom')+' '+js:jm==='seeking'?t('jobAsk')+' '+js:js;}
+ if(x.svc&&!isAuc(x)){var su=keyOf('svcUnit',x.svc.unit),pr=effPrice(x);if(!pr)return t('svcDeal');var want=keyOf('svcMode',x.svc.mode)==='want';return t(want?'svcBudget':'svcFrom')+' '+money(pr)+(su&&su!=='deal'&&su!=='project'?' '+t('svcPer_'+su):'');}
  var s=money(effPrice(x));if(isRent(x))s+=' '+t('per_'+keyOf('period',specOf(x).period||'monthly'));return s;}
-function specOf(x){return x.appl||x.svc||x.car||x.moto||x.re||x.land||x.com||x.plate||x.mob||x.dev||x.pc||x.watch||{};}
+function specOf(x){return x.appl||x.svc||x.part||x.job||x.car||x.moto||x.re||x.land||x.com||x.plate||x.mob||x.dev||x.pc||x.watch||{};}
 function findListing(id){for(var i=0;i<listings.length;i++){if(listings[i].id===id)return listings[i];}return null;}
 function initial(n){var s=String(n||'?').trim();return s?s.charAt(0).toUpperCase():'?';}
 function monthYear(ts){try{return new Date(Number(ts)).toLocaleDateString(lang==='ar'?'ar-EG':'en-US',{month:'long',year:'numeric'});}catch(e){return '';}}
@@ -2327,6 +2403,8 @@ function autoTitle(catk,sp){
  if(catk==='numbers'){var d=digitsOnly(sp.num);return t('numWord',{op:lab('op',sp.op)})+(d?' '+dg(d):'');}
  if(catk==='computers'){var bn=sp.brand==='other'?String(sp.brandOther||'').trim():bName(PC_C,sp.brand);var pt=sp.type==='other'?String(sp.typeOther||'').trim():gtOne(sp.type);return joinName(bn,pcModelLabel(sp)||pt);}
  if(catk==='watches'){var wb=sp.brand==='other'?String(sp.brandOther||'').trim():bName(WT_C,sp.brand);var wc=(sp.brand==='other'||sp.model==='other')?String(sp.modelOther||'').trim():mName(WT_C,sp.brand,sp.model);return joinName(wb,joinName(wc,wrefLabel(sp)));}
+ if(catk==='parts'){var pn=sp.part==='other'?String(sp.partOther||'').trim():subName(PART_C,sp.part);var pmd=sp.model==='other'?String(sp.modelOther||'').trim():modelName(sp.make,sp.model);return [pn||bName(PART_C,sp.group),makeName(sp.make),pmd].filter(Boolean).join(' ');}
+ if(catk==='jobs'){var jr=sp.role==='other'?String(sp.roleOther||'').trim():subName(JOB_C,sp.role);jr=jr||bName(JOB_C,sp.field);var jm=keyOf('jobMode',sp.mode);return t(jm==='seeking'?'jobSeekT':jm==='freelance'?'jobFreeT':'jobHireT',{r:jr});}
  if(catk==='appliances'){var ab=sp.brand==='other'?String(sp.brandOther||'').trim():applBrandName(sp.brand);return [applTypeName(sp.type,true),ab,applSize(sp)].filter(Boolean).join(' ');}
  if(catk==='services'){var ss=sp.sub==='other'?String(sp.subOther||'').trim():svcSubName(sp.sub);ss=ss||bName(SVC_C,sp.group);return keyOf('svcMode',sp.mode)==='want'?t('svcWantT')+' '+ss:ss;}
  if(catk==='phones'){var pm=sp.model==='other'?String(sp.modelOther||'').trim():mName(PH_C,sp.brand,sp.model);var pb=bName(PH_C,sp.brand);var needB=!pm||(norm(pm).indexOf(norm(pb))<0&&!/^(iPhone|Galaxy|Pixel|آيفون|جالاكسي|بكسل)/.test(pm));return [needB?pb:'',pm,lab('storage',sp.storage)].filter(Boolean).join(' ');}
@@ -2481,6 +2559,32 @@ var FIELDS={
   {k:'warranty',kind:'sel',opts:'warranty'},
   {k:'seller',kind:'sel',opts:'seller'}
  ],
+ parts:[
+  {k:'group',kind:'gtiles',ds:'parts',sub:'part',lab:'f_pgroup'},
+  {k:'part',kind:'model',ds:'parts',bf:'group',chips:true,lab:'f_ppart'},
+  {k:'partOther',kind:'text',lab:'f_ppartOther',show:function(s){return s.part==='other';},noFact:true},
+  {k:'make',kind:'make',ds:'car',lab:'f_fitMake'},
+  {k:'model',kind:'model',ds:'car',bf:'make',lab:'f_fitModel'},
+  {k:'modelOther',kind:'text',lab:'f_classOther',show:function(s){return s.model==='other';},noFact:true},
+  {k:'years',kind:'text',lab:'f_fitYears',ph:'fitYearsPh',optional:true,digits:true},
+  {k:'pcond',kind:'sel',opts:'partCond',lab:'f_partCond'},
+  {k:'origin',kind:'sel',opts:'partOrigin',lab:'f_partOrigin',def:'na',hideNa:true},
+  {k:'pno',kind:'text',lab:'f_partNo',ph:'partNoPh',optional:true},
+  {k:'warranty',kind:'sel',opts:'pwarranty',lab:'f_pwarranty'}
+ ],
+ jobs:[
+  {k:'mode',kind:'sel',opts:'jobMode',lab:'f_jobMode',cards:'sm',descs:JOB_MODE_D,rerender:true},
+  {k:'field',kind:'gtiles',ds:'jobs',sub:'role',lab:'f_jfield'},
+  {k:'role',kind:'model',ds:'jobs',bf:'field',chips:true,lab:'f_jrole'},
+  {k:'roleOther',kind:'text',lab:'f_jroleOther',show:function(s){return s.role==='other';},noFact:true},
+  {k:'company',kind:'text',lab:'f_jcompany',optional:true,show:function(s){return keyOf('jobMode',s.mode)==='hiring';}},
+  {k:'jtype',kind:'sel',opts:'jobType',lab:'f_jtype'},
+  {k:'jexp',kind:'sel',opts:'jobExp',lab:'f_jexp'},
+  {k:'jedu',kind:'sel',opts:'jobEdu',lab:'f_jedu',show:function(s){return keyOf('jobMode',s.mode)!=='freelance';}},
+  {k:'unit',kind:'sel',opts:'jobUnit',lab:'f_junit'},
+  {k:'days',kind:'sel',opts:'svcDays',lab:'f_sdays',hideNa:true,show:function(s){return keyOf('jobMode',s.mode)==='freelance';}},
+  {k:'perks',kind:'multi',opts:'jobPerks',lab:'f_jperks',show:function(s){return keyOf('jobMode',s.mode)==='hiring';}}
+ ],
  appliances:[
   {k:'type',kind:'gtiles',ds:'appl',sub:'brand',lab:'f_atype'},
   {k:'brand',kind:'model',ds:'appl',bf:'type',chips:true,lab:'f_brand'},
@@ -2549,6 +2653,7 @@ var FIELDS={
  ]
 };
 function factVal(f,o){var v=o[f.k];
+ if(f.kind==='model'&&(f.ds==='parts'||f.ds==='jobs'))return subName(dsOf(f.ds),v);
  if(f.kind==='gtiles')return f.ds==='appl'?applTypeName(v,true):bName(dsOf(f.ds),v);
  if(f.kind==='make')return bName(dsOf(f.ds),v);
  if(f.kind==='model')return mName(dsOf(f.ds),o[f.bf||'make'],v);
@@ -2574,6 +2679,8 @@ function factsFor(x){var defs=FIELDS[x.category]||[];var sp=specOf(x);var out=[]
 
 /* ---------- cards ---------- */
 function cardMeta(x){var sp=specOf(x);
+ if(x.part)return [bName(PART_C,sp.group),sp.pcond?lab('partCond',sp.pcond):''].filter(Boolean).join(' · ');
+ if(x.job)return [sp.jtype?lab('jobType',sp.jtype):'',sp.jexp?lab('jobExp',sp.jexp):'',sp.company||''].filter(Boolean).join(' · ');
  if(x.appl)return [applTypeName(sp.type,true),applSize(sp),sp.cond?lab('pcond',sp.cond):''].filter(Boolean).join(' · ');
  if(x.svc)return [bName(SVC_C,sp.group),sp.prov?lab('svcProv',sp.prov):'',sp.where?lab('svcWhere',sp.where):''].filter(Boolean).join(' · ');
  if(x.car){var cp=[];if(sp.year)cp.push(t('sl_year')+' '+dg(sp.year));if(sp.trans)cp.push(t('sl_trans')+' '+lab('trans',sp.trans));var ck=keyOf('cyl',sp.cyl);if(ck)cp.push(ck==='ev'?lab('cyl',sp.cyl):t('sl_cyl')+' '+dg(ck));if(sp.km!==''&&sp.km!=null)cp.push(t('sl_km')+' '+num(sp.km)+' '+t('kmU'));return cp.join(' · ');}
@@ -2691,6 +2798,8 @@ function hay(x,noDesc){var sp=specOf(x),c=cat(x.category),p=[x.title,noDesc?'':x
  if(x.pc){var pb2=PC_C.map[bKey(PC_C,sp.brand)];p.push(pb2?pb2.ar+' '+pb2.en:sp.brand);var pt2=mFind(PC_C,sp.brand,sp.type);p.push(pt2?pt2.ar+' '+pt2.en:sp.type);p.push(gtName(sp.type));var pmi2=pcModelInfo(sp);if(pmi2)p.push(pmi2.ar+' '+pmi2.en);}
  if(x.watch){wTypesL(x).forEach(function(k){p.push(both('wtype',k));});if(sp.caliber)p.push(String(sp.caliber));var wb2=WT_C.map[bKey(WT_C,sp.brand)];p.push(wb2?wb2.ar+' '+wb2.en:sp.brand);var wm2=mFind(WT_C,sp.brand,sp.model);p.push(wm2?wm2.ar+' '+wm2.en:sp.model);var wi2=wrefInfo(sp);if(wi2)p.push(wi2.ar+' '+wi2.en);}
  if(x.moto){var mb2=MOTO_C.map[bKey(MOTO_C,sp.brand)];p.push(mb2?mb2.ar+' '+mb2.en:sp.brand);var mm2=mFind(MOTO_C,sp.brand,sp.model);p.push(mm2?mm2.ar+' '+mm2.en:sp.model);p.push(both('motoType',sp.mtype));}
+ if(x.part){var pg2=PART_C.map[sp.group];if(pg2)p.push(pg2.ar+' '+pg2.en);var po2=sp.group?mFind(PART_C,sp.group,sp.part):null;p.push(po2?po2.ar+' '+po2.en:sp.part);if(PART_TAGS[sp.part])p.push(PART_TAGS[sp.part]);var pm3=CARS[makeKey(sp.make)];p.push(pm3?pm3.ar+' '+pm3.en:sp.make);var pmm=findModel(sp.make,sp.model);p.push(pmm?pmm.ar+' '+pmm.en:sp.model);p.push(sp.pno,sp.years);}
+ if(x.job){var jf2=JOB_C.map[sp.field];if(jf2)p.push(jf2.ar+' '+jf2.en);var jo2=sp.field?mFind(JOB_C,sp.field,sp.role):null;p.push(jo2?jo2.ar+' '+jo2.en:sp.role);if(JOB_TAGS[sp.role])p.push(JOB_TAGS[sp.role]);p.push(sp.company,'وظيفة شغل عمل');}
  if(x.appl){var at2=APPL_C.map[sp.type];if(at2)p.push(at2.ar+' '+at2.en);if(APPL_ONE[sp.type])p.push(APPL_ONE[sp.type].join(' '));p.push(sp.brand,applBrandName(sp.brand),sp.mdl);}
  if(x.svc){var sg2=SVC_C.map[sp.group];if(sg2)p.push(sg2.ar+' '+sg2.en);var so2=sp.group?mFind(SVC_C,sp.group,sp.sub):null;p.push(so2?so2.ar+' '+so2.en:sp.sub);if(SVC_TAGS[sp.sub])p.push(SVC_TAGS[sp.sub]);}
  if(x.dev){var db2=PH_C.map[bKey(PH_C,sp.brand)];p.push(db2?db2.ar+' '+db2.en:sp.brand);var dm=mFind(PH_C,sp.brand,sp.model);p.push(dm?dm.ar+' '+dm.en:sp.model);}
@@ -2722,7 +2831,9 @@ function rankList(arr,cmp,q){var hr=Math.floor(Date.now()/3600000);
   else if(a.t>0)return a.h-b.h;
   return cmpNew(a.x,b.x);}).map(function(o){return o.x;});}
 function sortList(arr){return rankList(arr,cmpFor(S.sort),S.q?norm(S.q):'');}
-function catTiles(onPick){var g=el('div',{class:'cats'});CATS.forEach(function(c){g.appendChild(el('button',{type:'button',class:'cat',onclick:function(){onPick(c.k);}},[el('span',{class:'ci'},[ic(c.d,26)]),el('span',{text:c[lang]})]));});return g;}
+function catTiles(onPick){var w=el('div',{class:'catgroups'});CAT_GROUPS.forEach(function(gr){var n=listings.filter(function(x){return gr[3].indexOf(x.category)>=0;}).length;
+ w.appendChild(el('div',{class:'catg-h'},[el('b',{text:gr[lang==='ar'?1:2]}),n?el('span',{class:'small muted',text:plN('ads',n)}):null]));
+ var g=el('div',{class:'cats'});gr[3].forEach(function(k){var c=CAT[k];if(!c)return;g.appendChild(el('button',{type:'button',class:'cat',onclick:function(){onPick(c.k);}},[el('span',{class:'ci'},[ic(c.d,26)]),el('span',{text:c[lang]})]));});w.appendChild(g);});return w;}
 function wNoteEl(h,p){return el('div',{class:'wnote',role:'note'},[el('div',{class:'wnote-h'},[ic('shield',20),el('b',{text:h})]),el('p',{text:p})]);}
 function watchNotice(x){if(!x.watch)return null;var sp=x.watch,bn=bName(WT_C,sp.brand)||t('wTheBrand');
  var n=el('div',{class:'wnote wbuy',role:'note'},[el('div',{class:'wnote-h'},[ic('alert',20),el('b',{text:t('wDisclT')})]),el('p',{class:'wdiscl'},[el('b',{text:t('wDiscl1')}),' ',el('span',{text:t('wDiscl2',{b:bn})})]),el('div',{class:'wbuy-h',text:t('wBuyT')}),el('ol',{class:'wbuy-steps'},[el('li',{text:t('wBuy1')}),el('li',{text:t('wBuy2',{b:bn})}),el('li',{text:t('wBuy3')})])]);
@@ -3341,19 +3452,28 @@ var BANDS={cars:[['','300000'],['300000','700000'],['700000','1500000'],['150000
  goods:[['','2000'],['2000','10000'],['10000','50000'],['50000','']],
  services:[['','500'],['500','2000'],['2000','10000'],['10000','']],
  appliances:[['','5000'],['5000','15000'],['15000','40000'],['40000','']],
+ parts:[['','1000'],['1000','5000'],['5000','20000'],['20000','']],
+ jobs:[['','5000'],['5000','10000'],['10000','20000'],['20000','']],
  all:[['','5000'],['5000','50000'],['50000','500000'],['500000','']]};
 var SHOPC=null;
 function shopCfg(c){if(!SHOPC)SHOPC=buildShop();return SHOPC[c]||SHOPC.electronics;}
 /* tiles and chips for categories that start with a type (appliances) or a section (services) */
+/* after picking a filter: show the next choices if new ones appeared, otherwise the results */
+function smoothTo(node){if(!node)return;try{var top=document.querySelector('.top'),off=(top?top.getBoundingClientRect().height:0)+10;window.scrollTo({top:Math.max(0,node.getBoundingClientRect().top+window.scrollY-off),behavior:reduceMotion?'auto':'smooth'});}catch(e){}}
+function shopAfterPick(){try{requestAnimationFrame(function(){var rows=V.home.querySelectorAll('.shop .chiprow.drill'),tgt=null;
+ for(var i=0;i<rows.length;i++){var pr=rows[i].querySelector('.chip[aria-pressed="true"]');if(!pr||pr===rows[i].firstElementChild){tgt=rows[i].closest('.srow')||rows[i];var hd=V.home.querySelector('.shop .nt-head');if(hd&&i===0)tgt=hd;break;}}
+ if(!tgt)tgt=V.home.querySelector('.toolbar')||V.home.querySelector('.lst,.grid')||V.home.querySelector('.empty,.noresults');smoothTo(tgt);});}catch(e){}}
+function wizGo(id){try{requestAnimationFrame(function(){smoothTo($(id));});}catch(e){}}
+function wizGoNext(id){try{requestAnimationFrame(function(){var l=$(id),f=l&&l.closest('.field'),n=f&&f.nextElementSibling;while(n&&!n.offsetHeight)n=n.nextElementSibling;smoothTo(n||f);});}catch(e){}}
 function oneCounts(F){var c=S.cat,f2=fWithout(S.f,F.keys),cnt={};shopBase(c).forEach(function(x){if(!catPass(x,c,f2))return;var v=F.val(x);if(v)cnt[v]=(cnt[v]||0)+1;});return cnt;}
 function tileDrill(F,C,IC,big){var cnt=oneCounts(F),g=el('div',{class:'nt-tiles shop-tiles'+(big?' big':''),role:'group','aria-label':t(F.title)});
- C.keys.forEach(function(k){var n=cnt[k]||0,m=C.map[k];g.appendChild(el('button',{type:'button',class:'nt-tile',onclick:function(){F.keys.forEach(function(z){delete S.f[z];});S.f[F.k]=k;renderHome();try{window.scrollTo(0,0);}catch(e){}}},[el('span',{class:'nt-ic'},[ic(IC[k]||'M12 3v18 M3 12h18',big?24:22)]),el('span',{class:'nt-tx',text:m[lang]}),big?el('span',{class:'nt-sub',text:m.models.slice(0,4).map(function(o){return o[lang];}).join(' · ')}):null,n?el('span',{class:'nt-n',text:num(n)}):null]));});
+ C.keys.forEach(function(k){var n=cnt[k]||0,m=C.map[k];g.appendChild(el('button',{type:'button',class:'nt-tile',onclick:function(){F.keys.forEach(function(z){delete S.f[z];});S.f[F.k]=k;renderHome();shopAfterPick();}},[el('span',{class:'nt-ic'},[ic(IC[k]||'M12 3v18 M3 12h18',big?24:22)]),el('span',{class:'nt-tx',text:m[lang]}),big?el('span',{class:'nt-sub',text:m.models.slice(0,4).map(function(o){return o[lang];}).join(' · ')}):null,n?el('span',{class:'nt-n',text:num(n)}):null]));});
  return g;}
 function oneChips(F){var cnt=oneCounts(F),cur=S.f[F.k]||'',items=F.opts(S.f).map(function(o,i){return {k:o[0],l:o[1],n:cnt[o[0]]||0,i:i};});
  items.sort(function(a,b){return (b.n-a.n)||(a.i-b.i);});
  var r=el('div',{class:'chiprow drill',role:'group','aria-label':t(F.title)});
- r.appendChild(el('button',{type:'button',class:'chip','aria-pressed':String(!cur),onclick:function(){delete S.f[F.k];renderHome();}},[t(F.any)]));
- items.forEach(function(it){r.appendChild(el('button',{type:'button',class:'chip','aria-pressed':String(cur===it.k),onclick:function(){if(cur===it.k)delete S.f[F.k];else S.f[F.k]=it.k;renderHome();}},[el('span',{text:it.l}),it.n?el('span',{class:'chip-n',text:num(it.n)}):null]));});
+ r.appendChild(el('button',{type:'button',class:'chip','aria-pressed':String(!cur),onclick:function(){delete S.f[F.k];renderHome();shopAfterPick();}},[t(F.any)]));
+ items.forEach(function(it){r.appendChild(el('button',{type:'button',class:'chip','aria-pressed':String(cur===it.k),onclick:function(){if(cur===it.k)delete S.f[F.k];else S.f[F.k]=it.k;renderHome();shopAfterPick();}},[el('span',{text:it.l}),it.n?el('span',{class:'chip-n',text:num(it.n)}):null]));});
  return srow(r);}
 function groupHead(F,C,IC){var k=S.f[F.k],m=C.map[k];return el('div',{class:'nt-head'},[el('button',{type:'button',class:'btn btn-sm nt-back',onclick:function(){F.keys.forEach(function(z){delete S.f[z];});renderHome();}},[backIcon(),el('span',{text:t(F.any)})]),m?el('b',{class:'nt-cur'},[el('span',{class:'nt-ic sm'},[ic(IC[k],16)]),el('span',{text:m[lang]})]):null]);}
 function buildShop(){var C={},Y=new Date().getFullYear();
@@ -3481,6 +3601,22 @@ function buildShop(){var C={},Y=new Date().getFullYear();
  C.services=mk({bar:['group','mode','where','loc','price'],top:[['shGSvc',[sgroup,ssub]],price],groups:[['wFgBasic',[svf.mode,svf.prov,svf.where,svf.cover,svf.exp,svf.perks]],adG],
   fx:[sgroup,ssub,svf.mode,svf.prov,svf.where,svf.cover,svf.exp,svf.perks,price,sale,loc,age,photo],
   drill:function(){return S.f.group?[groupHead(sgroup,SVC_C,SVC_IC),oneChips(ssub)]:[el('p',{class:'gt-intro',text:t('svcIntro')}),tileDrill(sgroup,SVC_C,SVC_IC,true)];},bands:function(){return BANDS.services;}});
+ /* car spare parts */
+ var pgroup=FOne('group','f_pgroup',function(){return PART_C.keys.map(function(k){return [k,PART_C.map[k][lang]];});},{also:['part'],any:'pAllGroups',val:function(x){return sp(x).group||'';},lbl:function(v){return bName(PART_C,v);},icon:function(v){return PART_IC[v]||null;},onSet:function(f){delete f.part;}});
+ var ppart=FOne('part','f_ppart',function(f){var src=f&&f.group&&PART_C.map[f.group]?[PART_C.map[f.group]]:PART_C.keys.map(function(k){return PART_C.map[k];});var out=[];src.forEach(function(m){m.models.forEach(function(o){out.push([o.k,o[lang]]);});});return out;},{any:'sAllSubs',val:function(x){return sp(x).part||'';},lbl:function(v){return subName(PART_C,v);}});
+ var pmk=FCasc('pmake','f_fitMake',[
+  {k:'make',title:'f_fitMake',any:'anyMake',val:function(x){return makeKey(sp(x).make);},name:function(f){return makeName(f.make);},opts:function(){var all=bList(CARS_C),top=CAR_TOP.filter(function(k){return !!CARS_C.map[k];});return top.concat(all.filter(function(k){return top.indexOf(k)<0;})).map(function(k){return [k,CARS_C.map[k][lang]];});}},
+  {k:'model',title:'f_fitModel',any:'anyClass',val:function(x){var s=sp(x);return modelKey(s.make,s.model);},name:function(f){return modelName(f.make,f.model);},opts:function(f){var m=CARS_C.map[f.make];return m?m.models.filter(function(o){return o.k!=='other';}).map(function(o){return [o.k,o[lang]];}):[];}}],{C:CARS_C,logos:true,top:CAR_TOP});
+ var ptf={cond:FOpt('pcond','partCond','f_partCond'),origin:FOpt('origin','partOrigin','f_partOrigin',{pfx:true}),war:FOpt('warranty','pwarranty','f_pwarranty',{pfx:true})};
+ C.parts=mk({bar:['group','pmake','pcond','price','sale'],top:[['shGPart2',[pgroup,ppart]],['f_fitMake',[pmk]],price],groups:[['wFgBasic',[ptf.cond,ptf.origin,ptf.war]],adG],
+  fx:[pgroup,ppart,pmk,ptf.cond,ptf.origin,ptf.war,price,sale,loc,age,photo],drill:function(){return S.f.group?[groupHead(pgroup,PART_C,PART_IC),oneChips(ppart)].concat(cascDrill(pmk,0,2)):[tileDrill(pgroup,PART_C,PART_IC,false)];},bands:function(){return BANDS.parts;}});
+ /* jobs and freelance */
+ var jfield=FOne('field','f_jfield',function(){return JOB_C.keys.map(function(k){return [k,JOB_C.map[k][lang]];});},{also:['role'],any:'jAllFields',val:function(x){return sp(x).field||'';},lbl:function(v){return bName(JOB_C,v);},icon:function(v){return JOB_IC[v]||null;},onSet:function(f){delete f.role;}});
+ var jrole=FOne('role','f_jrole',function(f){var src=f&&f.field&&JOB_C.map[f.field]?[JOB_C.map[f.field]]:JOB_C.keys.map(function(k){return JOB_C.map[k];});var out=[];src.forEach(function(m){m.models.forEach(function(o){out.push([o.k,o[lang]]);});});return out;},{any:'sAllSubs',val:function(x){return sp(x).role||'';},lbl:function(v){return subName(JOB_C,v);}});
+ var jbf={mode:FOne('mode','f_jobMode',optsOf('jobMode'),{any:'all',val:function(x){return keyOf('jobMode',sp(x).mode)||'hiring';}}),type:FOpt('jtype','jobType','f_jtype'),exp:FOpt('jexp','jobExp','f_jexp'),edu:FOpt('jedu','jobEdu','f_jedu',{pfx:true}),perks:FOpt('perks','jobPerks','f_jperks',{all:true,val:function(x){return sp(x).perks||[];}})};
+ C.jobs=mk({bar:['mode','field','jtype','loc','price'],top:[['shGJob',[jfield,jrole]],price],groups:[['wFgBasic',[jbf.mode,jbf.type,jbf.exp,jbf.edu,jbf.perks]],adG],
+  fx:[jfield,jrole,jbf.mode,jbf.type,jbf.exp,jbf.edu,jbf.perks,price,sale,loc,age,photo],
+  drill:function(){return S.f.field?[groupHead(jfield,JOB_C,JOB_IC),oneChips(jrole)]:[el('p',{class:'nt-intro',text:t('jobIntro')}),tileDrill(jfield,JOB_C,JOB_IC,true)];},bands:function(){return BANDS.jobs;}});
  /* everything else: where and how much */
  ['electronics','furniture'].forEach(function(k){C[k]=mk({bar:['loc','price','sale'],top:[price],groups:[adG],fx:[price,sale,loc,age,photo],drill:locDrill,bands:function(){return k==='services'?BANDS.services:BANDS.goods;}});});
  C.all=mk({bar:['cat','loc','price','sale'],top:[price],groups:[adG],fx:[price,sale,loc,age,photo],drill:locDrill,bands:function(){return BANDS.all;}});
@@ -3517,7 +3653,7 @@ function shopBar(c){var cfg=shopCfg(c),n=shopCount(c);
   el('button',{type:'button',class:'chip wf-btn','data-q':'filters','aria-haspopup':'dialog','aria-label':t('wFilters')+(n?' ('+num(n)+')':''),onclick:openFilters},[ic('sliders',16),el('span',{text:t('wFilters')}),n?el('span',{class:'wf-n','aria-hidden':'true',text:num(n)}):null])]);
  cfg.bar.forEach(function(id){var P=pillInfo(c,id);bar.appendChild(el('button',{type:'button',class:'chip wq','data-q':id,'data-on':P.on?'1':null,'aria-haspopup':'dialog','aria-label':P.title+': '+(P.on?P.txt:t('cs_any')),onclick:function(){openQuick(id);}},[id==='sale'&&S.type==='auction'?ic('gavel',14):null,el('span',{text:P.on?P.txt:P.title}),ic('chevL',14,'wq-ch')]));});
  return srow(bar);}
-function drillEl(F,i,L,items,cur){function pick(v){F.levels.slice(i).forEach(function(z){delete S.f[z.k];});if(v)S.f[L.k]=v;renderHome();}
+function drillEl(F,i,L,items,cur){function pick(v){F.levels.slice(i).forEach(function(z){delete S.f[z.k];});if(v)S.f[L.k]=v;renderHome();shopAfterPick();}
  if(L.sel)return csSel(t(L.title),cur,[['',t(L.any)]].concat(items.map(function(it){return [it.k,it.l+(it.n?' ('+num(it.n)+')':'')];})),pick);
  var r=el('div',{class:'chiprow drill',role:'group','aria-label':t(L.title)});
  r.appendChild(el('button',{type:'button',class:'chip','aria-pressed':String(!cur),onclick:function(){pick('');}},[t(L.any)]));
@@ -3907,7 +4043,13 @@ var GOOGLE_D='M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.14
 function brandLogo(dd){var ns='http://www.w3.org/2000/svg';var s=document.createElementNS(ns,'svg');s.setAttribute('width','18');s.setAttribute('height','18');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('fill','currentColor');s.setAttribute('aria-hidden','true');var p=document.createElementNS(ns,'path');p.setAttribute('d',dd);s.appendChild(p);return s;}
 function payMark(m){return el('span',{class:'pay-mark',dir:'ltr'},[m==='apple'?appleLogo():brandLogo(GOOGLE_D),el('span',{text:'Pay'})]);}
 function appleLogo(){var ns='http://www.w3.org/2000/svg';var s=document.createElementNS(ns,'svg');s.setAttribute('width','20');s.setAttribute('height','20');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('fill','currentColor');s.setAttribute('aria-hidden','true');var p=document.createElementNS(ns,'path');p.setAttribute('d','M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701');s.appendChild(p);return s;}
-function authButtons(onPick){return el('div',{class:'authbtns'},[el('button',{type:'button',class:'btn btn-apple btn-block btn-lg brand-btn',onclick:function(){onPick('apple');}},[appleLogo(),t('withApple')]),el('button',{type:'button',class:'btn btn-google btn-block btn-lg brand-btn',onclick:function(){onPick('google');}},[brandLogo(GOOGLE_D),t('withGoogle')]),el('button',{type:'button',class:'btn btn-block btn-lg',onclick:function(){onPick('phone');}},[ic('phone',18),t('withPhone')])]);}
+function lastAuth(){try{return localStorage.getItem('nilesale.lastAuth')||'';}catch(e){return '';}}
+function setLastAuth(m){try{localStorage.setItem('nilesale.lastAuth',m);}catch(e){}}
+function lastBadge(m){return lastAuth()===m?el('span',{class:'last-b',text:t('lastUsed')}):null;}
+function authButtons(onPick){var bs=[['google',el('button',{type:'button',class:'btn btn-google btn-block btn-lg brand-btn',onclick:function(){onPick('google');}},[brandLogo(GOOGLE_D),t('withGoogle'),lastBadge('google')])],
+ ['apple',el('button',{type:'button',class:'btn btn-apple btn-block btn-lg brand-btn',onclick:function(){onPick('apple');}},[appleLogo(),t('withApple'),lastBadge('apple')])],
+ ['phone',el('button',{type:'button',class:'btn btn-block btn-lg brand-btn',onclick:function(){onPick('phone');}},[ic('phone',18),t('withPhone'),lastBadge('phone')])]],la=lastAuth();
+ bs.sort(function(x,y){return (y[0]===la)-(x[0]===la);});return el('div',{class:'authbtns'},bs.map(function(b){return b[1];}));}
 function renderAccount(){var box=V.account;box.textContent='';box.appendChild(el('h1',{class:'ptitle',text:t('accountT')}));
  if(isSignedIn()){var a=account;var contactTxt=a.method==='email'?a.email:a.method==='phone'?(a.phoneLocal||a.phone):(a.email||'');var phoneTxt=a.method!=='phone'&&a.phoneLocal?a.phoneLocal:'';
   box.appendChild(el('div',{class:'panel prof-card'},[el('div',{class:'prof'},[el('div',{class:'avatar','aria-hidden':'true',text:initial(a.name)}),el('div',{class:'pcol'},[el('b',{class:'pname',text:a.name}),T['verified_'+a.method]?el('span',{class:'vbadge'},[ic('shield',14),t('verified_'+a.method)]):null,contactTxt?el('span',{class:'small',dir:'ltr',text:a.method==='phone'?dg(contactTxt):contactTxt}):null,phoneTxt?el('span',{class:'small',dir:'ltr',text:dg(phoneTxt)}):null])]),el('div',{class:'pcol'},[el('button',{type:'button',class:'btn btn-sm',onclick:function(){openProfile(null);},text:t('editInfo')}),el('button',{type:'button',class:'btn btn-sm',onclick:signOut,text:t('signOut')})])]));
@@ -3954,19 +4096,19 @@ async function saveProfile(name,phone,phoneLocal){var a=authFlow;if(!db||!uid||a
 function openAuth(after,pick,reason){payFlow={};authFlow={step:'choose',after:after||null,reason:reason||'',err:'',busy:false};if(pick)pickAuth(authFlow,pick,true);renderAuth();try{if(!dlg.open)dlg.showModal();}catch(e){dlg.setAttribute('open','');}}
 function realAuthOn(p){return !!(window.__nsAuth&&window.__nsAuth.has&&window.__nsAuth.has(p));}
 function startRealAuth(a,p){a.err='';a.busy=true;var pend={};if(S.view==='post'&&draft){try{var dd=JSON.parse(JSON.stringify(draft));delete dd.busy;delete dd.err;dd.uploading=0;pend.draft=dd;}catch(e){}}toast(t('authRedirect'));window.__nsAuth.signIn(p,pend).catch(function(e){a.busy=false;if(!(e&&e.code==='cancel'))a.err=t('authFail');renderAuth();});}
-function pickAuth(a,p,silent){a.err='';if(p==='phone')a.step='phone';else if(realAuthOn(p)){startRealAuth(a,p);return;}else{a.step='social';a.provider=p;}if(!silent)renderAuth();}
+function pickAuth(a,p,silent){a.err='';if(p==='apple'&&!realAuthOn('apple')){a.step='appleSoon';if(!silent)renderAuth();return;}if(p==='phone')a.step='phone';else if(realAuthOn(p)){startRealAuth(a,p);return;}else{a.step='social';a.provider=p;}if(!silent)renderAuth();}
 function closeAuth(){closeDlg();}
 dlg.addEventListener('close',function(){authFlow={};payFlow={};priceFlow={};wFlow={};});
 dlg.addEventListener('click',function(e){if(e.target===dlg)closeAuth();});
 function newCode(){return String(Math.floor(100000+Math.random()*900000));}
 function errEl(a){return a.err?el('p',{class:'err',role:'alert',text:a.err}):null;}
 function renderAuth(){var a=authFlow,box=$('dlgIn');if(!a||!a.step)return;box.textContent='';
- var titleKey={choose:'signInT',phone:'phoneT',code:'codeT',name:'nameT',profile:'profileT',pkOffer:'pkOfferT'}[a.step]||(a.provider==='google'?'googleT':'appleT');
+ var titleKey={choose:'signInT',phone:'phoneT',code:'codeT',name:'nameT',profile:'profileT',pkOffer:'pkOfferT',appleSoon:'appleSoonT'}[a.step]||(a.provider==='google'?'googleT':'appleT');
  var backTo=a.step==='code'?'phone':'choose';
  box.appendChild(el('div',{class:'sheet-head'},[a.step!=='choose'&&a.step!=='profile'&&a.step!=='pkOffer'?el('button',{type:'button',class:'btn btn-icon','aria-label':t('back'),onclick:function(){a.err='';a.step=backTo;renderAuth();}},[backIcon()]):el('span',{class:'spacer'}),el('h2',{id:'dlgT',text:t(titleKey)}),el('button',{type:'button',class:'btn btn-icon','aria-label':t('close'),onclick:closeAuth},[ic('close',18)])]));
  if(!db||!uid){box.appendChild(el('p',{text:t('noIdentity')}));return;}
  if(a.reason==='publish'&&a.step==='choose')box.appendChild(el('p',{class:'ready'},[ic('check',18),el('span',{text:t('readyToPublish')})]));
- if(a.step==='choose'){box.appendChild(el('p',{class:'muted',text:t('signInP')}));if(pkOk())box.appendChild(el('button',{type:'button',class:'btn btn-primary btn-block btn-lg pk-btn',disabled:a.busy,onclick:function(){startPasskey(a);}},[ic('finger',20),t('withPasskey')]));if(a.err)box.appendChild(el('p',{class:'err',role:'alert',text:a.err}));box.appendChild(authButtons(function(p){pickAuth(a,p);}));box.appendChild(el('p',{class:'demo',text:t(realAuthOn('google')&&realAuthOn('apple')?'authRealBoth':realAuthOn('google')?'authRealGoogle':'demoAuth')}));box.appendChild(el('p',{class:'small',text:t('terms')}));return;}
+ if(a.step==='choose'){box.appendChild(el('p',{class:'muted',text:t('signInP')}));if(pkOk())box.appendChild(el('button',{type:'button',class:'btn btn-primary btn-block btn-lg pk-btn',disabled:a.busy,onclick:function(){startPasskey(a);}},[ic('finger',20),t('withPasskey'),lastBadge('passkey')]));if(a.err)box.appendChild(el('p',{class:'err',role:'alert',text:a.err}));box.appendChild(authButtons(function(p){pickAuth(a,p);}));box.appendChild(el('p',{class:'demo',text:t(realAuthOn('google')&&realAuthOn('apple')?'authRealBoth':realAuthOn('google')?'authRealGoogle':'demoAuth')}));box.appendChild(el('p',{class:'small',text:t('terms')}));return;}
  var form=el('form',{class:'sheet-form',novalidate:true}),focusEl=null;
  if(a.step==='social'){
   box.appendChild(el('p',{class:'muted',text:t('socialP',{p:t('p_'+a.provider)})}));
@@ -4008,6 +4150,12 @@ function renderAuth(){var a=authFlow,box=$('dlgIn');if(!a||!a.step)return;box.te
   form.appendChild(el('button',{type:'submit',class:'btn btn-primary btn-block btn-lg',disabled:a.busy,text:t('continueBtn')}));
   form.addEventListener('submit',function(ev){ev.preventDefault();var v=nn.value.trim();a.name=nn.value;if(!v){a.err=t('nameErr');renderAuth();return;}finishAuth(v);});
   focusEl=nn;}
+ if(a.step==='appleSoon'){
+  box.appendChild(el('div',{class:'pk-hero','aria-hidden':'true'},[appleLogo()]));
+  box.appendChild(el('p',{class:'muted',text:t('appleSoonP')}));
+  if(realAuthOn('google'))box.appendChild(el('button',{type:'button',class:'btn btn-google btn-block btn-lg brand-btn',onclick:function(){pickAuth(a,'google');}},[brandLogo(GOOGLE_D),t('withGoogle')]));
+  if(pkOk())box.appendChild(el('button',{type:'button',class:'btn btn-primary btn-block btn-lg pk-btn',onclick:function(){startPasskey(a);}},[ic('finger',20),t('withPasskey')]));
+  return;}
  if(a.step==='pkOffer'){
   box.appendChild(el('div',{class:'pk-hero','aria-hidden':'true'},[ic('finger',56)]));
   box.appendChild(el('p',{class:'muted',text:t('pkOfferP')}));
@@ -4084,7 +4232,7 @@ async function applyBoost(p){var x=findListing(p.listingId);if(!db||!x){closeDlg
  catch(e){if(payFlow===p){p.step='method';p.err=t('boostFail');renderPay();}}}
 async function finishAuth(name){var a=authFlow;if(!db||!uid||a.busy)return;a.busy=true;var now=Date.now();var prev=account||{};
  var acc={method:a.method,name:String(name).slice(0,60),signedIn:true,createdAt:prev.createdAt||now,email:a.method==='email'?a.email:(prev.email||''),phone:a.method==='phone'?a.phone:(prev.phone||''),phoneLocal:a.method==='phone'?a.phoneLocal:(prev.phoneLocal||'')};
- var joined=(profiles[uid]&&profiles[uid].joinedAt)||prev.createdAt||now;if(a.method==='phone'&&a.phone)rememberPhone(a.phone,acc.name);
+ var joined=(profiles[uid]&&profiles[uid].joinedAt)||prev.createdAt||now;if(a.method==='phone'&&a.phone){rememberPhone(a.phone,acc.name);setLastAuth('phone');}
  try{await db.doc('data/users/'+uid+'/account').set(acc);await db.doc('profiles/'+uid).set({name:acc.name,method:a.method,joinedAt:joined});account=acc;profiles[uid]={name:acc.name,method:a.method,joinedAt:joined};var after=a.after;closeAuth();toast(t('welcome',{name:acc.name}));updateHeader();render();if(after)after();}
  catch(e){a.busy=false;a.err=t('authFail');renderAuth();}}
 async function signOut(){if(!db||!uid||!account)return;if(window.__nsAuth&&window.__nsAuth.enabled){try{await window.__nsAuth.signOut();}catch(e){}}try{await db.doc('data/users/'+uid+'/account').update({signedIn:false});}catch(e){}account=Object.assign({},account,{signedIn:false});updateHeader();toast(t('signedOut'));render();}
@@ -4131,9 +4279,9 @@ function step1(b,d){
  b.appendChild(seg([['fixed',t('fixed')],['auction',t('auction')]],d.type,function(v){var y=window.scrollY;d.type=v;renderPost();try{window.scrollTo(0,y);}catch(e){}},t('adType')));
  if(d.type==='auction')b.appendChild(el('p',{class:'note',text:t('auctionNote')}));
  b.appendChild(el('span',{class:'lbl',text:t('chooseCat')}));
- var g=el('div',{class:'cats pick',role:'group','aria-label':t('chooseCat')});
- CATS.forEach(function(c){g.appendChild(el('button',{type:'button',class:'cat','aria-pressed':String(d.cat===c.k),onclick:function(){var y=window.scrollY;if(!d.cat)d._pop=true;if(d.cat!==c.k){d.cat=c.k;applyDefaults(d);}d.err='';renderPost();try{window.scrollTo(0,y);}catch(e){}var nb=document.querySelector('.wiz-nav.sticky .btn-primary');if(nb)try{nb.focus({preventScroll:true});}catch(e){}}},[el('span',{class:'ci'},[ic(c.d,26)]),el('span',{text:c[lang]})]));});
- b.appendChild(g);}
+ CAT_GROUPS.forEach(function(gr){b.appendChild(el('span',{class:'catg-h sm',text:gr[lang==='ar'?1:2]}));var g=el('div',{class:'cats pick',role:'group','aria-label':gr[lang==='ar'?1:2]});
+ gr[3].forEach(function(k){var c=CAT[k];if(!c)return;g.appendChild(el('button',{type:'button',class:'cat','aria-pressed':String(d.cat===c.k),onclick:function(){var y=window.scrollY;if(!d.cat)d._pop=true;if(d.cat!==c.k){d.cat=c.k;applyDefaults(d);}d.err='';renderPost();try{window.scrollTo(0,y);}catch(e){}var nb=document.querySelector('.wiz-nav.sticky .btn-primary');if(nb)try{nb.focus({preventScroll:true});}catch(e){}}},[el('span',{class:'ci'},[ic(c.d,26)]),el('span',{text:c[lang]})]));});
+ b.appendChild(g);});}
 function refreshAutoTitle(d){var i=$('fTitle');if(i&&(FIELDS[d.cat]||[]).length)i.placeholder=autoTitle(d.cat,d.spec)||t('titlePh');}
 function previewPlate(sp){return {type:sp.type,letters:[sp.l1,sp.l2,sp.l3].filter(Boolean),num:digitsOnly(sp.num).slice(0,4)||'0'};}
 function updatePlatePrev(d){var b=$('platePrev');if(b){b.textContent='';b.appendChild(plateEl(previewPlate(d.spec)));}}
@@ -4194,11 +4342,11 @@ function fieldEl(f,d){if(f.fold)return foldEl(f,d);if(f.kind==='wsub')return el(
   wrapB.appendChild(tg);
   var sbB=el('select',{class:'inp',id:id});bList(Cb,true).forEach(function(k){sbB.appendChild(el('option',{value:k,text:Cb.map[k][lang]}));});sbB.appendChild(el('option',{value:'other',text:t('otherBrand')}));sbB.value=sp[f.k]||'';sbB.addEventListener('change',function(){pickB(sbB.value);});
   wrapB.appendChild(el('label',{class:'small wt-alll',for:id,text:t('wtAllBrandsL')}));wrapB.appendChild(sbB);return wrapB;}
- if(f.kind==='gtiles'){var Cg=dsOf(f.ds),IG=f.ds==='svc'?SVC_IC:APPL_IC,wrapG=el('div',{class:'field wide'},[el('span',{class:'lbl',id:id+'_l',text:label})]),gg=el('div',{class:'nt-tiles',role:'radiogroup','aria-labelledby':id+'_l'});
-  Cg.keys.forEach(function(k){var on=sp[f.k]===k;gg.appendChild(el('button',{type:'button',role:'radio','aria-checked':String(on),class:'nt-tile',id:on?id:null,onclick:function(){if(sp[f.k]===k)return;var y=window.scrollY;sp[f.k]=k;var mm=Cg.map[k];if(f.sub){sp[f.sub]=mm&&mm.models[0]?mm.models[0].k:'other';sp[f.sub+'Other']='';}renderPost();try{window.scrollTo(0,y);}catch(e){}}},[el('span',{class:'nt-ic'},[ic(IG[k]||'M12 3v18 M3 12h18',22)]),el('span',{class:'nt-tx',text:Cg.map[k][lang]})]));});
+ if(f.kind==='gtiles'){var Cg=dsOf(f.ds),IG=DS_IC[f.ds]||{},wrapG=el('div',{class:'field wide'},[el('span',{class:'lbl',id:id+'_l',text:label})]),gg=el('div',{class:'nt-tiles',role:'radiogroup','aria-labelledby':id+'_l'});
+  Cg.keys.forEach(function(k){var on=sp[f.k]===k;gg.appendChild(el('button',{type:'button',role:'radio','aria-checked':String(on),class:'nt-tile',id:on?id:null,onclick:function(){if(sp[f.k]===k)return;var y=window.scrollY;sp[f.k]=k;var mm=Cg.map[k];if(f.sub){sp[f.sub]=mm&&mm.models[0]?mm.models[0].k:'other';sp[f.sub+'Other']='';}renderPost();try{window.scrollTo(0,y);}catch(e){}if(f.sub)wizGo('sp_'+f.sub+'_l');}},[el('span',{class:'nt-ic'},[ic(IG[k]||'M12 3v18 M3 12h18',22)]),el('span',{class:'nt-tx',text:Cg.map[k][lang]})]));});
   wrapG.appendChild(gg);return wrapG;}
  if(f.kind==='model'&&f.chips){var Cm=dsOf(f.ds),mkc=Cm.map[sp[f.bf||'make']],wrapM=el('div',{class:'field wide'},[el('span',{class:'lbl',id:id+'_l',text:label})]),cr=el('div',{class:'chips',role:'group','aria-labelledby':id+'_l'});
-  ((mkc&&mkc.models)||[]).concat([{k:'other',ar:t('other'),en:t('other')}]).forEach(function(m){cr.appendChild(el('button',{type:'button',class:'chip',id:m.k===sp[f.k]?id:null,'aria-pressed':String(sp[f.k]===m.k),onclick:function(){if(sp[f.k]===m.k)return;var y=window.scrollY;sp[f.k]=m.k;if(f.ds==='watch'){sp.ref='';sp.refOther='';}renderPost();try{window.scrollTo(0,y);}catch(e){}}},[m[lang]]));});
+  ((mkc&&mkc.models)||[]).concat([{k:'other',ar:t('other'),en:t('other')}]).forEach(function(m){cr.appendChild(el('button',{type:'button',class:'chip',id:m.k===sp[f.k]?id:null,'aria-pressed':String(sp[f.k]===m.k),onclick:function(){if(sp[f.k]===m.k)return;var y=window.scrollY;sp[f.k]=m.k;if(f.ds==='watch'){sp.ref='';sp.refOther='';}renderPost();try{window.scrollTo(0,y);}catch(e){}wizGoNext('sp_'+f.k+'_l');}},[m[lang]]));});
   wrapM.appendChild(cr);return wrapM;}
  if(f.kind==='sel'&&f.cards){var wrapC=el('div',{class:'field wide'},[el('span',{class:'lbl',id:id+'_l',text:label})]),rc=el('div',{class:'rcards'+(f.cards==='sm'?' sm':''),role:'radiogroup','aria-labelledby':id+'_l'});
   OPT[f.opts].forEach(function(o){var on=keyOf(f.opts,sp[f.k])===o.k,dsc=f.descs&&f.descs[o.k];rc.appendChild(el('button',{type:'button',role:'radio','aria-checked':String(on),class:'rcard','data-k':o.k,id:on?id:null,onclick:function(){sp[f.k]=o.k;if(f.rerender){renderPost();return;}Array.prototype.forEach.call(rc.children,function(bt){bt.setAttribute('aria-checked',String(bt.getAttribute('data-k')===o.k));});after();}},[el('b',{text:o[lang]}),dsc?el('span',{class:'small',text:dsc[lang==='ar'?0:1]}):null]));});
@@ -4235,7 +4383,7 @@ function fieldEl(f,d){if(f.fold)return foldEl(f,d);if(f.kind==='wsub')return el(
    if(f.kind==='trim'&&(s.value==='other'||prev==='other')){renderPost();return;}
    if(f.rerender){renderPost();return;}
    after();});
-  var lmk=(f.kind==='make'&&((!f.ds&&d.cat==='cars')||f.ds==='moto'))?logoMiniKey(sp[f.k],'lmk lmk-lg'):null;
+  var lmk=(f.kind==='make'&&((!f.ds&&d.cat==='cars')||f.ds==='moto'||f.ds==='car'))?logoMiniKey(sp[f.k],'lmk lmk-lg'):null;
   w.appendChild(lmk?el('div',{class:'mksel'},[lmk,s]):s);
   if(f.hint)w.appendChild(el('span',{class:'hint',text:t(f.hint)}));
   return w;}
@@ -4283,7 +4431,7 @@ function step2(b,d){
  if(defs.length){var g=el('div',{class:'fgrid'}),fg=null;defs.forEach(function(f){if(f.show&&!f.show(d.spec))return;var fe=fieldEl(f,d);if(f.fold){if(!fg){fg=el('div',{class:'field wide fold-group'});g.appendChild(fg);}fg.appendChild(fe);}else{fg=null;g.appendChild(fe);}});b.appendChild(g);}
  var structured=defs.length>0;
  var ti=el('input',{class:'inp',id:'fTitle',type:'text',maxlength:'80',value:d.title,placeholder:structured?(autoTitle(d.cat,d.spec)||t('titlePh')):t('titlePh')});ti.addEventListener('input',function(){d.title=ti.value;});
- var ta=el('textarea',{class:'inp',id:'fDesc',maxlength:'1500',placeholder:t(d.cat==='services'?(keyOf('svcMode',d.spec.mode)==='want'?'descPhWant':'descPhSvc'):'descPh')});ta.value=d.desc;ta.addEventListener('input',function(){d.desc=ta.value;});
+ var ta=el('textarea',{class:'inp',id:'fDesc',maxlength:'1500',placeholder:t(d.cat==='services'?(keyOf('svcMode',d.spec.mode)==='want'?'descPhWant':'descPhSvc'):d.cat==='jobs'?'descPhJob_'+(keyOf('jobMode',d.spec.mode)||'hiring'):'descPh')});ta.value=d.desc;ta.addEventListener('input',function(){d.desc=ta.value;});
  b.appendChild(el('div',{class:'fgrid'},[
   el('div',{class:'field wide'},[el('label',{for:'fTitle',text:t('titleL')+(structured?' '+t('optional'):'')}),ti,structured?el('span',{class:'hint',text:t('titleAuto')}):null]),
   el('div',{class:'field wide'},[el('label',{for:'fDesc',text:t('descL')}),ta])
@@ -4294,6 +4442,7 @@ function step3(b,d){var g=el('div',{class:'fgrid'});
  var rent=RE_CATS.indexOf(d.cat)>=0&&d.spec.purpose==='rent';
  var pl=d.type==='auction'?t('openL'):rent?t('rentL',{p:lab('period',d.spec.period)}):t('priceL');
  if(d.cat==='services'&&d.type!=='auction'){var su0=lab('svcUnit',d.spec.unit);pl=t(keyOf('svcMode',d.spec.mode)==='want'?'svcBudgetL':'svcPriceL',{u:su0});if(keyOf('svcUnit',d.spec.unit)==='deal')pl=t(keyOf('svcMode',d.spec.mode)==='want'?'svcBudget':'priceL')+' '+t('optional');}
+ if(d.cat==='jobs'&&d.type!=='auction'){var jm0=keyOf('jobMode',d.spec.mode),ju0=lab('jobUnit',d.spec.unit);pl=jm0==='freelance'?t('svcPriceL',{u:ju0}):t(jm0==='seeking'?'jobAskL':'jobSalaryL',{u:ju0});if(keyOf('jobUnit',d.spec.unit)==='deal')pl=t(jm0==='freelance'?'priceL':'jobSalary')+' '+t('optional');}
  var pv=el('div',{class:'pv'});
  function upd(){pv.textContent='';var x=buildDoc(d);x.id='__preview';pv.appendChild(listRow(x,true));}
  g.appendChild(inputField('fPrice',pl,d.price,{inputmode:'numeric',placeholder:t('pricePh')},function(v){d.price=v;upd();if(d._pm)d._pm();}));
@@ -4321,6 +4470,9 @@ function validate(d,step){
   if(d.cat==='moto'&&sp.model==='other'&&!String(sp.modelOther||'').trim())return t('errModel');
   if(d.cat==='appliances'&&sp.brand==='other'&&!String(sp.brandOther||'').trim())return t('errBrandOther');
   if(d.cat==='services'&&sp.sub==='other'&&!String(sp.subOther||'').trim())return t('errSvcSub');
+  if(d.cat==='parts'&&sp.part==='other'&&!String(sp.partOther||'').trim())return t('errPart');
+  if(d.cat==='parts'&&sp.model==='other'&&!String(sp.modelOther||'').trim())return t('errClass');
+  if(d.cat==='jobs'&&sp.role==='other'&&!String(sp.roleOther||'').trim())return t('errRole');
   if(d.cat==='phones'){if(sp.model==='other'&&!String(sp.modelOther||'').trim())return t('errModel');var bt=digitsOnly(sp.battery);if(keyOf('pcond',sp.cond)!=='new'&&bt!==''&&(Number(bt)<1||Number(bt)>100))return t('errBattery');}
   if((d.cat==='realestate'||d.cat==='commercial'||(d.cat==='land'&&!isAgri(sp)))&&!Number(digitsOnly(sp.area)))return t('errArea');
   if(d.cat==='land'&&isAgri(sp)&&!Number(digitsOnly(sp.feddan))&&!Number(keyOf('kirat',sp.kirat)))return t('errFeddan');
@@ -4328,7 +4480,7 @@ function validate(d,step){
   if(d.cat==='numbers'&&!/^01[0125]\d{8}$/.test(digitsOnly(sp.num)))return t('errMob');
   if(!(FIELDS[d.cat]||[]).length&&String(d.title||'').trim().length<3)return t('errTitle');
   return '';}
- if(!Number(digitsOnly(d.price))&&!(d.cat==='services'&&d.type!=='auction'&&keyOf('svcUnit',d.spec.unit)==='deal'))return t('errPrice');
+ if(!Number(digitsOnly(d.price))&&!(d.cat==='services'&&d.type!=='auction'&&keyOf('svcUnit',d.spec.unit)==='deal')&&!(d.cat==='jobs'&&d.type!=='auction'&&keyOf('jobUnit',d.spec.unit)==='deal'))return t('errPrice');
  if(RE_CATS.indexOf(d.cat)>=0&&(LOC[d.city]||[]).length&&!d.dist)return t('errDist');
  if(!phoneParse(d.phoneCc||'+20',d.phone))return phoneErrFor(d.phoneCc||'+20');
  return '';}
@@ -4342,6 +4494,8 @@ function buildDoc(d){var sp=JSON.parse(JSON.stringify(d.spec||{}));
  else if(d.cat==='computers'){if(sp.type==='other')sp.type=String(sp.typeOther||'').trim();delete sp.typeOther;if(sp.brand==='other')sp.brand=String(sp.brandOther||'').trim();delete sp.brandOther;if(sp.model==='other')sp.model=String(sp.modelOther||'').trim();delete sp.modelOther;if(keyOf('pcond',sp.cond)==='new')delete sp.cosmetic;if(!pcBig(sp)&&sp.type!=='Memory')delete sp.ram;if(!pcBig(sp)&&sp.type!=='Storage')delete sp.storage;doc.pc=sp;}
  else if(d.cat==='phones'){if(sp.model==='other')sp.model=String(sp.modelOther||'').trim();delete sp.modelOther;var bt=digitsOnly(sp.battery);sp.battery=bt===''?'':Math.min(100,Number(bt));if(keyOf('pcond',sp.cond)==='new'){delete sp.cosmetic;delete sp.battery;delete sp.clean;sp.issues=[];}else if(keyOf('clean',sp.clean)!=='issues'){sp.issues=[];}doc.dev=sp;}
  else if(d.cat==='watches'){var wIt0=priceItem('watches',sp,d.title||autoTitle('watches',sp),d.desc),wEs0=wIt0?priceMem[estId(wIt0)]:null,wRe0=wEs0?Math.round(Number((wEs0.egp||{}).retail)||0):0,wRu0=wEs0?Math.round(Number((wEs0.usd||{}).retail)||0):0;if(wRe0>0)sp.retail={egp:wRe0,usd:wRu0>0?wRu0:0,at:Date.now()};else delete sp.retail;var wty=(sp._typesTouched&&Array.isArray(sp.types))?sp.types.filter(function(k,i,a){return WT_TORDER.indexOf(k)>=0&&a.indexOf(k)===i;}):wInferTypes(sp);sp.types=wty;delete sp._typesTouched;delete sp._typesSig;var wOth=sp.brand==='other';if(wOth)sp.brand=String(sp.brandOther||'').trim();delete sp.brandOther;if(wOth||sp.model==='other'){sp.model=String(sp.modelOther||'').trim();sp.ref=String(sp.refOther||'').trim();}else if(sp.ref==='other')sp.ref=String(sp.refOther||'').trim();delete sp.modelOther;delete sp.refOther;delete sp._note;delete sp._find;delete sp._more;delete sp._sum;var wpw=digitsOnly(String(sp.power==null?'':sp.power));sp.power=wpw===''?'':Number(wpw);sp.caliber=latin(String(sp.caliber||'')).trim().slice(0,30);sp.ack=true;sp.ackAt=Date.now();Object.keys(sp).forEach(function(k){if(k.charAt(0)==='_')delete sp[k];});doc.watch=sp;}
+ if(d.cat==='parts'){stripHidden('parts',sp);if(sp.part==='other')sp.part=String(sp.partOther||'').trim();delete sp.partOther;if(sp.model==='other')sp.model=String(sp.modelOther||'').trim();delete sp.modelOther;sp.pno=latin(String(sp.pno||'')).trim().slice(0,40);doc.part=sp;}
+ else if(d.cat==='jobs'){stripHidden('jobs',sp);if(sp.role==='other')sp.role=String(sp.roleOther||'').trim();delete sp.roleOther;doc.job=sp;}
  if(d.cat==='appliances'){stripHidden('appliances',sp);if(sp.brand==='other')sp.brand=String(sp.brandOther||'').trim();delete sp.brandOther;sp.mdl=latin(String(sp.mdl||'')).trim().slice(0,40);doc.appl=sp;}
  else if(d.cat==='services'){stripHidden('services',sp);if(sp.sub==='other')sp.sub=String(sp.subOther||'').trim();delete sp.subOther;doc.svc=sp;}
  if(d.cat==='land'){sp.area=Number(digitsOnly(sp.area))||0;sp.feddan=Number(digitsOnly(sp.feddan))||0;if(isAgri(sp)){delete sp.area;}else{delete sp.feddan;delete sp.kirat;delete sp.water;}if(sp.purpose==='rent'){delete sp.pay;delete sp.reg;}else{delete sp.period;delete sp.deposit;}doc.land=sp;}
