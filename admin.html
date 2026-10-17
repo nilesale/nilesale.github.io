@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>لوحة التحكم · نيل سيل</title>
+<link rel="icon" href="icons/favicon-64.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@700&display=swap">
+<style>
+:root{--bg:#F6F5F2;--surface:#fff;--surface-2:#FAF9F6;--ink:#141414;--muted:#5C5A56;--line:#E4E0D9;--accent:#CE1126;--accent-ink:#fff;--accent-soft:#FBE9EB;--accent-text:#A50E1F;--bar:#111;--bar-ink:#fff;--gold:#C09300;--gold-soft:#F6EBC7;--gold-text:#7A5C00;--ok:#1E7A46;--ok-soft:#E6F4EC;--tile:#EFEBE4;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--surface:#1C1C1C;--surface-2:#222120;--ink:#F1EFEB;--muted:#A8A49D;--line:#2E2D2B;--accent:#E0283D;--accent-soft:#3A1418;--accent-text:#FF8592;--bar:#000;--gold-soft:#3A3214;--gold-text:#E2B93B;--ok:#5CC98A;--ok-soft:#163323;--tile:#262523;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121212;--surface:#1C1C1C;--surface-2:#222120;--ink:#F1EFEB;--muted:#A8A49D;--line:#2E2D2B;--accent:#E0283D;--accent-soft:#3A1418;--accent-text:#FF8592;--bar:#000;--gold-soft:#3A3214;--gold-text:#E2B93B;--ok:#5CC98A;--ok-soft:#163323;--tile:#262523;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 'IBM Plex Sans Arabic','Segoe UI',Tahoma,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{margin:0;line-height:1.3}
+.top{position:sticky;top:0;z-index:10;background:var(--bar);color:var(--bar-ink)}
+.top-in{max-width:72rem;margin:0 auto;padding:.625rem 1rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.top b{font-family:'Reem Kufi',sans-serif;font-size:1.375rem}
+.top .who{margin-inline-start:auto;font-size:.8125rem;color:#BDBAB4;display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.stripe{display:flex;height:4px}.stripe span{flex:1}.stripe .r{background:#CE1126}.stripe .w{background:#fff}.stripe .k{background:#111}
+main{max-width:72rem;margin:0 auto;padding:1rem 1rem 4rem}
+.tabs{display:flex;gap:.25rem;background:var(--tile);border-radius:.75rem;padding:.1875rem;margin-bottom:1rem;overflow-x:auto}
+.tabs button{flex:1;min-height:2.5rem;border:0;border-radius:.625rem;background:transparent;color:var(--muted);font-weight:600;white-space:nowrap;padding:0 .875rem}
+.tabs button[aria-pressed="true"]{background:var(--surface);color:var(--ink)}
+.btn{min-height:2.75rem;padding:0 1rem;border-radius:.75rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:.375rem;text-decoration:none}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn-danger{color:var(--accent-text)}
+.btn-sm{min-height:2.25rem;padding:0 .625rem;font-size:.8125rem}
+.top .btn{background:#262626;border-color:#333;color:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(10rem,1fr));gap:.625rem;margin-bottom:1rem}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:.875rem;padding:.75rem .875rem}
+.stat span{display:block;font-size:.8125rem;color:var(--muted)}
+.stat b{font-size:1.5rem;font-variant-numeric:tabular-nums}
+.tools{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem}
+.inp,.sel{min-height:2.75rem;border-radius:.75rem;border:1px solid var(--line);background:var(--surface);padding:0 .75rem;min-width:0}
+.tools .inp{flex:1 1 14rem}
+textarea.inp{min-height:7rem;padding:.625rem .75rem;resize:vertical;width:100%}
+.list{display:flex;flex-direction:column;gap:.5rem}
+.row{display:flex;gap:.75rem;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:.875rem;padding:.625rem}
+.thumb{width:5.5rem;height:4.25rem;flex:none;border-radius:.5rem;background:var(--tile);overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.75rem}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.rt{flex:1;min-width:0;display:flex;flex-direction:column;gap:.125rem}
+.rt b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.meta{font-size:.8125rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:.25rem .625rem}
+.price{color:var(--accent-text);font-weight:700;font-variant-numeric:tabular-nums}
+.acts{display:flex;flex-wrap:wrap;gap:.375rem;margin-top:.375rem}
+.pill{display:inline-flex;font-size:.6875rem;font-weight:700;padding:.0625rem .5rem;border-radius:.75rem;background:var(--tile)}
+.pill.vvip{background:var(--gold-soft);color:var(--gold-text)}
+.pill.vip{background:var(--accent-soft);color:var(--accent-text)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.bad{background:var(--accent);color:#fff}
+.empty,.gate{background:var(--surface);border:1px dashed var(--line);border-radius:.875rem;padding:2rem 1rem;text-align:center;color:var(--muted)}
+.gate{max-width:26rem;margin:3rem auto;border-style:solid;color:var(--ink);display:flex;flex-direction:column;gap:.75rem;align-items:center}
+.gate h1{font-family:'Reem Kufi',sans-serif;font-size:1.5rem}
+#gslot{min-height:44px}
+.err{color:var(--accent-text);font-weight:600;font-size:.875rem}
+.form{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,14rem),1fr));gap:.75rem}
+.field{display:flex;flex-direction:column;gap:.25rem;min-width:0}
+.field.wide{grid-column:1/-1}
+.field label{font-weight:600;font-size:.875rem}
+.field .inp,.field .sel{width:100%}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:.875rem;padding:1rem;display:flex;flex-direction:column;gap:.75rem}
+.photos{display:flex;flex-wrap:wrap;gap:.5rem}
+.ph{position:relative;width:5.5rem;height:5.5rem;border-radius:.625rem;overflow:hidden;background:var(--tile)}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph button{position:absolute;top:.25rem;inset-inline-end:.25rem;width:1.75rem;height:1.75rem;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff}
+dialog{border:0;border-radius:1rem;padding:0;max-width:40rem;width:calc(100% - 2rem);background:var(--surface);color:var(--ink)}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+.dlg-in{padding:1.125rem;display:flex;flex-direction:column;gap:.75rem;max-height:85vh;overflow:auto}
+.dlg-foot{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:flex-end}
+.toast{position:fixed;bottom:1rem;inset-inline:1rem;margin:0 auto;max-width:24rem;background:var(--ink);color:var(--bg);padding:.625rem 1rem;border-radius:.75rem;text-align:center;font-weight:600;z-index:50}
+.more{display:flex;justify-content:center;margin-top:.75rem}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <b>نيل سيل</b><span>لوحة التحكم</span>
+    <div class="who" id="who" hidden><span id="whoName"></span><a class="btn btn-sm" href="./">فتح الموقع</a><button class="btn btn-sm" id="signOut" type="button">خروج</button></div>
+  </div>
+  <div class="stripe"><span class="r"></span><span class="w"></span><span class="k"></span></div>
+</header>
+
+<main id="main">
+  <div class="gate" id="gate">
+    <h1>دخول المالك</h1>
+    <p id="gateMsg">سجّل دخول بحساب جوجل المسجّل كمدير.</p>
+    <div id="gslot"></div>
+    <p class="err" id="gateErr" hidden></p>
+  </div>
+
+  <div id="app" hidden>
+    <div class="stats" id="stats"></div>
+    <div class="tabs" role="group" aria-label="الأقسام">
+      <button type="button" data-tab="listings" aria-pressed="true">الإعلانات</button>
+      <button type="button" data-tab="add" aria-pressed="false">إضافة إعلان</button>
+      <button type="button" data-tab="users" aria-pressed="false">المستخدمين</button>
+    </div>
+
+    <section id="tab-listings">
+      <div class="tools">
+        <input class="inp" id="q" type="search" placeholder="ابحث بالعنوان أو الوصف أو رقم الإعلان">
+        <select class="sel" id="fCat" aria-label="القسم"><option value="">كل الأقسام</option></select>
+        <select class="sel" id="fState" aria-label="الحالة">
+          <option value="">الكل</option><option value="boost">المميّزة</option><option value="auction">المزادات</option><option value="fixed">سعر ثابت</option>
+        </select>
+      </div>
+      <div class="list" id="list"></div>
+      <div class="more"><button class="btn" id="moreBtn" type="button" hidden>عرض المزيد</button></div>
+    </section>
+
+    <section id="tab-add" hidden>
+      <form class="panel" id="addForm">
+        <h2>إضافة إعلان باسم نيل سيل</h2>
+        <div class="form" id="addFields"></div>
+        <div class="field wide">
+          <label for="addPhotos">الصور (حتى ١٠)</label>
+          <input id="addPhotos" type="file" accept="image/*" multiple>
+          <div class="photos" id="addPrev"></div>
+        </div>
+        <p class="err" id="addErr" hidden></p>
+        <div><button class="btn btn-primary" type="submit" id="addBtn">نشر الإعلان</button></div>
+      </form>
+    </section>
+
+    <section id="tab-users" hidden>
+      <form class="tools" id="adminForm">
+        <input class="inp" id="adminEmail" type="email" placeholder="إيميل شخص تبي تعطيه صلاحية مدير" required>
+        <button class="btn" type="submit">إضافة مدير</button>
+      </form>
+      <div class="tools"><input class="inp" id="uq" type="search" placeholder="ابحث بالاسم أو الإيميل"></div>
+      <div class="list" id="ulist"></div>
+    </section>
+  </div>
+</main>
+
+<dialog id="dlg"><form class="dlg-in" id="dlgForm" method="dialog"></form></dialog>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="js/config.js"></script>
+<script src="js/vendor/supabase-2.117.2.js"></script>
+<script>
+(function () {
+'use strict';
+var CATS = {cars:'سيارات',moto:'دراجات نارية',realestate:'عقارات',land:'أراضي',commercial:'عقارات تجارية',plates:'نمر سيارات',numbers:'نمر موبايلات',phones:'موبايلات',computers:'إكسسوارات جيمنج',electronics:'إلكترونيات',appliances:'أجهزة كهربائية',furniture:'أثاث',watches:'ساعات',services:'خدمات',parts:'قطع غيار سيارات',fashion:'ملابس وأحذية',oud:'عود وبخور',perfumes:'عطور',jobs:'وظائف وأعمال حرة'};
+var CITIES = {cairo:'القاهرة',giza:'الجيزة',alex:'الإسكندرية',qalyubia:'القليوبية',dakahlia:'الدقهلية',sharqia:'الشرقية',gharbia:'الغربية',monufia:'المنوفية',beheira:'البحيرة',kafrelsheikh:'كفر الشيخ',damietta:'دمياط',portsaid:'بورسعيد',ismailia:'الإسماعيلية',suez:'السويس',faiyum:'الفيوم',benisuef:'بني سويف',minya:'المنيا',asyut:'أسيوط',sohag:'سوهاج',qena:'قنا',luxor:'الأقصر',aswan:'أسوان',redsea:'البحر الأحمر',newvalley:'الوادي الجديد',matrouh:'مطروح',northsinai:'شمال سيناء',southsinai:'جنوب سيناء'};
+var PAGE = 50;
+
+var cfg = window.NILESALE_CONFIG || {};
+var sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' } });
+var $ = function (id) { return document.getElementById(id); };
+var me = null, rows = [], shown = PAGE, users = [], profiles = {};
+
+/* ---------- helpers ---------- */
+function el(tag, attrs, kids) {
+  var n = document.createElement(tag);
+  Object.keys(attrs || {}).forEach(function (k) {
+    var v = attrs[k];
+    if (v == null || v === false) return;
+    if (k === 'text') n.textContent = v;
+    else if (k.slice(0, 2) === 'on') n.addEventListener(k.slice(2), v);
+    else n.setAttribute(k, v === true ? '' : v);
+  });
+  (kids || []).forEach(function (c) { if (c != null) n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+  return n;
+}
+function rid(n, abc) {
+  abc = abc || 'abcdefghijklmnopqrstuvwxyz0123456789';
+  var a = new Uint8Array(n), s = ''; crypto.getRandomValues(a);
+  for (var i = 0; i < n; i++) s += abc[a[i] % abc.length]; return s;
+}
+function money(v) { var n = Number(v); return isFinite(n) && n > 0 ? n.toLocaleString('ar-EG') + ' ج.م' : '—'; }
+function day(ms) { var n = Number(ms); return n ? new Date(n).toLocaleDateString('ar-EG', { day: 'numeric', month: 'short', year: 'numeric' }) : ''; }
+function photoUrl(id) {
+  id = String(id || '');
+  if (/^[0-9a-f]{32}$/.test(id)) return cfg.supabaseUrl.replace(/\/$/, '') + '/storage/v1/object/public/photos/p/' + id;
+  return '';
+}
+function boostOf(d) { return d && (d.boost === 'vip' || d.boost === 'vvip') && Number(d.boostUntil) > Date.now() ? d.boost : ''; }
+var toastT;
+function toast(msg) { var t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(function () { t.hidden = true; }, 3200); }
+function fail(e) { console.error(e); toast('صار خطأ: ' + (e && (e.message || e.error_description) || 'غير معروف')); }
+function opts(sel, map, cur, blank) {
+  if (blank) sel.appendChild(el('option', { value: '', text: blank }));
+  Object.keys(map).forEach(function (k) { sel.appendChild(el('option', { value: k, text: map[k], selected: k === cur })); });
+  return sel;
+}
+
+/* ---------- sign-in ---------- */
+function sha256Hex(str) {
+  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(str)).then(function (b) {
+    return Array.prototype.map.call(new Uint8Array(b), function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
+  });
+}
+function showGoogle() {
+  var raw = rid(32, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
+  var s = document.createElement('script');
+  s.src = 'https://accounts.google.com/gsi/client'; s.async = true;
+  s.onload = function () {
+    sha256Hex(raw).then(function (hashed) {
+      google.accounts.id.initialize({
+        client_id: cfg.googleClientId, nonce: hashed, ux_mode: 'popup', use_fedcm_for_prompt: true,
+        callback: function (resp) {
+          $('gateMsg').textContent = 'جاري الدخول…';
+          sb.auth.signInWithIdToken({ provider: 'google', token: resp.credential, nonce: raw }).then(function (r) {
+            if (r.error) throw r.error; location.reload();
+          }).catch(function (e) { gateErr('ما قدرنا ندخلك: ' + (e.message || e)); });
+        }
+      });
+      google.accounts.id.renderButton($('gslot'), { type: 'standard', theme: 'outline', size: 'large', shape: 'pill', text: 'signin_with', locale: 'ar' });
+    });
+  };
+  s.onerror = function () { gateErr('ما انفتح زر جوجل. سجّل دخول من الموقع الرئيسي وارجع لهذي الصفحة.'); };
+  document.head.appendChild(s);
+}
+function gateErr(m) { var e = $('gateErr'); e.textContent = m; e.hidden = false; }
+
+function start() {
+  sb.auth.getSession().then(function (r) {
+    var s = r.data && r.data.session;
+    if (!s) { showGoogle(); return; }
+    me = s.user;
+    return sb.rpc('is_admin').then(function (a) {
+      if (a.error) throw a.error;
+      if (!a.data) {
+        $('gateMsg').textContent = 'حسابك (' + (me.email || '') + ') ما عنده صلاحية مدير.';
+        $('gslot').replaceWith(el('button', { class: 'btn', type: 'button', text: 'الدخول بحساب ثاني', onclick: signOut }));
+        return;
+      }
+      $('gate').hidden = true; $('app').hidden = false; $('who').hidden = false;
+      $('whoName').textContent = me.email || '';
+      boot();
+    });
+  }).catch(function (e) { gateErr(e.message || String(e)); });
+}
+function signOut() { sb.auth.signOut().then(function () { location.reload(); }); }
+$('signOut').onclick = signOut;
+
+/* ---------- data ---------- */
+function loadListings() {
+  return sb.from('listings').select('id,seller_id,data,created_at,updated_at').order('created_at', { ascending: false }).limit(5000).then(function (r) {
+    if (r.error) throw r.error; rows = r.data || []; renderStats(); renderList();
+  });
+}
+function loadProfiles() {
+  return sb.from('profiles').select('id,data').limit(5000).then(function (r) {
+    if (r.error) throw r.error; profiles = {}; (r.data || []).forEach(function (p) { profiles[p.id] = p.data || {}; });
+  });
+}
+function loadUsers() {
+  return sb.rpc('admin_users').then(function (r) { if (r.error) throw r.error; users = r.data || []; renderStats(); renderUsers(); });
+}
+function boot() {
+  opts($('fCat'), CATS);
+  buildAddForm();
+  Promise.all([loadProfiles(), loadUsers()]).then(loadListings).catch(fail);
+  sb.channel('admin-listings').on('postgres_changes', { event: '*', schema: 'public', table: 'listings' }, function () { loadListings().catch(fail); }).subscribe();
+}
+
+/* ---------- stats ---------- */
+function renderStats() {
+  var now = Date.now();
+  var boosted = rows.filter(function (r) { return boostOf(r.data); }).length;
+  var auctions = rows.filter(function (r) { return r.data && r.data.type === 'auction' && Number(r.data.endsAt) > now; }).length;
+  var week = rows.filter(function (r) { return new Date(r.created_at).getTime() > now - 7 * 864e5; }).length;
+  var box = $('stats'); box.textContent = '';
+  [['كل الإعلانات', rows.length], ['أُضيفت هالأسبوع', week], ['مميّزة الحين', boosted], ['مزادات شغالة', auctions], ['المستخدمين', users.length]].forEach(function (s) {
+    box.appendChild(el('div', { class: 'stat' }, [el('span', { text: s[0] }), el('b', { text: Number(s[1]).toLocaleString('ar-EG') })]));
+  });
+}
+
+/* ---------- listings ---------- */
+function filtered() {
+  var q = $('q').value.trim().toLowerCase(), c = $('fCat').value, st = $('fState').value;
+  return rows.filter(function (r) {
+    var d = r.data || {};
+    if (c && d.category !== c) return false;
+    if (st === 'boost' && !boostOf(d)) return false;
+    if ((st === 'auction' || st === 'fixed') && d.type !== st) return false;
+    if (q && (r.id + ' ' + (d.title || '') + ' ' + (d.desc || '')).toLowerCase().indexOf(q) < 0) return false;
+    return true;
+  });
+}
+function sellerName(id) {
+  var p = profiles[id]; if (p && p.name) return p.name;
+  var u = users.filter(function (x) { return x.id === id; })[0];
+  return u ? (u.name || u.email) : 'مستخدم';
+}
+function renderList() {
+  var list = $('list'), all = filtered(); list.textContent = '';
+  if (!all.length) { list.appendChild(el('div', { class: 'empty', text: rows.length ? 'ما فيه إعلانات تطابق البحث.' : 'ما فيه إعلانات منشورة لين الحين.' })); $('moreBtn').hidden = true; return; }
+  all.slice(0, shown).forEach(function (r) { list.appendChild(listingRow(r)); });
+  $('moreBtn').hidden = all.length <= shown;
+}
+function listingRow(r) {
+  var d = r.data || {}, b = boostOf(d), src = photoUrl((d.photos || [])[0]);
+  var banned = users.some(function (u) { return u.id === r.seller_id && u.is_banned; });
+  return el('div', { class: 'row' }, [
+    el('div', { class: 'thumb' }, [src ? el('img', { src: src, alt: '', loading: 'lazy' }) : 'بدون صورة']),
+    el('div', { class: 'rt' }, [
+      el('b', { text: d.title || '(بدون عنوان)' }),
+      el('div', { class: 'meta' }, [
+        el('span', { class: 'price', text: d.type === 'auction' ? 'مزاد · ' + money(d.currentBid || d.price) : money(d.price) }),
+        el('span', { text: CATS[d.category] || d.category || '' }),
+        el('span', { text: CITIES[d.city] || d.city || '' }),
+        el('span', { text: day(d.createdAt) }),
+        b ? el('span', { class: 'pill ' + b, text: (b === 'vvip' ? 'VVIP' : 'VIP') + ' لين ' + day(d.boostUntil) }) : null,
+        banned ? el('span', { class: 'pill bad', text: 'البائع محظور' }) : null
+      ]),
+      el('div', { class: 'meta' }, [el('span', { text: 'البائع: ' + sellerName(r.seller_id) }), el('span', { text: '#' + r.id })]),
+      el('div', { class: 'acts' }, [
+        el('button', { class: 'btn btn-sm', type: 'button', text: 'تعديل', onclick: function () { editListing(r); } }),
+        el('button', { class: 'btn btn-sm', type: 'button', text: b ? 'تغيير التمييز' : 'تمييز', onclick: function () { boostListing(r); } }),
+        el('button', { class: 'btn btn-sm btn-danger', type: 'button', text: 'حذف', onclick: function () { deleteListing(r); } })
+      ])
+    ])
+  ]);
+}
+['q', 'fCat', 'fState'].forEach(function (id) { $(id).addEventListener('input', function () { shown = PAGE; renderList(); }); });
+$('moreBtn').onclick = function () { shown += PAGE; renderList(); };
+
+/* ---------- dialog ---------- */
+function openDlg(title, body, okText, onOk, danger) {
+  var f = $('dlgForm'); f.textContent = '';
+  var errP = el('p', { class: 'err', hidden: true });
+  var ok = el('button', { class: 'btn ' + (danger ? 'btn-primary' : 'btn-primary'), type: 'button', text: okText });
+  ok.onclick = function () {
+    ok.disabled = true; errP.hidden = true;
+    Promise.resolve().then(onOk).then(function () { $('dlg').close(); }).catch(function (e) {
+      ok.disabled = false; errP.textContent = e && e.message || String(e); errP.hidden = false;
+    });
+  };
+  f.appendChild(el('h2', { text: title }));
+  f.appendChild(body);
+  f.appendChild(errP);
+  f.appendChild(el('div', { class: 'dlg-foot' }, [el('button', { class: 'btn', type: 'button', text: 'إلغاء', onclick: function () { $('dlg').close(); } }), ok]));
+  $('dlg').showModal();
+}
+function field(label, input, wide) { if (!input.id) input.id = 'f_' + rid(6); return el('div', { class: 'field' + (wide ? ' wide' : '') }, [el('label', { for: input.id, text: label }), input]); }
+function update(r, data) {
+  return sb.from('listings').update({ data: data }).eq('id', r.id).select('id').then(function (res) {
+    if (res.error) throw res.error;
+    if (!res.data || !res.data.length) throw new Error('ما انحفظ التعديل. تأكد إن حسابك مدير.');
+    toast('انحفظ'); return loadListings();
+  });
+}
+
+function editListing(r) {
+  var d = Object.assign({}, r.data);
+  var title = el('input', { class: 'inp', value: d.title || '', maxlength: 120 });
+  var price = el('input', { class: 'inp', type: 'number', min: 0, value: d.price || '' });
+  var cat = opts(el('select', { class: 'sel' }), CATS, d.category);
+  var city = opts(el('select', { class: 'sel' }), CITIES, d.city);
+  var phone = el('input', { class: 'inp', type: 'tel', value: d.phone || '', dir: 'ltr' });
+  var desc = el('textarea', { class: 'inp' }); desc.value = d.desc || '';
+  openDlg('تعديل الإعلان', el('div', { class: 'form' }, [
+    field('العنوان', title, true), field(d.type === 'auction' ? 'سعر البداية' : 'السعر (ج.م)', price), field('القسم', cat),
+    field('المحافظة', city), field('رقم التواصل', phone), field('الوصف', desc, true)
+  ]), 'حفظ', function () {
+    if (!title.value.trim()) throw new Error('العنوان مطلوب');
+    d.title = title.value.trim(); d.price = Number(price.value) || 0; d.category = cat.value; d.city = city.value;
+    d.phone = phone.value.trim(); d.desc = desc.value; delete d.i18n; d.autoT = true;
+    return update(r, d);
+  });
+}
+
+function boostListing(r) {
+  var d = Object.assign({}, r.data), cur = boostOf(d);
+  var tier = el('select', { class: 'sel' }, [
+    el('option', { value: '', text: 'بدون تمييز', selected: !cur }),
+    el('option', { value: 'vip', text: 'VIP', selected: cur === 'vip' }),
+    el('option', { value: 'vvip', text: 'VVIP (أعلى الصفحة)', selected: cur === 'vvip' })
+  ]);
+  var days = el('input', { class: 'inp', type: 'number', min: 1, max: 365, value: 30 });
+  openDlg('تمييز الإعلان', el('div', { class: 'form' }, [field('نوع التمييز', tier), field('المدة بالأيام', days)]), 'حفظ', function () {
+    if (!tier.value) { ['boost', 'boostAt', 'boostUntil', 'boostPaid', 'boostMethod'].forEach(function (k) { delete d[k]; }); }
+    else {
+      var n = Math.max(1, Math.min(365, Number(days.value) || 30));
+      d.boost = tier.value; d.boostAt = Date.now(); d.boostUntil = Date.now() + n * 864e5; d.boostMethod = 'admin'; d.boostPaid = 0;
+    }
+    return update(r, d);
+  });
+}
+
+function deleteListing(r) {
+  openDlg('حذف الإعلان؟', el('p', { text: '«' + ((r.data || {}).title || r.id) + '» ينحذف نهائياً من الموقع والتطبيق مع مزايداته وصوره.' }), 'حذف نهائي', function () {
+    var photos = ((r.data || {}).photos || []).filter(function (p) { return /^[0-9a-f]{32}$/.test(p); });
+    return sb.from('bids').delete().eq('listing_id', r.id)
+      .then(function (x) { if (x.error) throw x.error; return sb.from('entries').delete().eq('listing_id', r.id); })
+      .then(function (x) { if (x.error) throw x.error; return sb.from('listings').delete().eq('id', r.id).select('id'); })
+      .then(function (x) {
+        if (x.error) throw x.error;
+        if (!x.data || !x.data.length) throw new Error('ما انحذف. تأكد إن حسابك مدير.');
+        if (photos.length) sb.storage.from('photos').remove(photos.map(function (p) { return 'p/' + p; })).catch(function () {});
+        toast('انحذف الإعلان'); return loadListings();
+      });
+  }, true);
+}
+
+/* ---------- add listing ---------- */
+var addFiles = [];
+function buildAddForm() {
+  var f = $('addFields');
+  f.appendChild(field('العنوان', el('input', { class: 'inp', name: 'title', required: true, maxlength: 120 }), true));
+  f.appendChild(field('القسم', opts(el('select', { class: 'sel', name: 'category', required: true }), CATS, '', 'اختر القسم')));
+  f.appendChild(field('المحافظة', opts(el('select', { class: 'sel', name: 'city', required: true }), CITIES, 'cairo')));
+  f.appendChild(field('السعر (ج.م)', el('input', { class: 'inp', name: 'price', type: 'number', min: 1, required: true })));
+  f.appendChild(field('رقم التواصل', el('input', { class: 'inp', name: 'phone', type: 'tel', dir: 'ltr' })));
+  f.appendChild(field('تمييز', el('select', { class: 'sel', name: 'boost' }, [el('option', { value: '', text: 'بدون' }), el('option', { value: 'vip', text: 'VIP لمدة ٣٠ يوم' }), el('option', { value: 'vvip', text: 'VVIP لمدة ٣٠ يوم' })])));
+  var desc = el('textarea', { class: 'inp', name: 'desc', required: true });
+  f.appendChild(field('الوصف', desc, true));
+}
+$('addPhotos').addEventListener('change', function (e) {
+  Array.prototype.forEach.call(e.target.files, function (file) { if (addFiles.length < 10 && /^image\//.test(file.type) && file.size <= 10 * 1024 * 1024) addFiles.push(file); });
+  e.target.value = ''; renderAddPrev();
+});
+function renderAddPrev() {
+  var p = $('addPrev'); p.textContent = '';
+  addFiles.forEach(function (file, i) {
+    var url = URL.createObjectURL(file);
+    p.appendChild(el('div', { class: 'ph' }, [el('img', { src: url, alt: '' }), el('button', { type: 'button', 'aria-label': 'شيل الصورة', text: '×', onclick: function () { addFiles.splice(i, 1); renderAddPrev(); } })]));
+  });
+}
+$('addForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var fd = new FormData(e.target), btn = $('addBtn'), er = $('addErr'); er.hidden = true; btn.disabled = true; btn.textContent = 'جاري النشر…';
+  var ids = [];
+  Promise.all(addFiles.map(function (file) {
+    var id = rid(32, '0123456789abcdef'); ids.push(id);
+    return sb.storage.from('photos').upload('p/' + id, file, { contentType: file.type || 'image/jpeg', cacheControl: '31536000', upsert: false }).then(function (r) { if (r.error) throw r.error; });
+  })).then(function () {
+    var now = Date.now(), data = {
+      title: String(fd.get('title')).trim(), category: fd.get('category'), city: fd.get('city'), price: Number(fd.get('price')) || 0,
+      phone: String(fd.get('phone') || '').trim(), desc: String(fd.get('desc') || ''), type: 'fixed', lang: 'ar', autoT: true,
+      photos: ids, dist: '', nbh: '', createdAt: now
+    };
+    if (fd.get('boost')) { data.boost = fd.get('boost'); data.boostAt = now; data.boostUntil = now + 30 * 864e5; data.boostMethod = 'admin'; data.boostPaid = 0; }
+    return sb.from('listings').insert({ id: rid(20), data: data });
+  }).then(function (r) {
+    if (r.error) throw r.error;
+    e.target.reset(); addFiles = []; renderAddPrev(); toast('انتشر الإعلان');
+    setTab('listings'); return loadListings();
+  }).catch(function (x) { er.textContent = x.message || String(x); er.hidden = false; })
+    .then(function () { btn.disabled = false; btn.textContent = 'نشر الإعلان'; });
+});
+
+/* ---------- users ---------- */
+function renderUsers() {
+  var q = $('uq').value.trim().toLowerCase(), box = $('ulist'); box.textContent = '';
+  var all = users.filter(function (u) { return !q || ((u.name || '') + ' ' + (u.email || '')).toLowerCase().indexOf(q) >= 0; });
+  if (!all.length) { box.appendChild(el('div', { class: 'empty', text: 'ما فيه مستخدمين.' })); return; }
+  all.forEach(function (u) {
+    var self = me && u.id === me.id;
+    box.appendChild(el('div', { class: 'row' }, [el('div', { class: 'rt' }, [
+      el('b', { text: u.name || u.email || 'مستخدم' }),
+      el('div', { class: 'meta' }, [
+        el('span', { text: u.email || '' }), el('span', { text: 'انضم ' + day(new Date(u.created_at).getTime()) }),
+        el('span', { text: Number(u.listings).toLocaleString('ar-EG') + ' إعلان' }),
+        u.is_admin ? el('span', { class: 'pill ok', text: 'مدير' }) : null,
+        u.is_banned ? el('span', { class: 'pill bad', text: 'محظور' }) : null
+      ]),
+      self ? null : el('div', { class: 'acts' }, [
+        el('button', { class: 'btn btn-sm', type: 'button', text: u.is_banned ? 'فك الحظر' : 'حظر من النشر والمزايدة', onclick: function () { toggleBan(u); } }),
+        u.is_admin ? el('button', { class: 'btn btn-sm btn-danger', type: 'button', text: 'شيل صلاحية المدير', onclick: function () { removeAdmin(u); } }) : null,
+        Number(u.listings) ? el('button', { class: 'btn btn-sm', type: 'button', text: 'إعلاناته', onclick: function () { $('q').value = ''; setTab('listings'); showSeller(u.id); } }) : null
+      ])
+    ])]));
+  });
+}
+function showSeller(id) {
+  var list = $('list'); list.textContent = '';
+  rows.filter(function (r) { return r.seller_id === id; }).forEach(function (r) { list.appendChild(listingRow(r)); });
+  $('moreBtn').hidden = true;
+}
+$('uq').addEventListener('input', renderUsers);
+function toggleBan(u) {
+  var p = u.is_banned ? sb.from('banned').delete().eq('user_id', u.id) : sb.from('banned').insert({ user_id: u.id });
+  p.then(function (r) { if (r.error) throw r.error; toast(u.is_banned ? 'انفك الحظر' : 'انحظر'); return loadUsers(); }).then(renderList).catch(fail);
+}
+function removeAdmin(u) {
+  sb.from('admins').delete().eq('user_id', u.id).then(function (r) { if (r.error) throw r.error; toast('انشالت الصلاحية'); return loadUsers(); }).catch(fail);
+}
+$('adminForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  sb.rpc('admin_add_by_email', { p_email: $('adminEmail').value }).then(function (r) {
+    if (r.error) throw new Error(/signed in/.test(r.error.message) ? 'هذا الإيميل لازم يسجّل دخول في الموقع مرة وحدة أول.' : r.error.message);
+    $('adminEmail').value = ''; toast('صار مدير'); return loadUsers();
+  }).catch(fail);
+});
+
+/* ---------- tabs ---------- */
+function setTab(name) {
+  document.querySelectorAll('[data-tab]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.tab === name)); });
+  ['listings', 'add', 'users'].forEach(function (t) { $('tab-' + t).hidden = t !== name; });
+  if (name === 'listings') renderList();
+}
+document.querySelectorAll('[data-tab]').forEach(function (b) { b.onclick = function () { setTab(b.dataset.tab); }; });
+
+start();
+})();
+</script>
+</body>
+</html>
