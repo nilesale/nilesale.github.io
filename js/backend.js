@@ -236,6 +236,7 @@
 
   /* ---------- Google sign-in with Google Identity Services ---------- */
   var gisLoading = null;
+  (function () { var st = document.createElement('style'); st.textContent = 'dialog.ns-gis::backdrop{background:rgba(0,0,0,.6)}'; document.head.appendChild(st); })();
   function loadGis() {
     if (window.google && google.accounts && google.accounts.id) return Promise.resolve();
     if (gisLoading) return gisLoading;
@@ -260,9 +261,10 @@
       var hashed = r[1];
       return new Promise(function (ok, bad) {
         var done = false;
-        var box = document.createElement('div');
-        box.setAttribute('role', 'dialog');
-        box.style.cssText = 'position:fixed;inset:0;z-index:2147483000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px';
+        // a real <dialog> so it shows above the site's own sign-in sheet
+        var box = document.createElement('dialog');
+        box.className = 'ns-gis';
+        box.style.cssText = 'border:0;padding:16px;background:transparent;max-width:none;max-height:none;width:100%;height:100%;margin:0;display:flex;align-items:center;justify-content:center;box-sizing:border-box';
         var card = document.createElement('div');
         card.style.cssText = 'background:#fff;color:#111;border-radius:16px;padding:22px 18px;max-width:340px;width:100%;text-align:center;font-family:inherit;box-shadow:0 10px 40px rgba(0,0,0,.3)';
         card.dir = ar ? 'rtl' : 'ltr';
@@ -279,7 +281,9 @@
         cancel.style.cssText = 'margin-top:12px;background:none;border:0;color:#555;font:inherit;font-size:14px;cursor:pointer;padding:8px 16px';
         card.appendChild(title); card.appendChild(slot); card.appendChild(msg); card.appendChild(cancel);
         box.appendChild(card); document.body.appendChild(box);
-        function close() { if (box.parentNode) box.parentNode.removeChild(box); }
+        try { box.showModal(); } catch (e) { box.setAttribute('open', ''); }
+        box.addEventListener('cancel', function (e) { e.preventDefault(); stop(); });
+        function close() { try { box.close(); } catch (e) {} if (box.parentNode) box.parentNode.removeChild(box); }
         function stop() { if (done) return; done = true; close(); bad(err('cancel')); }
         cancel.onclick = stop;
         box.addEventListener('click', function (e) { if (e.target === box) stop(); });
