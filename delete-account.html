@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>حذف الحساب · نيل سيل</title>
+<link rel="icon" href="icons/favicon-64.png">
+<style>
+:root{--bg:#F6F5F2;--surface:#fff;--ink:#141414;--muted:#5C5A56;--line:#E4E0D9;--accent:#CE1126;--accent-text:#A50E1F}
+@media (prefers-color-scheme:dark){:root{--bg:#121212;--surface:#1C1C1C;--ink:#F1EFEB;--muted:#A8A49D;--line:#2E2D2B;--accent:#E0283D;--accent-text:#FF8592}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 'IBM Plex Sans Arabic','Segoe UI',Tahoma,sans-serif}
+main{max-width:30rem;margin:2rem auto;padding:0 1rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:1rem;padding:1.25rem;display:flex;flex-direction:column;gap:.75rem}
+h1{font-size:1.5rem;margin:0}.muted{color:var(--muted)}
+.btn{min-height:2.75rem;border-radius:.75rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:600;padding:0 1rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn-danger{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn:disabled{opacity:.5}
+label{display:flex;gap:.5rem;align-items:flex-start}
+.err{color:var(--accent-text);font-weight:600}
+[hidden]{display:none!important}
+</style>
+</head>
+<body><main><div class="card">
+<h1>حذف حسابك في نيل سيل</h1>
+<p>ينحذف حسابك وكل إعلاناتك ومزايداتك ومفضلتك وصورك نهائياً، وما نقدر نرجعها. <span class="muted">Deletes your account, listings, bids, favourites and photos permanently.</span></p>
+<p id="who" class="muted">جاري التحقق…</p>
+<div id="signedOut" hidden>
+  <p>سجّل دخول في الموقع أول، وبعدها ارجع لهذي الصفحة.</p>
+  <a class="btn" href="./">فتح نيل سيل وتسجيل الدخول</a>
+  <p class="muted">أو راسلنا من إيميل حسابك على <a href="mailto:alboainainsanad@gmail.com?subject=حذف حسابي في نيل سيل">alboainainsanad@gmail.com</a> ونحذفه خلال ٧ أيام.</p>
+</div>
+<div id="signedIn" hidden>
+  <label><input type="checkbox" id="ok"> فاهم إن الحذف نهائي</label>
+  <button class="btn btn-danger" id="del" type="button" disabled>حذف حسابي نهائياً</button>
+</div>
+<p class="err" id="err" hidden></p>
+<p id="done" hidden><b>انحذف حسابك.</b> شكراً إنك جربت نيل سيل.</p>
+</div></main>
+<script src="js/config.js"></script>
+<script src="js/vendor/supabase-2.117.2.js"></script>
+<script>
+(function () {
+  var cfg = window.NILESALE_CONFIG || {};
+  var sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, { auth: { persistSession: true, autoRefreshToken: true } });
+  var $ = function (id) { return document.getElementById(id); };
+  var user = null;
+  sb.auth.getSession().then(function (r) {
+    var s = r.data && r.data.session;
+    if (!s) { $('who').hidden = true; $('signedOut').hidden = false; return; }
+    user = s.user; $('who').textContent = 'الحساب: ' + (user.email || ''); $('signedIn').hidden = false;
+  });
+  $('ok').onchange = function () { $('del').disabled = !this.checked; };
+  $('del').onclick = function () {
+    var b = this; b.disabled = true; $('err').hidden = true;
+    sb.from('listings').select('data').eq('seller_id', user.id).then(function (r) {
+      var ids = [];
+      (r.data || []).forEach(function (x) { ((x.data || {}).photos || []).forEach(function (p) { if (/^[0-9a-f]{32}$/.test(p)) ids.push('p/' + p); }); });
+      return ids.length ? sb.storage.from('photos').remove(ids) : null;
+    }).then(function () { return sb.rpc('delete_my_account'); }).then(function (r) {
+      if (r.error) throw r.error;
+      return sb.auth.signOut({ scope: 'local' });
+    }).then(function () {
+      try { Object.keys(localStorage).forEach(function (k) { if (k.indexOf('nilesale') === 0) localStorage.removeItem(k); }); } catch (e) {}
+      $('signedIn').hidden = true; $('who').hidden = true; $('done').hidden = false;
+    }).catch(function (e) { b.disabled = false; $('err').textContent = 'ما انحذف: ' + (e.message || e); $('err').hidden = false; });
+  };
+})();
+</script>
+</body></html>
