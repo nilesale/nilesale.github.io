@@ -428,7 +428,9 @@
       if (have >= seed.version) return;
       Object.keys(seed.docs || {}).forEach(function (p) {
         // add new demo documents; never overwrite what the visitor changed
-        if (store.docs[p] === undefined || p.indexOf('brandLogos/') === 0) store.docs[p] = seed.docs[p];
+        var cur = store.docs[p], nd = seed.docs[p];
+        // demo ads are ours: newer versions replace older copies
+        if (cur === undefined || p.indexOf('brandLogos/') === 0 || (cur && cur.demo && nd && nd.demo)) store.docs[p] = nd;
       });
       store.meta.seedVersion = seed.version;
       saveStore();
